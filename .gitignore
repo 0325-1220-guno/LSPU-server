@@ -1,0 +1,5 @@
+# Never commit Firebase Admin SDK service-account credentials.
+*serviceAccount*.json
+*service-account*.json
+*service_account*.json
+*-firebase-adminsdk-*.json

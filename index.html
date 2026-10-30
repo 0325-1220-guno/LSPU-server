@@ -1,0 +1,1926 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b2d">
+  <meta name="description" content="Laguna State Polytechnic University Student Information and Enrollment Management System.">
+  <title>LSPU | Student Information &amp; Enrollment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --forest: #173b2d;
+      --forest-2: #24543f;
+      --forest-3: #326b4d;
+      --gold: #d3ac5a;
+      --gold-pale: #f6f0df;
+      --ink: #1d2924;
+      --muted: #68766d;
+      --line: #e4e9e3;
+      --paper: #fff;
+      --canvas: #f7f8f5;
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "DM Sans", Arial, sans-serif;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--canvas);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--canvas); }
+    body, button, input, select, textarea { font-family: var(--sans); }
+    button, a, input, select { -webkit-tap-highlight-color: transparent; }
+    button { color: inherit; }
+    a { color: inherit; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid #d3ac5a; outline-offset: 3px; }
+    .skip-link { position: fixed; z-index: 1000; top: 8px; left: 8px; padding: 10px 14px; transform: translateY(-160%); color: white; background: var(--forest); border-radius: 6px; }
+    .skip-link:focus { transform: translateY(0); }
+    .load-cover { position: fixed; z-index: 999; inset: 0; display: grid; place-items: center; background: var(--forest); animation: cover-out .65s .15s ease forwards; pointer-events: none; }
+    .load-cover span { color: white; font: 600 19px var(--serif); letter-spacing: .12em; animation: cover-word .35s ease both; }
+    @keyframes cover-out { to { opacity: 0; visibility: hidden; } }
+    @keyframes cover-word { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .container { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+    .section { padding: 100px 0; }
+    .section-heading { max-width: 680px; margin: 0 auto 46px; text-align: center; }
+    .eyebrow { margin: 0 0 12px; color: var(--forest-3); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .section-heading h2, .about-copy h2 { margin: 0; color: var(--forest); font: 600 clamp(32px, 4vw, 46px)/1.16 var(--serif); }
+    .section-heading > p:last-child { max-width: 570px; margin: 14px auto 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 22px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: inherit; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .2s, background .2s, border-color .2s, box-shadow .2s; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #fff; background: var(--forest); box-shadow: 0 7px 18px #173b2d20; }
+    .button-primary:hover { background: var(--forest-2); box-shadow: 0 10px 24px #173b2d2b; }
+    .button-gold { color: #223327; background: var(--gold); }
+    .button-gold:hover { background: #e0bd72; }
+    .button-outline { border-color: #ffffff8a; color: #fff; background: #ffffff0a; }
+    .button-outline:hover { background: #ffffff19; }
+    .button-quiet { border-color: var(--line); color: var(--forest); background: white; }
+    .button-quiet:hover { border-color: #a7b9a9; background: #f8faf7; }
+    .button-small { min-height: 34px; padding: 0 12px; font-size: 11px; }
+    .button:disabled { opacity: .65; cursor: wait; transform: none; }
+    .button .spinner { width: 15px; height: 15px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--forest); text-decoration: none; }
+    .brand-seal { width: 42px; height: 42px; display: grid; flex: 0 0 42px; place-items: center; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold); background: #ffffff0e; font: 700 11px var(--serif); letter-spacing: .04em; }
+    .brand-text { display: grid; gap: 3px; }
+    .brand-text strong { font: 700 15px/1 var(--serif); letter-spacing: .02em; }
+    .brand-text small { font-size: 8px; font-weight: 700; letter-spacing: .12em; }
+    .navbar { position: fixed; z-index: 50; inset: 0 0 auto; border-bottom: 1px solid transparent; transition: background .25s, box-shadow .25s, border-color .25s; }
+    .navbar.scrolled { border-color: #e4e9e3cc; background: #ffffffed; box-shadow: 0 5px 25px #173b2d0b; backdrop-filter: blur(14px); }
+    .nav-inner { width: min(1240px, calc(100% - 48px)); min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 26px; margin: auto; }
+    .nav-links { display: flex; align-items: center; gap: clamp(15px, 2.3vw, 29px); margin-left: auto; }
+    .nav-links a { position: relative; padding: 8px 0; color: #ffffffdf; font-size: 11px; font-weight: 600; text-decoration: none; transition: color .2s; }
+    .navbar.scrolled .nav-links a { color: #47574c; }
+    .nav-links a::after { position: absolute; right: 0; bottom: 1px; left: 0; height: 2px; transform: scaleX(0); transform-origin: left; background: var(--gold); content: ""; transition: transform .2s; }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .navbar .brand { color: white; }
+    .navbar.scrolled .brand { color: var(--forest); }
+    .nav-actions { display: flex; align-items: center; gap: 11px; }
+    .nav-login { min-height: 39px; padding-inline: 17px; }
+    .menu-toggle { width: 42px; height: 42px; display: none; place-items: center; border: 1px solid #ffffff72; border-radius: 5px; color: white; background: transparent; font-size: 21px; cursor: pointer; }
+    .navbar.scrolled .menu-toggle { border-color: var(--line); color: var(--forest); }
+    .hero { min-height: min(780px, 100svh); min-height: max(680px, 100svh); position: relative; display: flex; align-items: center; overflow: hidden; color: white; background: var(--forest); isolation: isolate; }
+    .hero-bg { position: absolute; z-index: -3; inset: -8% 0; background: radial-gradient(ellipse at 75% 42%, #477250 0, transparent 40%), linear-gradient(120deg, #102d23 0%, #173b2d 54%, #244b38 100%); will-change: transform; }
+    .hero::before { position: absolute; z-index: -2; inset: 0; background: linear-gradient(90deg, #102d23ed 0%, #173b2de8 42%, #173b2d80 100%); content: ""; }
+    .hero::after { position: absolute; z-index: -1; inset: 0; opacity: .11; background-image: linear-gradient(#ffffff30 1px, transparent 1px), linear-gradient(90deg, #ffffff30 1px, transparent 1px); background-size: 68px 68px; mask-image: linear-gradient(90deg, transparent, black 68%); content: ""; }
+    .hero-campus { position: absolute; z-index: -1; right: 2%; bottom: 0; width: min(59vw, 800px); height: 83%; opacity: .32; pointer-events: none; }
+    .hero-content { padding-top: 85px; padding-bottom: 78px; }
+    .hero-copy { max-width: 670px; position: relative; z-index: 1; }
+    .hero-kicker { display: flex; align-items: center; gap: 10px; color: #e8cc82; font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .hero-kicker::before { width: 28px; height: 1px; background: var(--gold); content: ""; }
+    .hero h1 { margin: 22px 0 20px; font: 600 clamp(44px, 7.1vw, 78px)/1.08 var(--serif); letter-spacing: -.025em; }
+    .hero h1 span { color: #e6ca82; }
+    .hero-tagline { min-height: 31px; margin: 0; color: #d7e1d8; font-size: clamp(15px, 1.65vw, 19px); line-height: 1.7; }
+    .hero-tagline .cursor { display: inline-block; width: 1px; height: 1.1em; margin-left: 2px; vertical-align: middle; background: var(--gold); animation: blink .8s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 31px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 23px; margin-top: 52px; color: #d1dfd3; font-size: 10px; }
+    .hero-meta span { display: flex; align-items: center; gap: 8px; }
+    .hero-meta span::before { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); content: ""; }
+    .hero-orb { position: absolute; border: 1px solid #ffffff1a; border-radius: 50%; pointer-events: none; animation: float 12s ease-in-out infinite alternate; }
+    .hero-orb.one { top: 23%; right: 16%; width: 170px; height: 170px; }
+    .hero-orb.two { right: 7%; bottom: 17%; width: 84px; height: 84px; animation-delay: -3s; }
+    .hero-orb.three { top: 34%; right: 37%; width: 18px; height: 18px; background: #e6ca8240; animation-delay: -5s; }
+    @keyframes float { to { transform: translate3d(12px, -20px, 0); } }
+    .hero-scroll { position: absolute; right: 32px; bottom: 26px; display: flex; align-items: center; gap: 10px; color: #d0ddd1; font-size: 9px; letter-spacing: .13em; text-decoration: none; writing-mode: vertical-rl; }
+    .hero-scroll::after { width: 1px; height: 34px; background: var(--gold); content: ""; }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 62px; align-items: center; }
+    .about-copy h2 { max-width: 480px; }
+    .about-copy > p:not(.eyebrow) { color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .placeholder-note { display: inline-flex; gap: 8px; align-items: flex-start; margin-top: 12px; padding: 11px 13px; border-left: 2px solid var(--gold); color: #64746a; background: #f2f4ef; font-size: 10px; line-height: 1.6; }
+    .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .about-card { min-height: 174px; padding: 23px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); box-shadow: 0 8px 30px #173b2d07; }
+    .about-card:nth-child(2) { transform: translateY(22px); }
+    .about-card .card-mark { width: 31px; height: 31px; display: grid; place-items: center; margin-bottom: 15px; border-radius: 50%; color: var(--forest); background: var(--gold-pale); font-size: 13px; }
+    .about-card h3 { margin: 0 0 8px; color: var(--forest); font: 600 18px var(--serif); }
+    .about-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .values { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .value-chip { padding: 8px 11px; border: 1px solid #dfe7df; border-radius: 30px; color: var(--forest); background: white; font-size: 10px; font-weight: 600; }
+    .programs-section { background: #f0f3ee; }
+    .program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .program-card { min-height: 214px; position: relative; overflow: hidden; padding: 25px; border: 1px solid #e3e9e1; border-radius: 7px; background: white; transition: transform .25s, box-shadow .25s, border-color .25s; }
+    .program-card:hover { transform: translateY(-6px); border-color: #c9d6c9; box-shadow: 0 18px 34px #173b2d12; }
+    .program-card::after { position: absolute; right: -33px; bottom: -55px; width: 120px; height: 120px; border: 1px solid #d3ac5a38; border-radius: 50%; box-shadow: 0 0 0 13px #d3ac5a0b, 0 0 0 28px #d3ac5a08; content: ""; transition: transform .4s; }
+    .program-card:hover::after { transform: scale(1.15); }
+    .program-icon { width: 41px; height: 41px; display: grid; place-items: center; margin-bottom: 20px; border-radius: 6px; color: var(--forest); background: #eff4ed; font-size: 17px; }
+    .program-card h3 { margin: 0 0 8px; color: var(--forest); font: 600 19px var(--serif); }
+    .program-card p { max-width: 260px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .campus-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .campus-card { min-height: 221px; position: relative; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; padding: 21px; border-radius: 7px; color: white; background: linear-gradient(150deg, #285642, #102d23); isolation: isolate; }
+    .campus-card::before { position: absolute; z-index: -1; inset: 0; opacity: .65; background: radial-gradient(circle at 75% 28%, #d3ac5a60 0 2%, transparent 3%), linear-gradient(145deg, transparent 40%, #ffffff12 41% 42%, transparent 43%), repeating-linear-gradient(130deg, transparent 0 25px, #ffffff0a 26px 27px, transparent 28px 48px); content: ""; transition: transform .5s; }
+    .campus-card:hover::before { transform: scale(1.08); }
+    .campus-number { position: absolute; top: 18px; right: 19px; color: #ffffff70; font: 500 13px var(--serif); }
+    .campus-card h3 { margin: 0; font: 600 22px var(--serif); }
+    .campus-card p { margin: 5px 0 0; color: #d3dfd4; font-size: 10px; }
+    .steps-section { color: white; background: var(--forest); }
+    .steps-section .section-heading h2 { color: white; }
+    .steps-section .section-heading > p:last-child { color: #cad7cc; }
+    .steps-section .eyebrow { color: #e6ca82; }
+    .timeline { display: grid; grid-template-columns: repeat(6, 1fr); position: relative; gap: 8px; }
+    .timeline::before { position: absolute; top: 19px; right: 7%; left: 7%; height: 1px; background: #ffffff40; content: ""; }
+    .step { position: relative; padding: 0 10px; text-align: center; }
+    .step-number { width: 39px; height: 39px; position: relative; z-index: 1; display: grid; place-items: center; margin: 0 auto 19px; border: 1px solid #d3ac5a; border-radius: 50%; color: #e6ca82; background: var(--forest); font-size: 12px; font-weight: 700; transition: color .2s, background .2s, transform .2s; }
+    .step:hover .step-number { transform: scale(1.1); color: var(--forest); background: var(--gold); }
+    .step h3 { margin: 0 0 8px; font: 600 16px var(--serif); }
+    .step p { margin: 0; color: #c6d4c9; font-size: 10px; line-height: 1.65; }
+    .stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 58px; padding: 29px 0; border-top: 1px solid #ffffff35; border-bottom: 1px solid #ffffff35; }
+    .stat { text-align: center; }
+    .stat + .stat { border-left: 1px solid #ffffff32; }
+    .stat strong { display: block; color: #e6ca82; font: 600 35px var(--serif); }
+    .stat span { color: #d2ded3; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .contact-section { background: #f0f3ee; }
+    .contact-grid { display: grid; grid-template-columns: 1fr .85fr; gap: 40px; align-items: start; }
+    .contact-card { padding: 30px; border: 1px solid var(--line); border-radius: 7px; background: white; }
+    .contact-card h3 { margin: 0 0 20px; color: var(--forest); font: 600 23px var(--serif); }
+    .contact-item { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 13px 0; border-bottom: 1px solid #edf0ec; }
+    .contact-item:last-child { border-bottom: 0; }
+    .contact-item > span:first-child { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: var(--forest); background: var(--gold-pale); }
+    .contact-item strong { display: block; margin-bottom: 3px; color: #34443a; font-size: 11px; }
+    .contact-item p, .contact-item a { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .contact-cta { min-height: 100%; padding: 32px; border-radius: 7px; color: white; background: linear-gradient(140deg, #24543f, #173b2d); }
+    .contact-cta .eyebrow { color: #e6ca82; }
+    .contact-cta h3 { margin: 0 0 12px; font: 600 28px var(--serif); }
+    .contact-cta p { color: #d2ded3; font-size: 12px; line-height: 1.8; }
+    .contact-cta .button { margin-top: 9px; }
+    .footer { padding: 43px 0 22px; color: #d2ded3; background: #102d23; }
+    .footer-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 30px; }
+    .footer .brand { color: white; }
+    .footer-copy { max-width: 350px; margin-top: 13px; color: #b6c8ba; font-size: 10px; line-height: 1.7; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .footer-links a { color: #d2ded3; font-size: 10px; text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 20px; margin-top: 30px; padding-top: 17px; border-top: 1px solid #ffffff20; color: #9eb2a2; font-size: 9px; }
+    .rules-details { margin-top: 16px; }
+    .rules-details summary { color: #c8d7ca; font-size: 10px; cursor: pointer; }
+    .rules-details pre { max-height: 330px; overflow: auto; padding: 15px; border: 1px solid #ffffff20; border-radius: 5px; color: #d6e0d7; background: #0c241b; font: 10px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; }
+    .modal-backdrop { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; overflow: auto; padding: 24px; background: #0c2119b8; backdrop-filter: blur(7px); animation: fade-in .2s ease both; }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    .auth-modal { width: min(920px, 100%); min-height: 560px; position: relative; display: grid; grid-template-columns: .9fr 1.1fr; overflow: hidden; border: 1px solid #e5ebe6; border-radius: 12px; background: white; box-shadow: 0 24px 70px #07170f40; animation: modal-in .35s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes modal-in { from { opacity: 0; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: none; } }
+    .auth-art { position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 35px; color: white; background: linear-gradient(145deg, #173b2d, #28533e); }
+    .auth-art::before { position: absolute; inset: 0; opacity: .24; background: radial-gradient(ellipse at 86% 76%, #d3ac5a20, transparent 42%), linear-gradient(135deg, transparent 47%, #ffffff0a 47.2% 47.5%, transparent 47.7%); content: ""; }
+    .auth-art::after { width: 260px; height: 260px; position: absolute; right: -90px; bottom: 70px; border: 1px solid #e6ca8230; border-radius: 48% 52% 55% 45%; box-shadow: 0 0 0 24px #ffffff06, 0 0 0 51px #ffffff04; content: ""; }
+    .auth-art > * { position: relative; z-index: 1; }
+    .auth-art .brand { color: white; }
+    .auth-art-copy { margin-block: auto; padding: 45px 0; }
+    .auth-art-copy .eyebrow { color: #e6ca82; }
+    .auth-art-copy h2 { margin: 0 0 12px; font: 700 34px/1.2 var(--sans); letter-spacing: -.025em; }
+    .auth-art-copy p { max-width: 290px; color: #d5e0d6; font-size: 12px; line-height: 1.8; }
+    .auth-art-foot { color: #b9ccbd; font-size: 9px; letter-spacing: .13em; }
+    .auth-panel { position: relative; padding: 48px clamp(28px, 5vw, 55px); }
+    .modal-close { width: 36px; height: 36px; position: absolute; z-index: 2; top: 15px; right: 15px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); background: white; font-size: 20px; cursor: pointer; }
+    .auth-panel h2 { margin: 0; color: #25332b; font: 700 29px/1.25 var(--sans); letter-spacing: -.02em; }
+    .auth-intro { margin: 8px 0 22px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    #auth-panel .field { gap: 8px; margin-bottom: 16px; color: #34443a; font-size: 11px; font-weight: 600; }
+    #auth-panel .field input, #auth-panel .field select { min-height: 46px; padding-inline: 13px; border-color: #d6dfd8; border-radius: 6px; font-size: 12px; transition: border-color .2s, box-shadow .2s; }
+    #auth-panel .field input:focus, #auth-panel .field select:focus { border-color: #64896d; box-shadow: 0 0 0 3px #4e806017; }
+    .field { display: grid; gap: 7px; margin-bottom: 14px; color: #435348; font-size: 10px; font-weight: 700; }
+    .field input, .field select, .field textarea, .portal-form input, .portal-form select { width: 100%; min-height: 43px; padding: 0 12px; border: 1px solid #dce4dc; border-radius: 5px; outline: 0; color: var(--ink); background: #fff; font-size: 11px; }
+    .field textarea { min-height: 78px; padding-block: 10px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus, .portal-form input:focus, .portal-form select:focus { border-color: #6a9477; box-shadow: 0 0 0 3px #4e806017; }
+    .password-wrap { display: flex; align-items: center; }
+    .password-wrap input { padding-right: 64px; }
+    .password-wrap button { height: 31px; position: absolute; right: 8px; padding: 0 7px; border: 0; color: var(--forest-3); background: transparent; font-size: 10px; font-weight: 700; cursor: pointer; }
+    .password-control { position: relative; display: block; }
+    .password-control input { padding-right: 64px; }
+    .password-control button { height: 31px; position: absolute; top: 6px; right: 8px; padding: 0 7px; border: 0; color: var(--forest-3); background: transparent; font-size: 10px; font-weight: 700; cursor: pointer; }
+    .auth-options { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 2px 0 16px; }
+    .remember { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 10px; }
+    .remember input { accent-color: var(--forest); }
+    .text-button { padding: 4px 0; border: 0; color: var(--forest-3); background: transparent; font-size: 10px; font-weight: 700; cursor: pointer; }
+    .text-button:hover { text-decoration: underline; }
+    .auth-message, .toast { padding: 10px 12px; border-radius: 5px; font-size: 10px; line-height: 1.6; }
+    .auth-message { margin: 0 0 13px; color: #8d452f; background: #fff0e9; }
+    .auth-message.success { color: #285d3b; background: #eaf5ec; animation: success-pop .34s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes success-pop { from { opacity: 0; transform: translateY(5px) scale(.99); } to { opacity: 1; transform: none; } }
+    .auth-submit { width: 100%; border-radius: 6px; }
+    .auth-switch { margin: 20px 0 0; color: var(--muted); text-align: center; font-size: 11px; }
+    .setup-hint { margin-top: 15px; padding: 10px 11px; border: 1px solid #eadfbf; border-radius: 5px; color: #6f5c2d; background: #fbf7ea; font-size: 9px; line-height: 1.6; }
+    .setup-notice { position: relative; margin: 0 0 20px; padding: 16px 16px 15px 48px; border: 1px solid #d6e2d9; border-left: 3px solid #64896d; border-radius: 7px; color: #45554a; background: #f5f8f5; box-shadow: 0 5px 16px #173b2d0b; animation: setup-slide-down .32s ease both; }
+    .setup-notice[hidden] { display: none; }
+    .setup-notice-icon { width: 23px; height: 23px; position: absolute; top: 16px; left: 14px; display: grid; place-items: center; border: 1px solid #d6e2d9; border-radius: 50%; color: #416f4d; background: #e8f0e9; font-size: 12px; font-weight: 700; }
+    .setup-notice h3 { margin: 0 26px 5px 0; color: #304536; font: 700 13px/1.4 var(--sans); }
+    .setup-notice p { margin: 0; color: #5c6a60; font-size: 11px; line-height: 1.65; }
+    .setup-notice-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px; }
+    .setup-notice .text-button { color: #326b4d; font-size: 11px; }
+    .setup-guide-link { margin: 14px 0 0; color: var(--muted); text-align: center; font-size: 10px; }
+    .setup-dismiss { width: 26px; height: 26px; position: absolute; top: 8px; right: 7px; display: grid; place-items: center; border: 0; border-radius: 4px; color: #56636d; background: transparent; font-size: 17px; cursor: pointer; }
+    .setup-dismiss:hover { background: #557a9815; }
+    @keyframes setup-slide-down { from { opacity: 0; transform: translateY(-9px); } to { opacity: 1; transform: translateY(0); } }
+    .setup-backdrop { position: fixed; z-index: 140; inset: 0; display: grid; place-items: center; overflow: auto; padding: 20px; background: #0c2119b8; backdrop-filter: blur(6px); animation: fade-in .2s ease both; }
+    .setup-dialog { width: min(590px, 100%); max-height: min(780px, calc(100dvh - 40px)); position: relative; overflow: auto; padding: 30px; border-radius: 9px; background: white; box-shadow: 0 28px 80px #07170f66; animation: setup-modal-in .3s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes setup-modal-in { from { opacity: 0; transform: translateY(-12px) scale(.99); } to { opacity: 1; transform: none; } }
+    .setup-dialog h2 { margin: 0; color: var(--forest); font: 600 27px var(--serif); }
+    .setup-dialog-intro { margin: 8px 0 20px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .setup-steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .setup-step { display: grid; grid-template-columns: 27px 1fr; gap: 11px; align-items: start; padding: 12px; border: 1px solid #e7ece7; border-radius: 5px; background: #fbfcfa; }
+    .setup-step-status { width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid #b9c9be; border-radius: 50%; color: #326b4d; background: #eff5ef; font-size: 11px; font-weight: 700; }
+    .setup-step strong { display: block; margin: 1px 0 3px; color: #34463a; font-size: 10px; }
+    .setup-step p { margin: 0; color: #68766d; font-size: 9px; line-height: 1.6; }
+    .setup-dialog-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; }
+    .setup-copy-status { min-height: 18px; margin: 10px 0 0; color: #326b4d; font-size: 10px; }
+    .setup-copy-status.error { color: #8d452f; }
+    .setup-template { overflow: auto; margin: 8px 0 0; padding: 13px; border: 1px solid #e4e9e3; border-radius: 5px; color: #34463a; background: #f7f8f5; font: 10px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .file-protocol-warning { margin: 0 0 16px; padding: 12px 14px; border: 1px solid #c8dced; border-radius: 5px; color: #254860; background: #edf6fc; font-size: 10px; line-height: 1.65; }
+    .setup-progress-wrap { margin: 14px 0 18px; }
+    .setup-progress-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 7px; color: #4a5a4f; font-size: 10px; font-weight: 700; }
+    .setup-progress-label [role="status"] { color: #326b4d; font-weight: 600; }
+    .setup-progress-track { height: 8px; overflow: hidden; border-radius: 10px; background: #e8eee8; }
+    .setup-progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #326b4d, #d3ac5a); transition: width .35s ease; }
+    .setup-step { grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px 10px; }
+    .setup-step-main { min-width: 0; }
+    .setup-step-toggle { width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 0; border: 0; color: inherit; background: transparent; text-align: left; cursor: pointer; }
+    .setup-step-toggle strong { margin: 3px 0; font-size: 11px; line-height: 1.5; }
+    .setup-step-chevron { flex: 0 0 auto; margin-top: 3px; color: #526358; transition: transform .18s; }
+    .setup-step-toggle[aria-expanded="true"] .setup-step-chevron { transform: rotate(180deg); }
+    .setup-step-copy { padding-top: 3px; }
+    .setup-step-copy p { margin: 5px 0; font-size: 10px; }
+    .setup-step-copy strong { color: #34463a; }
+    .setup-step-copy .mistake { padding: 7px 9px; border-left: 2px solid #d3ac5a; color: #66532a; background: #fbf7ea; }
+    .setup-step-status { width: auto; min-width: 78px; height: auto; align-self: start; padding: 5px 7px; border-color: #d7dfd8; border-radius: 20px; color: #5a655d; background: #f1f3f1; font-size: 9px; }
+    .setup-step-status.in-progress { border-color: #e8d49a; color: #725a20; background: #fff5d8; }
+    .setup-step-status.done { border-color: #bad6bf; color: #245c39; background: #e8f4eb; }
+    .setup-step-status.done::before { content: "✓ "; }
+    .setup-step-checkbox { width: 18px; height: 18px; grid-column: 1; grid-row: 1; align-self: center; margin: 0 0 0 3px; accent-color: var(--forest-3); }
+    .setup-step-status:not(.done) { grid-column: 3; grid-row: 1; }
+    .setup-step input:disabled { cursor: not-allowed; }
+    .setup-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 13px; }
+    .setup-result { min-height: 46px; display: flex; align-items: center; gap: 8px; padding: 9px 10px; border: 1px solid #e2e8e2; border-radius: 5px; color: #536158; background: #fafbf9; font-size: 9px; line-height: 1.5; }
+    .setup-result[data-state="success"] { border-color: #bad6bf; color: #245c39; background: #edf7ef; }
+    .setup-result[data-state="success"] { animation: success-pop .28s ease both; }
+    .setup-result[data-state="warning"] { border-color: #e8d49a; color: #725a20; background: #fff8e6; }
+    .setup-result[data-state="error"] { border-color: #e3c2b9; color: #813e32; background: #fff2ed; }
+    .setup-result .spinner { width: 14px; height: 14px; flex: 0 0 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+    .copy-confirm { color: #245c39; font-weight: 700; }
+    .footer-guide-link { padding: 0; border: 0; color: #d2ded3; background: transparent; font: inherit; cursor: pointer; }
+    .footer-guide-link:hover { color: var(--gold); text-decoration: underline; }
+    .student-signup { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .student-signup .field:nth-child(-n+2) { grid-column: span 2; }
+    .student-signup .auth-message, .student-signup .setup-hint, .student-signup .auth-submit { grid-column: span 2; }
+    .auth-panel[data-mode="signup"] { padding-top: 34px; padding-bottom: 28px; }
+    .auth-panel[data-mode="signup"] .auth-intro { margin-bottom: 14px; }
+    .auth-panel[data-mode="signup"] .field { margin-bottom: 10px; }
+    .auth-panel[data-mode="reset"] { padding-top: 70px; }
+    .toast { position: fixed; z-index: 120; right: 22px; bottom: 22px; max-width: min(400px, calc(100vw - 44px)); transform: translateY(15px); opacity: 0; color: white; background: #173b2d; box-shadow: 0 12px 30px #102d2330; transition: opacity .2s, transform .2s; pointer-events: none; }
+    .toast.show { transform: none; opacity: 1; animation: success-pop .28s cubic-bezier(.2,.8,.2,1) both; }
+    .portal { min-height: 100vh; display: grid; grid-template-columns: 245px 1fr; color: var(--ink); background: #f4f6f2; }
+    .portal-side { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; padding: 23px 17px; color: white; background: var(--forest); }
+    .portal-side .brand { color: white; padding: 5px 7px 28px; }
+    .portal-label { padding: 12px 10px; color: #a9c0ad; font-size: 9px; font-weight: 700; letter-spacing: .15em; }
+    .portal-nav { display: grid; gap: 5px; }
+    .portal-nav button { min-height: 42px; display: flex; align-items: center; gap: 11px; padding: 0 11px; border: 0; border-radius: 5px; color: #d1dfd4; background: transparent; text-align: left; font-size: 11px; cursor: pointer; }
+    .portal-nav button:hover, .portal-nav button[aria-current="page"] { color: white; background: #ffffff19; }
+    .portal-user { margin-top: auto; padding-top: 16px; border-top: 1px solid #ffffff27; }
+    .portal-user-row { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: var(--forest); background: var(--gold); font-size: 11px; font-weight: 700; }
+    .portal-user strong, .portal-user small { display: block; }
+    .portal-user strong { max-width: 140px; overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .portal-user small { margin-top: 3px; color: #c0d0c3; font-size: 9px; text-transform: capitalize; }
+    .portal-signout { width: 100%; margin-top: 13px; padding: 9px; border: 1px solid #ffffff32; border-radius: 4px; color: #e3ece4; background: transparent; font-size: 10px; cursor: pointer; }
+    .portal-main { min-width: 0; }
+    .portal-top { min-height: 69px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 32px; border-bottom: 1px solid var(--line); background: white; }
+    .portal-top strong { color: var(--forest); font: 600 19px var(--serif); }
+    .portal-top span { color: var(--muted); font-size: 10px; }
+    .portal-content { max-width: 1200px; margin: auto; padding: 32px; }
+    .portal-welcome { margin: 0 0 5px; color: var(--forest); font: 600 30px var(--serif); }
+    .portal-subtitle { margin: 0 0 24px; color: var(--muted); font-size: 11px; }
+    .portal-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 21px; }
+    .portal-metric, .portal-card { border: 1px solid var(--line); border-radius: 6px; background: white; box-shadow: 0 5px 20px #173b2d06; }
+    .portal-metric { padding: 17px; }
+    .portal-metric span { color: var(--muted); font-size: 10px; }
+    .portal-metric strong { display: block; margin-top: 7px; color: var(--forest); font: 600 26px var(--serif); }
+    .portal-card { margin-bottom: 17px; padding: 20px; }
+    .portal-card h3 { margin: 0 0 15px; color: var(--forest); font: 600 19px var(--serif); }
+    .portal-card p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .portal-form { display: grid; grid-template-columns: repeat(4, 1fr); align-items: end; gap: 10px; }
+    .portal-form label { display: grid; gap: 6px; color: #536258; font-size: 9px; font-weight: 700; }
+    .portal-form input, .portal-form select { min-height: 38px; font-size: 10px; }
+    .portal-form .button { min-height: 38px; }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th { padding: 10px 11px; border-bottom: 1px solid var(--line); color: #79867d; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    .data-table td { padding: 12px 11px; border-bottom: 1px solid #edf0ec; color: #46564b; font-size: 10px; }
+    .data-table tbody tr:last-child td { border-bottom: 0; }
+    .status { display: inline-flex; align-items: center; padding: 5px 8px; border-radius: 20px; color: #6e6035; background: #f6f0df; font-size: 9px; font-weight: 700; text-transform: capitalize; }
+    .status.approved, .status.active { color: #326346; background: #e7f2e9; }
+    .status.rejected { color: #8b443b; background: #fbecea; }
+    .table-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+    .empty-row { padding: 24px !important; color: var(--muted) !important; text-align: center; }
+    .portal-notice { margin-bottom: 18px; padding: 11px 13px; border: 1px solid #e8ddb9; border-radius: 5px; color: #6f5c2d; background: #fbf7ea; font-size: 10px; line-height: 1.6; }
+    .mobile-portal-menu { display: none; }
+    .scroll-top { width: 40px; height: 40px; position: fixed; z-index: 40; right: 20px; bottom: 20px; display: grid; place-items: center; border: 0; border-radius: 50%; color: white; background: var(--forest); box-shadow: 0 6px 20px #173b2d35; cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(8px); transition: .2s; }
+    .scroll-top.show { opacity: 1; pointer-events: auto; transform: none; }
+    @media (max-width: 980px) {
+      .nav-links { gap: 13px; }
+      .nav-links a { font-size: 10px; }
+      .program-grid { grid-template-columns: repeat(2, 1fr); }
+      .campus-grid { grid-template-columns: repeat(2, 1fr); }
+      .portal { grid-template-columns: 210px 1fr; }
+      .portal-content { padding: 24px; }
+    }
+    @media (max-width: 760px) {
+      .container, .nav-inner { width: min(100% - 36px, 600px); }
+      .section { padding: 75px 0; }
+      .nav-inner { min-height: 69px; }
+      .menu-toggle { display: grid; order: 3; }
+      .nav-actions { margin-left: auto; }
+      .nav-links { position: absolute; top: 68px; right: 0; left: 0; display: none; align-items: stretch; gap: 0; padding: 8px 20px 15px; border-top: 1px solid #ffffff20; background: #173b2df5; box-shadow: 0 12px 20px #102d2320; }
+      .navbar.scrolled .nav-links { border-color: var(--line); background: #fff; }
+      .nav-links.open { display: grid; }
+      .nav-links a, .navbar.scrolled .nav-links a { padding: 12px 7px; border-bottom: 1px solid #ffffff15; color: white; font-size: 12px; }
+      .navbar.scrolled .nav-links a { border-color: #edf0ec; color: var(--ink); }
+      .nav-links a::after { display: none; }
+      .nav-login { min-height: 36px; padding-inline: 13px; font-size: 10px; }
+      .hero { min-height: 730px; min-height: 100svh; }
+      .hero-campus { right: -18%; width: 98vw; height: 58%; opacity: .25; }
+      .hero::before { background: linear-gradient(90deg, #102d23ed, #173b2dc4); }
+      .hero-content { padding-top: 104px; padding-bottom: 73px; }
+      .hero h1 { font-size: clamp(42px, 11vw, 68px); }
+      .hero-meta { gap: 12px; margin-top: 39px; font-size: 9px; }
+      .hero-scroll { right: 18px; bottom: 19px; }
+      .about-grid { grid-template-columns: 1fr; gap: 35px; }
+      .about-cards { max-width: 580px; }
+      .timeline { grid-template-columns: repeat(3, 1fr); row-gap: 29px; }
+      .timeline::before { display: none; }
+      .step { padding-inline: 5px; }
+      .stats-strip { margin-top: 42px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 17px; }
+      .auth-modal { width: min(510px, 100%); min-height: 0; grid-template-columns: 1fr; }
+      .auth-art { min-height: 173px; padding: 20px 24px; }
+      .auth-art .brand-seal { width: 36px; height: 36px; flex-basis: 36px; }
+      .auth-art-copy { display: none; }
+      .auth-art-foot { margin-top: 19px; }
+      .auth-panel { padding: 31px 27px; }
+      .modal-close { top: 11px; right: 11px; }
+      .auth-panel[data-mode="signup"] { padding-top: 27px; }
+      .portal { display: block; }
+      .portal-side { width: 255px; height: 100dvh; position: fixed; z-index: 80; top: 0; left: 0; transform: translateX(-105%); transition: transform .25s; box-shadow: 12px 0 30px #102d2325; }
+      .portal-side.open { transform: none; }
+      .mobile-portal-menu { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 4px; background: white; cursor: pointer; }
+      .portal-top { justify-content: flex-start; padding-inline: 17px; }
+      .portal-content { padding: 22px 16px; }
+      .portal-form { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .container, .nav-inner { width: calc(100% - 32px); }
+      .brand-seal { width: 37px; height: 37px; flex-basis: 37px; }
+      .brand-text strong { font-size: 13px; }
+      .brand-text small { font-size: 7px; }
+      .hero-kicker { font-size: 8px; letter-spacing: .15em; }
+      .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .hero-actions .button { min-height: 45px; padding-inline: 10px; font-size: 10px; }
+      .hero-meta { display: grid; gap: 9px; }
+      .about-cards { gap: 9px; }
+      .about-card { min-height: 165px; padding: 16px; }
+      .program-grid { grid-template-columns: 1fr; }
+      .program-card { min-height: 180px; }
+      .campus-grid { gap: 9px; }
+      .campus-card { min-height: 170px; padding: 15px; }
+      .campus-card h3 { font-size: 19px; }
+      .timeline { grid-template-columns: repeat(2, 1fr); }
+      .step h3 { font-size: 14px; }
+      .step p { font-size: 9px; }
+      .stat strong { font-size: 27px; }
+      .stat span { font-size: 8px; }
+      .contact-card, .contact-cta { padding: 22px; }
+      .footer-top, .footer-bottom { flex-direction: column; }
+      .footer-bottom { gap: 8px; }
+      .modal-backdrop { padding: 10px; }
+      .auth-panel { padding: 27px 19px; }
+      .auth-panel h2 { font-size: 25px; }
+      .student-signup { grid-template-columns: 1fr; }
+      .student-signup .field:nth-child(-n+2), .student-signup .auth-message, .student-signup .setup-hint, .student-signup .auth-submit { grid-column: auto; }
+      .portal-cards { grid-template-columns: 1fr 1fr; }
+      .portal-metric:last-child { grid-column: span 2; }
+      .portal-form { grid-template-columns: 1fr; }
+      .portal-card { padding: 15px; }
+      .portal-top strong { font-size: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media (max-width: 600px) {
+      .setup-backdrop { align-items: start; padding: 8px; }
+      .setup-dialog { width: 100%; max-height: calc(100dvh - 16px); padding: 24px 15px; }
+      .setup-dialog h2 { font-size: 23px; }
+      .setup-step { grid-template-columns: 23px minmax(0, 1fr); gap: 7px; padding: 10px; }
+      .setup-step-status { grid-column: 2; grid-row: 2; justify-self: start; }
+      .setup-step-checkbox { grid-row: 1; }
+      .setup-step-main { grid-column: 2; grid-row: 1; }
+      .setup-progress-label { align-items: flex-start; }
+      .setup-result-grid { grid-template-columns: 1fr; }
+      .setup-dialog-actions .button { flex: 1 1 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .setup-notice, .setup-dialog { animation: none !important; }
+      .setup-progress-fill { transition: none !important; }
+    }
+    @media print {
+      body * { visibility: hidden !important; }
+      #registration-print, #registration-print * { visibility: visible !important; }
+      #registration-print { display: block !important; position: absolute; inset: 0; width: 100%; padding: 24px; color: #111; background: white; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="load-cover" id="load-cover" aria-hidden="true"><span>LSPU</span></div>
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="#home" aria-label="LSPU Student Information and Enrollment home">
+        <span class="brand-seal" aria-hidden="true">LSPU</span>
+        <span class="brand-text"><strong>Laguna State Polytechnic</strong><small>UNIVERSITY · SIEMS</small></span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Main navigation">
+        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#campuses">Campuses</a><a href="#admissions">Admissions</a><a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="button button-gold nav-login" type="button" data-open-auth>Login <span aria-hidden="true">↗</span></button>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="nav-links" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+      <svg class="hero-campus" viewBox="0 0 800 600" fill="none" aria-hidden="true">
+        <path d="M75 558h690M119 558V280h550v278M95 280l300-170 300 170H95Z" stroke="#E8D59D" stroke-width="3"/>
+        <path d="M165 558V318h458v240M193 342h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm-264 91h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35zm66 0h35v64h-35z" stroke="#E8D59D" stroke-width="2"/>
+        <path d="M300 226h190m-160-34h130m-92-51v85" stroke="#E8D59D" stroke-width="3"/>
+        <path d="M50 558V430l69-48 69 48v128m481 0V430l69-48 69 48v128" stroke="#E8D59D" stroke-width="2"/>
+        <path d="M58 425h122m501 0h122M22 558h756" stroke="#E8D59D" stroke-width="3"/>
+      </svg>
+      <span class="hero-orb one" aria-hidden="true"></span><span class="hero-orb two" aria-hidden="true"></span><span class="hero-orb three" aria-hidden="true"></span>
+      <div class="container hero-content">
+        <div class="hero-copy">
+          <p class="hero-kicker reveal">Knowledge, character, and service</p>
+          <h1 class="reveal reveal-delay-1" id="hero-title">A future shaped<br>by <span>possibility.</span></h1>
+          <p class="hero-tagline reveal reveal-delay-2"><span id="tagline-text">Learn with purpose. Lead with integrity.</span><span class="cursor" aria-hidden="true"></span></p>
+          <div class="hero-actions reveal reveal-delay-2">
+            <a class="button button-gold" href="#admissions">Explore enrollment <span aria-hidden="true">→</span></a>
+            <button class="button button-outline" type="button" data-open-auth>Student login <span aria-hidden="true">↗</span></button>
+          </div>
+          <div class="hero-meta reveal reveal-delay-2"><span>Four Laguna campuses</span><span>Student-first services</span><span>Academic year 2026–2027</span></div>
+        </div>
+      </div>
+      <a class="hero-scroll" href="#about">SCROLL TO EXPLORE</a>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div class="about-copy reveal">
+          <p class="eyebrow">Rooted in Laguna · Ready for tomorrow</p>
+          <h2>Learning that moves communities forward.</h2>
+          <p>Laguna State Polytechnic University brings learning closer to the communities it serves. Explore student services, discover academic pathways, and find the campus that feels like home.</p>
+          <span class="placeholder-note"><strong>Content note</strong> Mission, vision, and values below are editable placeholders. Replace them with the current official LSPU statements before publication.</span>
+          <div class="values" aria-label="Placeholder core values"><span class="value-chip">Integrity</span><span class="value-chip">Excellence</span><span class="value-chip">Service</span><span class="value-chip">Innovation</span></div>
+        </div>
+        <div class="about-cards">
+          <article class="about-card reveal"><span class="card-mark" aria-hidden="true">◇</span><h3>Our mission</h3><p>[Insert the current official LSPU mission statement here.]</p></article>
+          <article class="about-card reveal reveal-delay-1"><span class="card-mark" aria-hidden="true">◎</span><h3>Our vision</h3><p>[Insert the current official LSPU vision statement here.]</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section programs-section" id="programs">
+      <div class="container">
+        <div class="section-heading reveal"><p class="eyebrow">Find your direction</p><h2>Explore academic pathways</h2><p>Discover areas of study and build skills for the work and opportunities ahead.</p></div>
+        <div class="program-grid">
+          <article class="program-card reveal"><span class="program-icon" aria-hidden="true">⌘</span><h3>Arts &amp; Sciences</h3><p>Build a broad foundation through inquiry, communication, and discovery.</p></article>
+          <article class="program-card reveal reveal-delay-1"><span class="program-icon" aria-hidden="true">▤</span><h3>Teacher Education</h3><p>Prepare to support learning and inspire the next generation.</p></article>
+          <article class="program-card reveal reveal-delay-2"><span class="program-icon" aria-hidden="true">↗</span><h3>Business &amp; Accountancy</h3><p>Develop practical skills in management, finance, and enterprise.</p></article>
+          <article class="program-card reveal"><span class="program-icon" aria-hidden="true">⌘</span><h3>Computer Studies</h3><p>Explore computing, information systems, and digital problem-solving.</p></article>
+          <article class="program-card reveal reveal-delay-1"><span class="program-icon" aria-hidden="true">⌁</span><h3>Engineering</h3><p>Turn technical foundations into solutions for real-world needs.</p></article>
+          <article class="program-card reveal reveal-delay-2"><span class="program-icon" aria-hidden="true">✳</span><h3>Industrial Technology</h3><p>Learn through applied practice, craftsmanship, and modern technology.</p></article>
+        </div>
+        <p class="placeholder-note reveal" style="margin-top:20px">Program names and availability are illustrative. Confirm the current catalog with the university before applying.</p>
+      </div>
+    </section>
+
+    <section class="section" id="campuses">
+      <div class="container">
+        <div class="section-heading reveal"><p class="eyebrow">A university across Laguna</p><h2>Four campuses. One community.</h2><p>Choose the location that fits your next chapter.</p></div>
+        <div class="campus-grid">
+          <article class="campus-card reveal"><span class="campus-number">01</span><h3>San Pablo</h3><p>San Pablo City, Laguna</p></article>
+          <article class="campus-card reveal reveal-delay-1"><span class="campus-number">02</span><h3>Santa Cruz</h3><p>Santa Cruz, Laguna</p></article>
+          <article class="campus-card reveal reveal-delay-2"><span class="campus-number">03</span><h3>Siniloan</h3><p>Siniloan, Laguna</p></article>
+          <article class="campus-card reveal reveal-delay-2"><span class="campus-number">04</span><h3>Los Baños</h3><p>Los Baños, Laguna</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section steps-section" id="admissions">
+      <div class="container">
+        <div class="section-heading reveal"><p class="eyebrow">Your next chapter starts here</p><h2>Enrollment, made clearer.</h2><p>Use this overview as a guide. Confirm dates, requirements, and payment procedures with your campus registrar.</p></div>
+        <div class="timeline">
+          <article class="step reveal"><span class="step-number">01</span><h3>Apply</h3><p>Complete the official application for your campus and program.</p></article>
+          <article class="step reveal reveal-delay-1"><span class="step-number">02</span><h3>Submit</h3><p>Provide the required academic and identification documents.</p></article>
+          <article class="step reveal reveal-delay-1"><span class="step-number">03</span><h3>Evaluation</h3><p>Wait for your application and submitted documents to be reviewed.</p></article>
+          <article class="step reveal reveal-delay-2"><span class="step-number">04</span><h3>Subject enrollment</h3><p>Confirm your approved subjects and class schedule.</p></article>
+          <article class="step reveal reveal-delay-2"><span class="step-number">05</span><h3>Payment</h3><p>Follow official campus guidance for assessment and payment.</p></article>
+          <article class="step reveal reveal-delay-2"><span class="step-number">06</span><h3>Confirmation</h3><p>Keep your registration confirmation for your records.</p></article>
+        </div>
+        <div class="stats-strip reveal">
+          <div class="stat"><strong data-counter="6">0</strong><span>Featured study areas</span></div>
+          <div class="stat"><strong data-counter="4">0</strong><span>Laguna campuses</span></div>
+          <div class="stat"><strong id="public-student-count">—</strong><span>Student profiles in this portal</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="section-heading reveal"><p class="eyebrow">We're here to help</p><h2>Start with your campus.</h2><p>For current program details, requirements, and enrollment dates, contact the appropriate university office.</p></div>
+        <div class="contact-grid">
+          <div class="contact-card reveal">
+            <h3>Connect with LSPU</h3>
+            <div class="contact-item"><span aria-hidden="true">⌖</span><div><strong>University</strong><p>Laguna State Polytechnic University<br>Province of Laguna, Philippines</p></div></div>
+            <div class="contact-item"><span aria-hidden="true">⌂</span><div><strong>Campuses</strong><p>San Pablo · Santa Cruz · Siniloan · Los Baños</p></div></div>
+            <div class="contact-item"><span aria-hidden="true">↗</span><div><strong>Official website</strong><a href="https://lspu.edu.ph/" target="_blank" rel="noopener noreferrer">Visit lspu.edu.ph</a></div></div>
+          </div>
+          <div class="contact-cta reveal reveal-delay-1"><p class="eyebrow">SIEMS student portal</p><h3>Your student services, in one place.</h3><p>Sign in to review your enrollment, subjects, and academic information. Student portal access is provided by authorized university staff.</p><button class="button button-gold" type="button" data-open-auth>Open student portal <span aria-hidden="true">→</span></button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="landing-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div><a class="brand" href="#home"><span class="brand-seal" aria-hidden="true">LSPU</span><span class="brand-text"><strong>Laguna State Polytechnic</strong><small>UNIVERSITY · SIEMS</small></span></a><p class="footer-copy">A student information and enrollment portal concept for the LSPU community.</p></div>
+        <nav class="footer-links" aria-label="Footer navigation"><a href="#about">About</a><a href="#programs">Programs</a><a href="#campuses">Campuses</a><a href="#admissions">Admissions</a><a href="#contact">Contact</a><button class="footer-guide-link" id="footer-setup-guide" type="button" data-open-setup-guide hidden>Setup guide</button><a href="https://lspu.edu.ph/" target="_blank" rel="noopener noreferrer">Official LSPU site</a></nav>
+      </div>
+      <details class="rules-details" id="rules-details" hidden><summary>Firestore security rules starter (review and deploy in Firebase Console)</summary>
+        <p>Role checks read the <code>users</code> collection. Assign every account role and provision its profile manually in Firestore; registration never assigns roles. Test these rules in the Rules Playground before publishing.</p>
+        <div class="setup-dialog-actions"><button class="button button-gold button-small" id="copy-rules" type="button">Copy security rules</button><span class="copy-confirm" id="rules-copy-status" role="status" aria-live="polite"></span></div>
+        <pre><code id="firestore-rules">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles and roles are provisioned by trusted administrators.
+    function signedIn() {
+      return request.auth != null;
+    }
+    function verifiedUser() {
+      return signedIn() &amp;&amp; request.auth.token.email_verified == true;
+    }
+    function hasUserProfile() {
+      return verifiedUser()
+        &amp;&amp; exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    function role() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function staff() {
+      return hasUserProfile() &amp;&amp; role() in ['admin', 'registrar'];
+    }
+    function faculty() {
+      return hasUserProfile() &amp;&amp; role() == 'faculty';
+    }
+    function isStudent(uid) {
+      return hasUserProfile() &amp;&amp; request.auth.uid == uid &amp;&amp; role() == 'student';
+    }
+    function validProfile(uid) {
+      return request.resource.data.keys().hasAll(['uid', 'email', 'displayName', 'role', 'createdAt'])
+        &amp;&amp; request.resource.data.keys().hasOnly(['uid', 'email', 'displayName', 'role', 'createdAt'])
+        &amp;&amp; request.resource.data.uid == uid
+        &amp;&amp; request.resource.data.email is string
+        &amp;&amp; request.resource.data.email == request.auth.token.email
+        &amp;&amp; request.resource.data.displayName is string
+        &amp;&amp; request.resource.data.displayName.size() &lt;= 100
+        &amp;&amp; request.resource.data.role in ['student', 'faculty', 'registrar', 'admin']
+        &amp;&amp; request.resource.data.createdAt is timestamp;
+    }
+    function facultyOwnsClass(subjectId) {
+      return faculty()
+        &amp;&amp; exists(/databases/$(database)/documents/subjects/$(subjectId))
+        &amp;&amp; get(/databases/$(database)/documents/subjects/$(subjectId)).data.facultyUid == request.auth.uid;
+    }
+    function validStudentRecord(uid) {
+      return request.resource.data.keys().hasAll(['uid', 'fullName', 'email', 'studentNumber', 'program', 'yearLevel', 'status', 'createdAt'])
+        &amp;&amp; request.resource.data.keys().hasOnly(['uid', 'fullName', 'email', 'studentNumber', 'program', 'yearLevel', 'status', 'createdAt', 'reviewedBy', 'reviewedAt'])
+        &amp;&amp; request.resource.data.uid == uid
+        &amp;&amp; request.resource.data.fullName is string
+        &amp;&amp; request.resource.data.fullName.size() &lt;= 100
+        &amp;&amp; request.resource.data.email is string
+        &amp;&amp; request.resource.data.studentNumber is string
+        &amp;&amp; request.resource.data.program is string
+        &amp;&amp; request.resource.data.yearLevel is string
+        &amp;&amp; request.resource.data.status in ['pending', 'active']
+        &amp;&amp; request.resource.data.email == get(/databases/$(database)/documents/users/$(uid)).data.email
+        &amp;&amp; request.resource.data.createdAt is timestamp;
+    }
+    function validSubject() {
+      return request.resource.data.keys().hasAll(['code', 'title', 'units', 'section', 'campus', 'term', 'facultyUid', 'createdBy', 'createdAt'])
+        &amp;&amp; request.resource.data.keys().hasOnly(['code', 'title', 'units', 'section', 'campus', 'term', 'facultyUid', 'createdBy', 'createdAt'])
+        &amp;&amp; request.resource.data.code is string
+        &amp;&amp; request.resource.data.code.size() &gt; 0
+        &amp;&amp; request.resource.data.code.size() &lt;= 20
+        &amp;&amp; request.resource.data.title is string
+        &amp;&amp; request.resource.data.title.size() &gt; 0
+        &amp;&amp; request.resource.data.title.size() &lt;= 100
+        &amp;&amp; request.resource.data.units is int
+        &amp;&amp; request.resource.data.units &gt;= 1
+        &amp;&amp; request.resource.data.units &lt;= 12
+        &amp;&amp; request.resource.data.section is string
+        &amp;&amp; request.resource.data.section.size() &gt; 0
+        &amp;&amp; request.resource.data.section.size() &lt;= 30
+        &amp;&amp; request.resource.data.campus is string
+        &amp;&amp; request.resource.data.campus.size() &gt; 0
+        &amp;&amp; request.resource.data.term is string
+        &amp;&amp; request.resource.data.term.size() &gt; 0
+        &amp;&amp; request.resource.data.term.size() &lt;= 40
+        &amp;&amp; request.resource.data.facultyUid is string
+        &amp;&amp; (request.resource.data.facultyUid == ''
+          || (exists(/databases/$(database)/documents/users/$(request.resource.data.facultyUid))
+            &amp;&amp; get(/databases/$(database)/documents/users/$(request.resource.data.facultyUid)).data.role == 'faculty'))
+        &amp;&amp; request.resource.data.createdBy == request.auth.uid
+        &amp;&amp; request.resource.data.createdAt is timestamp;
+    }
+    function validSection() {
+      return request.resource.data.keys().hasAll(['subjectId', 'section', 'term', 'facultyUid', 'createdAt'])
+        &amp;&amp; request.resource.data.keys().hasOnly(['subjectId', 'section', 'term', 'facultyUid', 'createdAt'])
+        &amp;&amp; request.resource.data.subjectId is string
+        &amp;&amp; request.resource.data.section is string
+        &amp;&amp; request.resource.data.section.size() &gt; 0
+        &amp;&amp; request.resource.data.section.size() &lt;= 30
+        &amp;&amp; request.resource.data.term is string
+        &amp;&amp; request.resource.data.term.size() &gt; 0
+        &amp;&amp; request.resource.data.term.size() &lt;= 40
+        &amp;&amp; request.resource.data.facultyUid is string
+        &amp;&amp; (request.resource.data.facultyUid == ''
+          || (exists(/databases/$(database)/documents/users/$(request.resource.data.facultyUid))
+            &amp;&amp; get(/databases/$(database)/documents/users/$(request.resource.data.facultyUid)).data.role == 'faculty'))
+        &amp;&amp; request.resource.data.createdAt is timestamp;
+    }
+    function validEnrollment() {
+      return request.resource.data.keys().hasAll(['studentId', 'studentUid', 'studentName', 'subjectId', 'subjectCode', 'subjectTitle', 'section', 'facultyUid', 'term', 'status', 'createdAt'])
+        &amp;&amp; request.resource.data.keys().hasOnly(['studentId', 'studentUid', 'studentName', 'subjectId', 'subjectCode', 'subjectTitle', 'section', 'facultyUid', 'term', 'status', 'createdAt'])
+        &amp;&amp; request.resource.data.studentId == request.auth.uid
+        &amp;&amp; request.resource.data.studentUid == request.auth.uid
+        &amp;&amp; request.resource.data.studentName is string
+        &amp;&amp; request.resource.data.studentName.size() &lt;= 100
+        &amp;&amp; exists(/databases/$(database)/documents/students/$(request.auth.uid))
+        &amp;&amp; request.resource.data.studentName == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.fullName
+        &amp;&amp; request.resource.data.subjectId is string
+        &amp;&amp; request.resource.data.subjectId.size() &gt; 0
+        &amp;&amp; request.resource.data.subjectId.size() &lt;= 128
+        &amp;&amp; request.resource.data.subjectCode is string
+        &amp;&amp; request.resource.data.subjectCode.size() &lt;= 20
+        &amp;&amp; request.resource.data.subjectTitle is string
+        &amp;&amp; request.resource.data.subjectTitle.size() &lt;= 100
+        &amp;&amp; request.resource.data.section is string
+        &amp;&amp; request.resource.data.section.size() &lt;= 30
+        &amp;&amp; request.resource.data.facultyUid is string
+        &amp;&amp; request.resource.data.term is string
+        &amp;&amp; request.resource.data.term.size() &lt;= 40
+        &amp;&amp; request.resource.data.status == 'pending'
+        &amp;&amp; request.resource.data.createdAt is timestamp
+        &amp;&amp; exists(/databases/$(database)/documents/subjects/$(request.resource.data.subjectId))
+        &amp;&amp; get(/databases/$(database)/documents/subjects/$(request.resource.data.subjectId)).data.code == request.resource.data.subjectCode
+        &amp;&amp; get(/databases/$(database)/documents/subjects/$(request.resource.data.subjectId)).data.title == request.resource.data.subjectTitle
+        &amp;&amp; get(/databases/$(database)/documents/subjects/$(request.resource.data.subjectId)).data.section == request.resource.data.section
+        &amp;&amp; get(/databases/$(database)/documents/subjects/$(request.resource.data.subjectId)).data.term == request.resource.data.term
+        &amp;&amp; get(/databases/$(database)/documents/subjects/$(request.resource.data.subjectId)).data.facultyUid == request.resource.data.facultyUid;
+    }
+
+    match /users/{uid} {
+      allow read: if verifiedUser() &amp;&amp; request.auth.uid == uid;
+      // An account owner can update basic profile fields, never their UID or role.
+      allow update: if verifiedUser()
+        &amp;&amp; request.auth.uid == uid
+        &amp;&amp; request.resource.data.uid == resource.data.uid
+        &amp;&amp; request.resource.data.role == resource.data.role
+        &amp;&amp; request.resource.data.diff(resource.data).affectedKeys().hasOnly(['email', 'displayName'])
+        &amp;&amp; validProfile(uid);
+      // Create and role assignment are performed by an administrator in Firestore.
+      allow create, delete: if false;
+    }
+
+    match /students/{uid} {
+      allow read: if isStudent(uid) || staff();
+      allow create, delete: if false;
+      allow update: if staff()
+        &amp;&amp; request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'reviewedBy', 'reviewedAt'])
+        &amp;&amp; validStudentRecord(uid)
+        &amp;&amp; request.resource.data.status in ['pending', 'active']
+        &amp;&amp; request.resource.data.reviewedBy == request.auth.uid
+        &amp;&amp; request.resource.data.reviewedAt == request.time;
+    }
+
+    match /subjects/{subjectId} {
+      allow read: if hasUserProfile();
+      allow create: if staff() &amp;&amp; validSubject() &amp;&amp; request.resource.data.createdAt == request.time;
+      allow update: if staff()
+        &amp;&amp; validSubject()
+        &amp;&amp; request.resource.data.createdBy == resource.data.createdBy
+        &amp;&amp; request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if staff();
+    }
+
+    match /sections/{sectionId} {
+      allow read: if hasUserProfile();
+      allow create: if staff() &amp;&amp; validSection() &amp;&amp; request.resource.data.createdAt == request.time;
+      allow update: if staff()
+        &amp;&amp; validSection()
+        &amp;&amp; request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if staff();
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow create: if isStudent(request.auth.uid)
+        &amp;&amp; validEnrollment()
+        &amp;&amp; request.resource.data.createdAt == request.time;
+      allow read: if hasUserProfile()
+        &amp;&amp; (resource.data.studentUid == request.auth.uid
+          || resource.data.facultyUid == request.auth.uid || staff());
+      // Registrar/admin approval is pending-only. Faculty may only edit grades
+      // for enrollments whose assigned subject belongs to them.
+      allow update: if (staff()
+          &amp;&amp; resource.data.status == 'pending'
+          &amp;&amp; request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'reviewedBy', 'reviewedAt'])
+          &amp;&amp; request.resource.data.status in ['approved', 'rejected']
+          &amp;&amp; request.resource.data.reviewedBy == request.auth.uid
+          &amp;&amp; request.resource.data.reviewedAt == request.time)
+        || (facultyOwnsClass(resource.data.subjectId)
+          &amp;&amp; resource.data.facultyUid == request.auth.uid
+          &amp;&amp; request.resource.data.diff(resource.data).affectedKeys().hasOnly(['grade', 'gradeUpdatedAt'])
+          &amp;&amp; request.resource.data.grade is string
+          &amp;&amp; request.resource.data.grade.size() &gt; 0
+          &amp;&amp; request.resource.data.grade.size() &lt;= 20
+          &amp;&amp; request.resource.data.gradeUpdatedAt == request.time);
+      allow delete: if staff();
+    }
+
+    // Explicitly deny every document not granted above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}</code></pre>
+      </details>
+      <div class="footer-bottom"><span>© <span id="current-year"></span> Laguna State Polytechnic University · SIEMS concept</span><span>Replace sample copy and verify university information before launch.</span></div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="auth-backdrop" hidden>
+    <section class="auth-modal" id="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title" aria-describedby="auth-intro">
+      <div class="auth-art">
+        <a class="brand" href="#home"><span class="brand-seal" aria-hidden="true">LSPU</span><span class="brand-text"><strong>Laguna State Polytechnic</strong><small>UNIVERSITY · SIEMS</small></span></a>
+        <div class="auth-art-copy"><p class="eyebrow">Your academic journey</p><h2>Welcome to your campus community.</h2><p>Sign in to access your student services and enrollment information.</p></div>
+        <div class="auth-art-foot">KNOWLEDGE · CHARACTER · SERVICE</div>
+      </div>
+      <div class="auth-panel" id="auth-panel" data-mode="signin">
+        <button class="modal-close" id="auth-close" type="button" aria-label="Close sign-in dialog">×</button>
+        <aside class="setup-notice" id="setup-notice" role="alert" hidden>
+          <span class="setup-notice-icon" aria-hidden="true">i</span>
+          <button class="setup-dismiss" id="setup-dismiss" type="button" aria-label="Dismiss Firebase setup notice">×</button>
+          <h3 id="service-unavailable-title">Enrollment services temporarily unavailable</h3>
+          <p id="service-unavailable-message">We’re unable to connect to the enrollment services right now. Sign-in, account creation, and password resets are unavailable. Please try again later or contact the Registrar’s Office for assistance.</p>
+          <p class="file-protocol-warning" id="file-protocol-inline" role="status" hidden>Opened from <code>file://</code>? Use VS Code Live Server or another local HTTP server; Firebase Authentication requires localhost or a hosted domain.</p>
+          <div class="setup-notice-actions" id="admin-setup-actions" hidden><button class="text-button" id="open-setup-guide" type="button">View setup steps</button></div>
+        </aside>
+        <div id="signin-view">
+          <p class="eyebrow">SECURE PORTAL</p><h2 id="auth-title">Welcome back</h2><p class="auth-intro" id="auth-intro">Sign in with your university account to continue.</p>
+          <form id="signin-form" novalidate>
+            <label class="field">Account role
+              <select id="signin-role" name="role" required><option value="student">Student</option><option value="faculty">Faculty</option><option value="registrar">Registrar / Admin</option></select>
+            </label>
+            <label class="field">University email<input id="signin-email" name="email" type="email" autocomplete="username" placeholder="name@lspu.edu.ph" required></label>
+            <label class="field">Password
+              <span class="password-control"><input id="signin-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button type="button" data-toggle-password="signin-password" aria-label="Show password" aria-pressed="false">Show</button></span>
+            </label>
+            <div class="auth-options"><label class="remember"><input name="remember" type="checkbox"> Remember me</label><button class="text-button" type="button" data-auth-mode="reset">Forgot password?</button></div>
+            <p class="auth-message" id="signin-message" role="alert" hidden></p>
+            <button class="button button-primary auth-submit" id="signin-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="auth-switch">New student? <button class="text-button" type="button" data-auth-mode="signup">Create an account</button></p>
+        </div>
+        <div id="signup-view" hidden>
+          <p class="eyebrow">STUDENT REGISTRATION</p><h2 id="signup-title">Create your account</h2><p class="auth-intro" id="signup-intro">Create an account with your university email. Verify your email, then contact the Registrar’s Office to have your SIEMS profile and role provisioned.</p>
+          <form id="signup-form" class="student-signup" novalidate>
+            <label class="field">Full name<input name="fullName" type="text" autocomplete="name" maxlength="100" placeholder="As shown on your records" required></label>
+            <label class="field">University email<input name="email" type="email" autocomplete="email" placeholder="name@lspu.edu.ph" required></label>
+            <label class="field">Create password<span class="password-control"><input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required><button type="button" data-toggle-password="signup-password" aria-label="Show password" aria-pressed="false">Show</button></span></label>
+            <p class="auth-message" id="signup-message" role="alert" hidden></p>
+            <button class="button button-primary auth-submit" id="signup-submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="auth-switch">Already registered? <button class="text-button" type="button" data-auth-mode="signin">Back to sign in</button></p>
+          <div class="setup-hint">After verifying your email, contact the Registrar’s Office to have your SIEMS profile and role assigned. All roles are provisioned manually in Firestore.</div>
+        </div>
+        <div id="reset-view" hidden>
+          <p class="eyebrow">ACCOUNT RECOVERY</p><h2 id="reset-title">Reset your password</h2><p class="auth-intro" id="reset-intro">Enter the email address associated with your university account. Firebase will email a password reset link.</p>
+          <form id="reset-form" novalidate>
+            <label class="field">University email<input name="email" type="email" autocomplete="email" placeholder="name@lspu.edu.ph" required></label>
+            <p class="auth-message" id="reset-message" role="alert" hidden></p>
+            <button class="button button-primary auth-submit" id="reset-submit" type="submit">Send reset link <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="auth-switch"><button class="text-button" type="button" data-auth-mode="signin">← Back to sign in</button></p>
+        </div>
+        <p class="setup-guide-link" id="setup-guide-link" hidden>Need help connecting Firebase? <button class="text-button" type="button" data-open-setup-guide>View setup steps</button></p>
+      </div>
+    </section>
+  </div>
+  <div class="setup-backdrop" id="setup-backdrop" hidden>
+    <section class="setup-dialog" id="setup-dialog" role="dialog" aria-modal="true" aria-labelledby="setup-title" aria-describedby="setup-intro">
+      <button class="modal-close" id="setup-close" type="button" aria-label="Close Firebase setup guide">×</button>
+      <p class="eyebrow">PROJECT CONFIGURATION</p>
+      <h2 id="setup-title">Firebase setup guide</h2>
+      <p class="setup-dialog-intro" id="setup-intro">Use separate Firebase projects for development and production. This guide checks configuration without creating accounts or writing Firestore data.</p>
+      <p class="setup-copy-status" id="config-validation-results" role="status" aria-live="polite"></p>
+      <aside class="file-protocol-warning" id="file-protocol-warning" role="alert" hidden><strong>Use a local web server.</strong> This page is open as a <code>file://</code> URL. Firebase Authentication does not work from local files. Open the project with VS Code Live Server or another local HTTP server, then use its localhost URL.</aside>
+      <div class="setup-progress-wrap">
+        <div class="setup-progress-label"><span>Setup progress</span><span id="setup-progress-text" role="status" aria-live="polite">0 of 6 steps complete</span></div>
+        <div class="setup-progress-track" id="setup-progress-track" role="progressbar" aria-label="Firebase setup progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><div class="setup-progress-fill" id="setup-progress-fill"></div></div>
+      </div>
+      <ol class="setup-steps">
+        <li class="setup-step" data-setup-step="1"><input class="setup-step-checkbox" id="setup-check-1" type="checkbox" aria-label="Mark step 1 complete" disabled><div class="setup-step-main"><button class="setup-step-toggle" type="button" aria-expanded="false" aria-controls="setup-detail-1"><strong>Create a Firebase project and register a Web app</strong><span class="setup-step-chevron" aria-hidden="true">⌄</span></button><div class="setup-step-copy" id="setup-detail-1" hidden><p><strong>Console path:</strong> Project settings &gt; General &gt; Your apps &gt; Add app &gt; Web.</p><p><strong>Tip:</strong> Keep separate Firebase projects for development and production. The config block selects the target project for each deployment.</p><p class="mistake"><strong>Common mistake:</strong> Creating a project without registering a Web app does not provide the web configuration needed by this page.</p></div></div><span class="setup-step-status" data-step-status="1">Pending</span></li>
+        <li class="setup-step" data-setup-step="2"><input class="setup-step-checkbox" id="setup-check-2" type="checkbox" aria-label="Mark step 2 complete" disabled><div class="setup-step-main"><button class="setup-step-toggle" type="button" aria-expanded="false" aria-controls="setup-detail-2"><strong>Validate and add the Firebase Web config</strong><span class="setup-step-chevron" aria-hidden="true">⌄</span></button><div class="setup-step-copy" id="setup-detail-2" hidden><p><strong>Console path:</strong> Project settings &gt; General &gt; Your apps &gt; SDK setup and configuration.</p><p><strong>Tip:</strong> Replace this block’s six placeholders with the values for the target environment before deployment. An empty <code>storageBucket</code> is allowed if Storage is not used.</p><p><strong>API key:</strong> Restrict it to your website’s HTTP referrers in Google Cloud Console. Enable Firebase App Check after the site is deployed.</p><p class="mistake"><strong>Common mistake:</strong> Never paste service-account JSON, private keys, or Admin SDK credentials into this browser page.</p></div></div><span class="setup-step-status" data-step-status="2">Pending</span></li>
+        <li class="setup-step" data-setup-step="3"><input class="setup-step-checkbox" id="setup-check-3" type="checkbox" aria-label="Mark step 3 complete"><div class="setup-step-main"><button class="setup-step-toggle" type="button" aria-expanded="false" aria-controls="setup-detail-3"><strong>Enable Email/Password sign-in</strong><span class="setup-step-chevron" aria-hidden="true">⌄</span></button><div class="setup-step-copy" id="setup-detail-3" hidden><p><strong>Console path:</strong> Authentication &gt; Sign-in method &gt; Email/Password &gt; Enable.</p><p><strong>Tip:</strong> Save the provider settings before testing login or account creation.</p><p class="mistake"><strong>Common mistake:</strong> Creating the Firebase project alone does not turn on the Email/Password provider.</p></div></div><span class="setup-step-status" data-step-status="3">Pending</span></li>
+        <li class="setup-step" data-setup-step="4"><input class="setup-step-checkbox" id="setup-check-4" type="checkbox" aria-label="Mark step 4 complete"><div class="setup-step-main"><button class="setup-step-toggle" type="button" aria-expanded="false" aria-controls="setup-detail-4"><strong>Create a Firestore database</strong><span class="setup-step-chevron" aria-hidden="true">⌄</span></button><div class="setup-step-copy" id="setup-detail-4" hidden><p><strong>Console path:</strong> Build &gt; Firestore Database &gt; Create database.</p><p><strong>Tip:</strong> Pick a database location that fits your users and deployment requirements.</p><p class="mistake"><strong>Common mistake:</strong> Authentication and Firestore are separate services; enabling one does not create the other.</p></div></div><span class="setup-step-status" data-step-status="4">Pending</span></li>
+        <li class="setup-step" data-setup-step="5"><input class="setup-step-checkbox" id="setup-check-5" type="checkbox" aria-label="Mark step 5 complete"><div class="setup-step-main"><button class="setup-step-toggle" type="button" aria-expanded="false" aria-controls="setup-detail-5"><strong>Authorize localhost and your production domain</strong><span class="setup-step-chevron" aria-hidden="true">⌄</span></button><div class="setup-step-copy" id="setup-detail-5" hidden><p><strong>Console path:</strong> Authentication &gt; Settings &gt; Authorized domains.</p><p><strong>Tip:</strong> Add <code>localhost</code> and the exact production hostname only. Keep development and production domains in their corresponding Firebase projects.</p><p class="mistake"><strong>Common mistake:</strong> Adding a URL path or protocol is not the same as adding its host name.</p></div></div><span class="setup-step-status" data-step-status="5">Pending</span></li>
+        <li class="setup-step" data-setup-step="6"><input class="setup-step-checkbox" id="setup-check-6" type="checkbox" aria-label="Mark step 6 complete"><div class="setup-step-main"><button class="setup-step-toggle" type="button" aria-expanded="false" aria-controls="setup-detail-6"><strong>Test rules, publish, and provision roles</strong><span class="setup-step-chevron" aria-hidden="true">⌄</span></button><div class="setup-step-copy" id="setup-detail-6" hidden><p><strong>Console path:</strong> Firestore Database &gt; Rules. Test the supplied rules in the Rules Playground before publishing.</p><p><strong>Tip:</strong> Create each <code>users/{uid}</code> profile and assign its role manually in Firestore. Manually provision the first admin, registrar, faculty, and student profiles; create the initial admin directly in the Firebase Console.</p><p class="mistake"><strong>Common mistake:</strong> Never grant roles based on a client-side sign-up form or selected sign-in role. Students and faculty must not see setup controls.</p></div></div><span class="setup-step-status" data-step-status="6">Pending</span></li>
+      </ol>
+      <div class="setup-dialog-actions"><button class="button button-primary" id="copy-config-template" type="button">Copy config template</button><button class="button button-quiet" id="test-connection" type="button" disabled>Test connection</button><button class="button button-quiet" id="setup-done" type="button">Done</button></div>
+      <div class="setup-result-grid">
+        <div class="setup-result" id="auth-check-result" role="status" aria-live="polite" data-state="idle">Authentication: not tested</div>
+        <div class="setup-result" id="firestore-check-result" role="status" aria-live="polite" data-state="idle">Firestore: not tested</div>
+      </div>
+      <p class="setup-copy-status" id="setup-copy-status" role="status" aria-live="polite"></p>
+      <pre class="setup-template" id="setup-template" hidden><code id="setup-template-code"></code></pre>
+    </section>
+  </div>
+  <section class="portal" id="portal" aria-label="SIEMS dashboard" hidden>
+    <aside class="portal-side" id="portal-side">
+      <a class="brand" href="#home"><span class="brand-seal" aria-hidden="true">LSPU</span><span class="brand-text"><strong>Student Services</strong><small>SIEMS PORTAL</small></span></a>
+      <div class="portal-label">WORKSPACE</div>
+      <nav class="portal-nav" id="portal-nav" aria-label="Dashboard navigation"></nav>
+      <div class="portal-user"><div class="portal-user-row"><span class="avatar" id="portal-avatar">L</span><span><strong id="portal-user-name">University member</strong><small id="portal-user-role">student</small></span></div><button class="portal-signout" id="signout-button" type="button">Sign out</button></div>
+    </aside>
+    <div class="portal-main">
+      <header class="portal-top"><button class="mobile-portal-menu" id="portal-menu" type="button" aria-label="Open dashboard menu" aria-expanded="false">☰</button><strong id="portal-heading">Overview</strong><button class="footer-guide-link" id="portal-setup-guide" type="button" data-open-setup-guide hidden>Setup guide</button><span id="portal-date"></span></header>
+      <main class="portal-content" id="portal-content" tabindex="-1"></main>
+    </div>
+  </section>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <button class="scroll-top" id="scroll-top" type="button" aria-label="Back to top">↑</button>
+
+  <script type="module">
+    // Replace these placeholders with this environment's Firebase Web app config.
+    // Use separate Firebase projects for development and production; switch environments by replacing this block with that project's six Web app values before deployment.
+    // Web config values are public identifiers. Access is protected by Authentication, Firestore security rules, and API key restrictions. Never paste service-account JSON, private keys, or Admin SDK credentials here.
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    function getFirebaseConfigIssues() {
+      const requiredKeys = ["apiKey", "authDomain", "projectId", "storageBucket", "messagingSenderId", "appId"];
+      const issues = [];
+      requiredKeys.forEach((key) => {
+        const value = firebaseConfig[key];
+        if (typeof value !== "string") {
+          issues.push(`${key}: must be a string.`);
+        } else if (!value.trim() && key !== "storageBucket") {
+          issues.push(`${key}: a value is required.`);
+        } else if (key === "storageBucket" && !value.trim() && value !== "") {
+          issues.push(`${key}: leave blank or provide a Firebase Storage bucket.`);
+        } else if (/(?:YOUR_|PALITAN|PLACEHOLDER|REPLACE|<[^>]+>)/i.test(value.trim())) {
+          issues.push(`${key}: replace the placeholder with a Firebase Web app value.`);
+        }
+      });
+      const { apiKey, authDomain, projectId, messagingSenderId, appId } = firebaseConfig;
+      const isPlaceholder = (value) => typeof value === "string" && /(?:YOUR_|PALITAN|PLACEHOLDER|REPLACE|<[^>]+>)/i.test(value.trim());
+      if (typeof apiKey === "string" && apiKey.trim() && !isPlaceholder(apiKey) && !apiKey.startsWith("AIza")) {
+        issues.push("apiKey: must start with AIza.");
+      }
+      if (typeof authDomain === "string" && authDomain.trim() && !isPlaceholder(authDomain)
+        && !/^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(authDomain)) {
+        issues.push("authDomain: must be a bare domain without a protocol, path, or trailing slash.");
+      }
+      if (typeof projectId === "string" && projectId.trim() && !isPlaceholder(projectId)
+        && !/^(?=.{6,30}$)[a-z0-9]+(?:-[a-z0-9]+)*$/.test(projectId)) {
+        issues.push("projectId: must be 6–30 lowercase letters, numbers, or hyphen-separated groups.");
+      }
+      if (typeof messagingSenderId === "string" && messagingSenderId.trim() && !isPlaceholder(messagingSenderId)
+        && !/^\d+$/.test(messagingSenderId)) {
+        issues.push("messagingSenderId: must contain digits only.");
+      }
+      if (typeof appId === "string" && appId.trim() && !isPlaceholder(appId)
+        && !/^1:\d+:web:[a-z0-9]+$/i.test(appId)) {
+        issues.push("appId: must match 1:<digits>:web:<id>.");
+      }
+      return [...new Set(issues)];
+    }
+
+    function isFirebaseConfigured() {
+      return getFirebaseConfigIssues().length === 0;
+    }
+
+    let configValid = isFirebaseConfigured();
+    const isFileProtocol = window.location.protocol === "file:";
+    let configured = configValid && !isFileProtocol;
+    const setupRequested = new URLSearchParams(window.location.search).get("setup") === "1";
+    let setupAccess = setupRequested;
+    let signedInAsAdmin = false;
+    let authIdentityResolved = false;
+    let app, auth, db;
+    let initializeApp, getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail;
+    let sendEmailVerification, sendPasswordResetEmail, signOut, setPersistence, browserLocalPersistence, browserSessionPersistence, updateProfile;
+    let getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, serverTimestamp;
+    let firebaseReady = false;
+    let serviceAvailable = false;
+
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const backdrop = $("#auth-backdrop");
+    const panel = $("#auth-panel");
+    const portal = $("#portal");
+    const setupBackdrop = $("#setup-backdrop");
+    const serviceUnavailableMessage = "The enrollment system is temporarily unavailable. Please try again later or contact the Registrar's Office.";
+    function updateServiceNotice() {
+      let title = "Enrollment services temporarily unavailable";
+      let message = serviceUnavailableMessage;
+      if (!configValid) {
+        title = "Portal setup required";
+        message = "This portal has not been connected to the university’s secure services yet. A site administrator can use the setup guide to complete the Firebase configuration.";
+      } else if (isFileProtocol && (signedInAsAdmin || setupRequested)) {
+        title = "Secure connection required";
+        message = "Open this page through a local web server or the university’s hosted address to access secure enrollment services.";
+      }
+      $("#service-unavailable-title").textContent = title;
+      $("#service-unavailable-message").textContent = message;
+    }
+    let lastFocusedElement = null;
+    let setupLastFocusedElement = null;
+    let toastTimer;
+    let currentUser = null;
+    let currentProfile = null;
+    let currentRole = null;
+    let activePortalPage = "dashboard";
+    let knownStudentCount = null;
+    let authBusy = false;
+    const setupState = {
+      steps: Array.from({ length: 6 }, () => ({
+        status: "pending",
+        manual: false,
+        verified: null
+      })),
+      connectionPassed: false
+    };
+    const setupSteps = setupState.steps;
+    let connectionTestBusy = false;
+    let copyStatusTimer;
+
+    try {
+      const saved = JSON.parse(localStorage.getItem("lspu-siems-setup-progress") || "null");
+      if (Array.isArray(saved) && (saved.length === 4 || saved.length === 6)) {
+        const manualValues = saved.length === 6 ? saved.slice(2) : saved;
+        manualValues.forEach((value, index) => {
+          setupSteps[index + 2].manual = value === true;
+        });
+      }
+    } catch {
+      // Progress remains usable in memory when browser storage is unavailable.
+    }
+
+    function escapeHTML(value = "") {
+      return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+    }
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 3600);
+    }
+    function friendlyError(error) {
+      const messages = {
+        "auth/invalid-email": "Enter a valid university email address.",
+        "auth/invalid-credential": "The email or password is incorrect. Check your details and try again.",
+        "auth/user-not-found": "No account was found for that email. Check the address or create a student account.",
+        "auth/wrong-password": "The email or password is incorrect. Check your details and try again.",
+        "auth/email-already-in-use": "An account already uses this email. Try signing in or resetting your password.",
+        "auth/weak-password": "Choose a password with at least 8 characters.",
+        "auth/too-many-requests": "Too many attempts. Wait a little before trying again.",
+        "auth/network-request-failed": "The enrollment system is temporarily unavailable. Please try again later or contact the Registrar's Office.",
+        "auth/operation-not-allowed": "Email and password sign-in is not enabled. Please contact the Registrar's Office.",
+        "auth/invalid-api-key": "The enrollment system is temporarily unavailable. Please try again later or contact the Registrar's Office.",
+        "auth/unauthorized-domain": "This website is not authorized to sign in. Please contact the Registrar's Office.",
+        "auth/email-not-verified": "Verify your university email using the link we sent before signing in.",
+        "auth/verification-email-failed": "Your account was created, but the verification email could not be sent. Please contact the Registrar’s Office for assistance.",
+        "profile/not-found": "Your email is verified, but your SIEMS profile has not been provisioned. Please contact the Registrar's Office.",
+        "role/mismatch": "The selected role does not match your assigned account role. Contact the Registrar's Office if you need help.",
+        "permission-denied": "Your request could not be completed. Please contact the Registrar's Office for assistance.",
+        "firestore/permission-denied": "Your request could not be completed. Please contact the Registrar's Office for assistance.",
+        "failed-precondition": "The enrollment system is temporarily unavailable. Please try again later or contact the Registrar's Office.",
+        "unavailable": "The enrollment system is temporarily unavailable. Please try again later or contact the Registrar's Office."
+      };
+      if (["auth/network-request-failed", "auth/operation-not-allowed", "auth/invalid-api-key", "auth/unauthorized-domain", "failed-precondition", "unavailable"].includes(error?.code)) {
+        markServiceUnavailable(error);
+      }
+      return messages[error?.code] || "The enrollment system is temporarily unavailable. Please try again later or contact the Registrar's Office.";
+    }
+    function setupError(error) {
+      const setupMessages = {
+        "auth/invalid-api-key": "Firebase rejected the API key. Verify the apiKey in the config block (Step 2).",
+        "auth/operation-not-allowed": "Email/Password sign-in is disabled. Enable it in Authentication > Sign-in method (Step 3).",
+        "auth/unauthorized-domain": "This host is not authorized. Add it under Authentication > Settings > Authorized domains (Step 5).",
+        "auth/network-request-failed": "Authentication could not reach Firebase. Check network access, the config block (Step 2), and authorized domains (Step 5).",
+        "auth/invalid-email": "The read-only Authentication check was rejected. Verify Email/Password sign-in is enabled (Step 3).",
+        "permission-denied": "Firestore is reachable, but the health-check read was denied. Review Firestore rules (Step 6).",
+        "firestore/permission-denied": "Firestore is reachable, but the health-check read was denied. Review Firestore rules (Step 6).",
+        "failed-precondition": "Firestore is not ready. Create the database in the Firebase Console (Step 4).",
+        "unavailable": "Firestore is unavailable. Verify the database exists (Step 4) and check the network.",
+        "not-found": "Firestore database was not found. Create it in the Firebase Console (Step 4).",
+        "firestore/not-found": "Firestore database was not found. Create it in the Firebase Console (Step 4).",
+        "auth/invalid-credential": "The Authentication endpoint responded to the read-only check. No test account was created."
+      };
+      return setupMessages[error?.code] || "The connection test failed. Review the Firebase config (Step 2), Authentication and Firestore setup (Steps 3–4), authorized domains (Step 5), and rules (Step 6).";
+    }
+    function logTechnicalError(context, error) {
+      console.error(`[SIEMS] ${context}`, error);
+    }
+    function markServiceUnavailable(error) {
+      logTechnicalError("Firebase service unavailable", error);
+      serviceAvailable = false;
+      updateServiceNotice();
+      $("#setup-notice").hidden = backdrop.hidden;
+    }
+    function setBusy(button, busy, label) {
+      button.disabled = busy || !firebaseReady;
+      button.innerHTML = busy ? `<span class="spinner" aria-hidden="true"></span> ${label}` : button.dataset.originalLabel;
+      button.setAttribute("aria-busy", String(busy));
+    }
+    $$(".auth-submit").forEach((button) => { button.dataset.originalLabel = button.innerHTML; });
+    $("#file-protocol-warning").hidden = true;
+    $("#file-protocol-inline").hidden = true;
+    $("#setup-notice").hidden = true;
+    $("#setup-guide-link").hidden = true;
+    $("#test-connection").disabled = true;
+    ["#signin-submit", "#signup-submit", "#reset-submit"].forEach((selector) => {
+      $(selector).disabled = true;
+    });
+
+    function saveSetupProgress() {
+      try {
+        localStorage.setItem("lspu-siems-setup-progress", JSON.stringify(
+          setupSteps.slice(2).map((step) => step.manual)
+        ));
+      } catch {
+        // The current page continues to track progress in memory.
+      }
+    }
+
+    function renderSteps() {
+      configValid = isFirebaseConfigured();
+      configured = configValid && !isFileProtocol;
+      setupSteps[0].status = configValid ? "done" : "pending";
+      setupSteps[1].status = configValid ? "done" : "pending";
+      setupSteps.slice(2, 5).forEach((step) => {
+        step.status = step.verified === null ? (step.manual ? "done" : "pending") : step.verified ? "done" : "pending";
+      });
+      setupSteps[5].status = setupSteps[5].manual ? "done" : "pending";
+      const firstIncomplete = setupSteps.findIndex((step) => step.status !== "done");
+      if (firstIncomplete !== -1) setupSteps[firstIncomplete].status = "in-progress";
+      const completed = setupSteps.filter((step) => step.status === "done").length;
+      $("#setup-progress-fill").style.width = `${(completed / setupSteps.length) * 100}%`;
+      $("#setup-progress-track").setAttribute("aria-valuenow", String(completed));
+      $("#setup-progress-text").textContent = `${completed} of 6 steps complete`;
+      setupSteps.forEach((stepState, index) => {
+        const stepNumber = index + 1;
+        const stepElement = $(`[data-setup-step="${stepNumber}"]`);
+        const checkbox = $(`#setup-check-${stepNumber}`);
+        const badge = $(`[data-step-status="${stepNumber}"]`);
+        checkbox.checked = stepState.status === "done";
+        checkbox.disabled = index < 2 || (index < 5 && stepState.verified !== null);
+        checkbox.setAttribute("aria-label", `Step ${stepNumber}: ${stepState.status}`);
+        badge.textContent = stepState.status === "in-progress"
+          ? "In progress"
+          : stepState.status === "done" ? "Done" : "Pending";
+        badge.classList.toggle("done", stepState.status === "done");
+        badge.classList.toggle("in-progress", stepState.status === "in-progress");
+        stepElement.classList.toggle("is-done", stepState.status === "done");
+      });
+      const issues = getFirebaseConfigIssues();
+      $("#config-validation-results").textContent = configValid
+        ? "Firebase web configuration is valid. Steps 1 and 2 are complete."
+        : `Configuration needs attention: ${issues.join(" ")}`;
+      updateSetupAccess();
+      if (completed === setupSteps.length && setupState.connectionPassed) {
+        $("#setup-notice").hidden = true;
+        if (!setupBackdrop.hidden) closeSetupGuide();
+      }
+    }
+
+    $$(".setup-step-checkbox").forEach((checkbox, index) => {
+      checkbox.addEventListener("change", () => {
+        if (index < 2) return;
+        setupSteps[index].manual = checkbox.checked;
+        saveSetupProgress();
+        renderSteps();
+      });
+    });
+    $$(".setup-step-toggle").forEach((button) => button.addEventListener("click", () => {
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!expanded));
+      $(`#${button.getAttribute("aria-controls")}`).hidden = expanded;
+    }));
+    function updateSetupAccess() {
+      const canSeeFileWarning = isFileProtocol && (signedInAsAdmin || setupRequested);
+      setupAccess = signedInAsAdmin
+        || (setupRequested && !currentUser && (authIdentityResolved || !configured))
+        || (!configValid && !currentUser);
+      $("#admin-setup-actions").hidden = !setupAccess;
+      $("#setup-guide-link").hidden = !setupAccess;
+      $("#footer-setup-guide").hidden = !setupAccess;
+      $("#portal-setup-guide").hidden = !setupAccess;
+      $("#rules-details").hidden = !setupAccess;
+      $("#file-protocol-warning").hidden = !canSeeFileWarning;
+      $("#file-protocol-inline").hidden = !canSeeFileWarning;
+      if (!setupAccess && !setupBackdrop.hidden) closeSetupGuide();
+    }
+
+    updateSetupAccess();
+    renderSteps();
+    function showAuthMessage(id, text, success = false) {
+      const message = $(`#${id}`);
+      message.textContent = text;
+      message.classList.toggle("success", success);
+      message.hidden = false;
+    }
+    function clearAuthMessages() {
+      $$(".auth-message").forEach((message) => { message.hidden = true; message.textContent = ""; message.classList.remove("success"); });
+    }
+    function setAuthMode(mode) {
+      clearAuthMessages();
+      panel.dataset.mode = mode;
+      $("#signin-view").hidden = mode !== "signin";
+      $("#signup-view").hidden = mode !== "signup";
+      $("#reset-view").hidden = mode !== "reset";
+      $("#auth-dialog").setAttribute("aria-labelledby", mode === "signup" ? "signup-title" : mode === "reset" ? "reset-title" : "auth-title");
+      $("#auth-dialog").setAttribute("aria-describedby", mode === "signup" ? "signup-intro" : mode === "reset" ? "reset-intro" : "auth-intro");
+      const title = mode === "signup" ? "Create your account" : mode === "reset" ? "Reset your password" : "Welcome back";
+      $("#auth-title").textContent = title;
+      $("#auth-intro").textContent = mode === "signup" ? "Create a student account to access SIEMS services." : "Sign in with your university account to continue.";
+      requestAnimationFrame(() => (mode === "signup" ? $('#signup-view input') : mode === "reset" ? $('#reset-view input') : $("#signin-role")).focus());
+    }
+    function openAuth(mode = "signin") {
+      lastFocusedElement = document.activeElement;
+      backdrop.hidden = false;
+      document.body.style.overflow = "hidden";
+      $("#setup-notice").hidden = firebaseReady && serviceAvailable;
+      if (!firebaseReady || !serviceAvailable) updateServiceNotice();
+      setAuthMode(mode);
+    }
+    function closeAuth(restoreFocus = true) {
+      backdrop.hidden = true;
+      document.body.style.overflow = "";
+      if (restoreFocus) lastFocusedElement?.focus?.();
+    }
+    function openSetupGuide() {
+      if (!setupAccess) return;
+      setupLastFocusedElement = document.activeElement;
+      setupBackdrop.hidden = false;
+      $("#setup-copy-status").textContent = "";
+      $("#setup-copy-status").classList.remove("error");
+      requestAnimationFrame(() => $("#setup-close").focus());
+    }
+    function closeSetupGuide() {
+      setupBackdrop.hidden = true;
+      setupLastFocusedElement?.focus?.();
+    }
+    $("#open-setup-guide").addEventListener("click", openSetupGuide);
+    $$("[data-open-setup-guide]").forEach((button) => button.addEventListener("click", openSetupGuide));
+    $("#setup-close").addEventListener("click", closeSetupGuide);
+    $("#setup-done").addEventListener("click", closeSetupGuide);
+    setupBackdrop.addEventListener("click", (event) => {
+      if (event.target === setupBackdrop) closeSetupGuide();
+    });
+    $("#setup-dismiss").addEventListener("click", () => {
+      $("#setup-notice").hidden = true;
+      ["#signin-submit", "#signup-submit", "#reset-submit"].forEach((selector) => $(selector).removeAttribute("aria-describedby"));
+    });
+    async function copyText(text) {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return;
+        } catch {
+          // Use the legacy copy path when clipboard permissions are unavailable.
+        }
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.append(textarea);
+      textarea.select();
+      let copied = false;
+      try {
+        copied = document.execCommand("copy");
+      } finally {
+        textarea.remove();
+      }
+      if (!copied) throw new Error("Clipboard access is unavailable.");
+    }
+
+    function announceCopied(status, successText) {
+      status.textContent = successText;
+      status.classList.remove("error");
+      clearTimeout(copyStatusTimer);
+      copyStatusTimer = setTimeout(() => { status.textContent = ""; }, 3000);
+    }
+
+    $("#copy-config-template").addEventListener("click", async () => {
+      const template = `const firebaseConfig = ${JSON.stringify(firebaseConfig, null, 2)};`;
+      const status = $("#setup-copy-status");
+      try {
+        await copyText(template);
+        announceCopied(status, "Copied! Replace every placeholder with your Firebase web app values.");
+      } catch (error) {
+        $("#setup-template-code").textContent = template;
+        $("#setup-template").hidden = false;
+        status.textContent = `${error.message} Select the template below and copy it manually.`;
+        status.classList.add("error");
+      }
+    });
+
+    $("#copy-rules").addEventListener("click", async () => {
+      const status = $("#rules-copy-status");
+      try {
+        await copyText($("#firestore-rules").textContent);
+        announceCopied(status, "Copied!");
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    });
+
+    function setCheckResult(element, text, state = "idle") {
+      element.dataset.state = state;
+      element.textContent = text;
+    }
+
+    async function runAuthConnectionCheck() {
+      const result = $("#auth-check-result");
+      result.dataset.state = "loading";
+      result.innerHTML = '<span class="spinner" aria-hidden="true"></span> Authentication: checking…';
+      try {
+        await fetchSignInMethodsForEmail(auth, "siems-connectivity-check@example.invalid");
+        return { ok: true, providerEnabled: true, domainAuthorized: true, message: "Authentication is reachable and the read-only Email/Password check completed. No account was created." };
+      } catch (error) {
+        logTechnicalError("Authentication setup check failed", error);
+        if (error?.code === "auth/user-not-found") {
+          return { ok: true, providerEnabled: true, domainAuthorized: true, message: "Authentication is reachable; the read-only check found no account, as expected. No account was created." };
+        }
+        return {
+          ok: false,
+          providerEnabled: error?.code === "auth/operation-not-allowed" ? false : null,
+          domainAuthorized: error?.code === "auth/unauthorized-domain" ? false : null,
+          message: `${setupError(error)} No account was created.`
+        };
+      }
+    }
+
+    async function runFirestoreConnectionCheck() {
+      const result = $("#firestore-check-result");
+      result.dataset.state = "loading";
+      result.innerHTML = '<span class="spinner" aria-hidden="true"></span> Firestore: checking…';
+      try {
+        const verifiedUser = auth.currentUser?.emailVerified ? auth.currentUser : null;
+        const probe = verifiedUser
+          ? doc(db, "users", verifiedUser.uid)
+          : doc(db, "_healthcheck", "ping");
+        await getDoc(probe);
+        return {
+          ok: true,
+          reachable: true,
+          message: verifiedUser
+            ? "Firestore is reachable; the signed-in user's own profile was read. No data was written."
+            : "Firestore is reachable; the read-only check completed. No account or data was created."
+        };
+      } catch (error) {
+        logTechnicalError("Firestore setup check failed", error);
+        if (error?.code === "permission-denied" || error?.code === "firestore/permission-denied") {
+          return {
+            ok: false,
+            reachable: true,
+            message: "Firestore is reachable, but security rules blocked the read-only profile check (or no verified administrator session is active). Sign in as an administrator and review Step 6 in the Rules Playground. No data was written."
+          };
+        }
+        if (["failed-precondition", "not-found", "firestore/not-found"].includes(error?.code)) {
+          return { ok: false, reachable: false, message: setupError(error) };
+        }
+        if (error?.code === "unavailable") {
+          return { ok: false, reachable: null, message: setupError(error) };
+        }
+        return { ok: false, reachable: null, message: setupError(error) };
+      }
+    }
+
+    $("#test-connection").dataset.originalLabel = $("#test-connection").textContent;
+    $("#test-connection").addEventListener("click", async (event) => {
+      configValid = isFirebaseConfigured();
+      configured = configValid && !isFileProtocol;
+      renderSteps();
+      if (!configured || connectionTestBusy || !firebaseReady) {
+        $("#setup-notice").hidden = false;
+        ["#signin-submit", "#signup-submit", "#reset-submit"].forEach((selector) => { $(selector).disabled = true; });
+        return;
+      }
+      connectionTestBusy = true;
+      authBusy = true;
+      setupState.connectionPassed = false;
+      const button = event.currentTarget;
+      button.disabled = true;
+      button.innerHTML = '<span class="spinner" aria-hidden="true"></span> Testing…';
+      try {
+        const [authResult, firestoreResult] = await Promise.all([
+          runAuthConnectionCheck(),
+          runFirestoreConnectionCheck()
+        ]);
+        setCheckResult($("#auth-check-result"), authResult.message, authResult.ok ? "success" : "error");
+        setCheckResult($("#firestore-check-result"), firestoreResult.message, firestoreResult.ok ? "success" : firestoreResult.reachable ? "warning" : "error");
+        setupSteps[2].verified = authResult.providerEnabled;
+        setupSteps[3].verified = firestoreResult.reachable;
+        setupSteps[4].verified = authResult.domainAuthorized;
+        setupState.connectionPassed = authResult.ok && firestoreResult.ok;
+        serviceAvailable = setupState.connectionPassed;
+        renderSteps();
+      } catch (error) {
+        setupState.connectionPassed = false;
+        logTechnicalError("Firebase connection test failed", error);
+        const message = setupError(error);
+        setCheckResult($("#auth-check-result"), message, "error");
+        setCheckResult($("#firestore-check-result"), message, "error");
+        renderSteps();
+      } finally {
+        authBusy = false;
+        button.innerHTML = button.dataset.originalLabel;
+        setTimeout(() => {
+          connectionTestBusy = false;
+          button.disabled = !firebaseReady;
+        }, 700);
+      }
+    });
+    $$("[data-open-auth]").forEach((button) => button.addEventListener("click", () => openAuth("signin")));
+    $("#auth-close").addEventListener("click", closeAuth);
+    backdrop.addEventListener("click", (event) => { if (event.target === backdrop) closeAuth(); });
+    $$("[data-auth-mode]").forEach((button) => button.addEventListener("click", () => setAuthMode(button.dataset.authMode)));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !setupBackdrop.hidden) closeSetupGuide();
+      else if (event.key === "Escape" && !backdrop.hidden) closeAuth();
+      const activeBackdrop = !setupBackdrop.hidden ? setupBackdrop : !backdrop.hidden ? backdrop : null;
+      if (event.key === "Tab" && activeBackdrop) {
+        const focusable = $$('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href]', activeBackdrop).filter((el) => el.offsetParent !== null);
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    });
+    $$("[data-toggle-password]").forEach((button) => button.addEventListener("click", () => {
+      const input = button.closest(".password-control").querySelector("input");
+      const visible = input.type === "password";
+      input.type = visible ? "text" : "password";
+      button.textContent = visible ? "Hide" : "Show";
+      button.setAttribute("aria-label", `${visible ? "Hide" : "Show"} password`);
+      button.setAttribute("aria-pressed", String(visible));
+    }));
+
+    $("#signin-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearAuthMessages();
+      const form = event.currentTarget;
+      if (!form.reportValidity()) return;
+      if (!configured || !firebaseReady) { showAuthMessage("signin-message", serviceUnavailableMessage); return; }
+      const button = $("#signin-submit");
+      setBusy(button, true, "Signing in");
+      authBusy = true;
+      try {
+        await setPersistence(auth, form.elements.remember.checked ? browserLocalPersistence : browserSessionPersistence);
+        const result = await signInWithEmailAndPassword(auth, form.elements.email.value.trim(), form.elements.password.value);
+        if (!result.user.emailVerified) {
+          await signOut(auth);
+          throw Object.assign(new Error("Verify your university email before signing in."), { code: "auth/email-not-verified" });
+        }
+        const snapshot = await getDoc(doc(db, "users", result.user.uid));
+        if (!snapshot.exists()) {
+          await signOut(auth);
+          throw Object.assign(new Error("Your account profile has not been provisioned. Contact your registrar."), { code: "profile/not-found" });
+        }
+        const profile = snapshot.data();
+        const assignedRole = profile.role;
+        const requestedRole = form.elements.role.value;
+        const roleMatches = requestedRole === "registrar" ? ["registrar", "admin"].includes(assignedRole) : assignedRole === requestedRole;
+        if (!roleMatches) {
+          await signOut(auth);
+          throw Object.assign(new Error("The selected role does not match your assigned account role."), { code: "role/mismatch" });
+        }
+        await enterPortal(result.user, profile);
+        authBusy = false;
+        closeAuth(false);
+      } catch (error) {
+        authBusy = false;
+        logTechnicalError("Sign-in request failed", error);
+        const message = error.code === "profile/not-found" || error.code === "role/mismatch" ? error.message : friendlyError(error);
+        showAuthMessage("signin-message", message);
+      } finally {
+        setBusy(button, false, "Signing in");
+      }
+    });
+
+    $("#signup-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearAuthMessages();
+      const form = event.currentTarget;
+      if (!form.reportValidity()) return;
+      if (!configured || !firebaseReady) { showAuthMessage("signup-message", serviceUnavailableMessage); return; }
+      const formData = new FormData(form);
+      const button = $("#signup-submit");
+      setBusy(button, true, "Creating account");
+      authBusy = true;
+      let credential;
+      const fullName = String(formData.get("fullName") || "").trim();
+      let verificationSent = false;
+      try {
+        await setPersistence(auth, browserSessionPersistence);
+        credential = await createUserWithEmailAndPassword(auth, String(formData.get("email") || "").trim(), formData.get("password"));
+        await updateProfile(credential.user, { displayName: fullName });
+        await sendEmailVerification(credential.user);
+        verificationSent = true;
+        await signOut(auth);
+        authBusy = false;
+        form.reset();
+        showAuthMessage("signup-message", "Account created. Check your university inbox and verify your email. Then contact the Registrar’s Office to have your SIEMS profile and role provisioned.", true);
+      } catch (error) {
+        authBusy = false;
+        logTechnicalError("Student registration failed", error);
+        const message = credential && !verificationSent
+          ? friendlyError({ code: "auth/verification-email-failed" })
+          : friendlyError(error);
+        if (credential) {
+          try {
+            await signOut(auth);
+          } catch (signOutError) {
+            logTechnicalError("Sign-out after registration failed", signOutError);
+          }
+        }
+        showAuthMessage("signup-message", message);
+      } finally {
+        setBusy(button, false, "Creating account");
+      }
+    });
+
+    $("#reset-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearAuthMessages();
+      const form = event.currentTarget;
+      if (!form.reportValidity()) return;
+      if (!configured || !firebaseReady) { showAuthMessage("reset-message", serviceUnavailableMessage); return; }
+      const button = $("#reset-submit");
+      setBusy(button, true, "Sending link");
+      try {
+        await sendPasswordResetEmail(auth, form.elements.email.value.trim());
+        showAuthMessage("reset-message", "If an account exists for that address, a password reset email has been sent. Check your inbox and spam folder.", true);
+      } catch (error) {
+        logTechnicalError("Password recovery request failed", error);
+        showAuthMessage("reset-message", friendlyError(error));
+      } finally {
+        setBusy(button, false, "Sending link");
+      }
+    });
+
+    function initials(name = "LSPU") {
+      return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0] || "").join("").toUpperCase();
+    }
+    function roleLabel(role) {
+      return ({ admin: "Administrator", registrar: "Registrar", faculty: "Faculty", student: "Student" })[role] || "University member";
+    }
+    async function enterPortal(user, profile) {
+      currentUser = user;
+      currentProfile = profile;
+      currentRole = profile.role;
+      signedInAsAdmin = profile.role === "admin";
+      authIdentityResolved = true;
+      updateSetupAccess();
+      $("#portal-user-name").textContent = profile.displayName || user.displayName || user.email;
+      $("#portal-user-role").textContent = roleLabel(profile.role);
+      $("#portal-avatar").textContent = initials(profile.displayName || user.displayName || user.email);
+      $("#portal-date").textContent = new Intl.DateTimeFormat("en", { weekday: "short", month: "short", day: "numeric" }).format(new Date());
+      renderPortalNav();
+      await renderDashboard();
+      $("#navbar").hidden = true;
+      $("#main-content").hidden = true;
+      $("#landing-footer").hidden = true;
+      portal.hidden = false;
+      $("#portal-content").focus();
+    }
+    function renderPortalNav() {
+      const options = currentRole === "student"
+        ? [["dashboard", "⌂", "Overview"], ["subjects", "▤", "My subjects"], ["grades", "▥", "Grades"]]
+        : currentRole === "faculty"
+          ? [["dashboard", "⌂", "Overview"], ["classes", "▤", "My classes"]]
+          : [["dashboard", "⌂", "Overview"], ["students", "♙", "Students"], ["enrollments", "⇥", "Enrollments"], ["subjects", "▤", "Subjects"], ["reports", "▥", "Reports"]];
+      $("#portal-nav").innerHTML = options.map(([page, icon, label]) => `<button type="button" data-portal-page="${page}"><span aria-hidden="true">${icon}</span>${label}</button>`).join("");
+      $$("#portal-nav button").forEach((button) => button.addEventListener("click", () => {
+        activePortalPage = button.dataset.portalPage;
+        $$("#portal-nav button").forEach((item) => { item.removeAttribute("aria-current"); });
+        button.setAttribute("aria-current", "page");
+        $("#portal-heading").textContent = button.textContent.trim();
+        $("#portal-side").classList.remove("open");
+        $("#portal-menu").setAttribute("aria-expanded", "false");
+        loadPortalPage(button.dataset.portalPage).catch((error) => showToast(friendlyError(error)));
+      }));
+      const first = $("#portal-nav button");
+      activePortalPage = first?.dataset.portalPage || "dashboard";
+      first?.setAttribute("aria-current", "page");
+      $("#portal-heading").textContent = first?.textContent.trim() || "Overview";
+    }
+    async function getCollection(name, field, value) {
+      const base = collection(db, name);
+      const result = field ? await getDocs(query(base, where(field, "==", value))) : await getDocs(base);
+      return result.docs.map((snapshot) => ({ id: snapshot.id, ...snapshot.data() }));
+    }
+    function statusBadge(value = "pending") {
+      const safe = escapeHTML(String(value).toLowerCase().replace(/[^a-z-]/g, ""));
+      return `<span class="status ${safe}">${escapeHTML(value)}</span>`;
+    }
+    function emptyRow(columns, message = "No records to display yet.") {
+      return `<tr><td class="empty-row" colspan="${columns}">${escapeHTML(message)}</td></tr>`;
+    }
+    function subjectTable(subjects, allowEnroll = false, manage = false) {
+      if (!subjects.length) return `<div class="portal-card"><h3>Subjects</h3><p>No subjects are available yet. Check with your registrar.</p></div>`;
+      return `<div class="portal-card"><h3>Subjects</h3><div class="table-wrap"><table class="data-table"><thead><tr><th>Code</th><th>Subject</th><th>Section</th><th>Units</th>${allowEnroll || manage ? "<th>Action</th>" : ""}</tr></thead><tbody>${subjects.map((subject) => `<tr><td>${escapeHTML(subject.code || "—")}</td><td>${escapeHTML(subject.title || "—")}</td><td>${escapeHTML(subject.section || "—")}</td><td>${escapeHTML(subject.units ?? "—")}</td>${allowEnroll ? `<td><button class="button button-primary button-small" data-enroll-subject="${escapeHTML(subject.id)}">Request enrollment</button></td>` : manage ? `<td><button class="button button-quiet button-small" data-delete-subject="${escapeHTML(subject.id)}">Remove</button></td>` : ""}</tr>`).join("")}</tbody></table></div></div>`;
+    }
+    function enrollmentTable(enrollments, actions = "") {
+      if (!enrollments.length) return `<div class="portal-card"><h3>Enrollment records</h3><div class="table-wrap"><table class="data-table"><thead><tr><th>Subject</th><th>Student</th><th>Term</th><th>Status</th>${actions ? "<th>Action</th>" : ""}</tr></thead><tbody>${emptyRow(actions ? 5 : 4)}</tbody></table></div></div>`;
+      return `<div class="portal-card"><h3>Enrollment records</h3><div class="table-wrap"><table class="data-table"><thead><tr><th>Subject</th><th>Student</th><th>Term</th><th>Status</th>${actions ? "<th>Action</th>" : ""}</tr></thead><tbody>${enrollments.map((record) => `<tr><td>${escapeHTML(record.subjectCode || record.subjectTitle || "—")}</td><td>${escapeHTML(record.studentName || record.studentUid || "—")}</td><td>${escapeHTML(record.term || "—")}</td><td>${statusBadge(record.status)}</td>${actions ? `<td class="table-actions">${actions(record)}</td>` : ""}</tr>`).join("")}</tbody></table></div></div>`;
+    }
+    async function renderDashboard() {
+      const content = $("#portal-content");
+      content.innerHTML = `<p class="portal-welcome">Welcome, ${escapeHTML(currentProfile.displayName || currentUser.email)}</p><p class="portal-subtitle">${escapeHTML(roleLabel(currentRole))} workspace · Laguna State Polytechnic University</p><div class="portal-notice">Your dashboard data is loaded from Firestore. Enrollment status is managed by authorized university staff.</div><div class="portal-cards"><div class="portal-metric"><span>Account role</span><strong>${escapeHTML(roleLabel(currentRole))}</strong></div><div class="portal-metric"><span>University email</span><strong style="font:500 13px var(--sans);overflow-wrap:anywhere">${escapeHTML(currentUser.email)}</strong></div><div class="portal-metric"><span>Campus</span><strong style="font:500 15px var(--sans)">${escapeHTML(currentProfile.campus || "To be confirmed")}</strong></div></div>`;
+      if (currentRole === "student") {
+        const [studentSnapshot, enrollments, subjects] = await Promise.all([
+          getDoc(doc(db, "students", currentUser.uid)),
+          getCollection("enrollments", "studentUid", currentUser.uid),
+          getCollection("subjects")
+        ]);
+        const student = studentSnapshot.exists() ? studentSnapshot.data() : {};
+        content.innerHTML += `<div class="portal-cards"><div class="portal-metric"><span>Student status</span><strong>${escapeHTML(student.status || "Profile pending")}</strong></div><div class="portal-metric"><span>Program</span><strong style="font:500 14px var(--sans)">${escapeHTML(student.program || "Not set")}</strong></div><div class="portal-metric"><span>Enrolled subjects</span><strong>${enrollments.filter((item) => item.status === "approved").length}</strong></div></div>
+          <div class="portal-card"><h3>Student profile</h3><p><strong>Student number:</strong> ${escapeHTML(student.studentNumber || "Pending")}<br><strong>Year level:</strong> ${escapeHTML(student.yearLevel || "Not set")}<br><strong>Enrollment status:</strong> ${statusBadge(student.status || "pending")}</p><button class="button button-quiet button-small" id="download-registration" type="button">Download registration form</button></div>
+          ${enrollmentTable(enrollments)}
+          ${subjectTable(subjects, true)}
+          <div id="registration-print" hidden><h1>Laguna State Polytechnic University</h1><h2>Student Registration Summary</h2><p>Name: ${escapeHTML(student.fullName || currentProfile.displayName || "")}</p><p>Student number: ${escapeHTML(student.studentNumber || "")}</p><p>Program: ${escapeHTML(student.program || "")}</p><p>Year level: ${escapeHTML(student.yearLevel || "")}</p><p>Status: ${escapeHTML(student.status || "pending")}</p><h3>Enrolled subjects</h3><ul>${enrollments.filter((item) => item.status === "approved").map((item) => `<li>${escapeHTML(item.subjectCode || "")} — ${escapeHTML(item.subjectTitle || "")}</li>`).join("") || "<li>No approved subjects.</li>"}</ul><p>Generated from the SIEMS student portal. Confirm official registration with your campus registrar.</p></div>`;
+        $("#download-registration").addEventListener("click", downloadRegistration);
+        bindEnrollActions(subjects, enrollments);
+      } else if (currentRole === "faculty") {
+        const classes = await getCollection("enrollments", "facultyUid", currentUser.uid);
+        content.innerHTML += `<div class="portal-cards"><div class="portal-metric"><span>Assigned enrollments</span><strong>${classes.length}</strong></div><div class="portal-metric"><span>Subjects</span><strong>${new Set(classes.map((item) => item.subjectId)).size}</strong></div><div class="portal-metric"><span>Grades entered</span><strong>${classes.filter((item) => item.grade !== undefined && item.grade !== "").length}</strong></div></div><div class="portal-card"><h3>Class lists &amp; grade encoding</h3><p>Only grade fields on enrollments assigned to your faculty account can be updated.</p><div class="table-wrap"><table class="data-table"><thead><tr><th>Student</th><th>Subject</th><th>Section</th><th>Status</th><th>Grade</th><th>Action</th></tr></thead><tbody>${classes.length ? classes.map((item) => `<tr><td>${escapeHTML(item.studentName || item.studentUid || "—")}</td><td>${escapeHTML(item.subjectCode || item.subjectTitle || "—")}</td><td>${escapeHTML(item.section || "—")}</td><td>${statusBadge(item.status)}</td><td>${escapeHTML(item.grade ?? "—")}</td><td><button class="button button-quiet button-small" data-encode-grade="${escapeHTML(item.id)}">Enter grade</button></td></tr>`).join("") : emptyRow(6, "No classes assigned to this account yet.")}</tbody></table></div></div>`;
+        bindGradeActions(classes);
+      } else {
+        const [students, enrollments, subjects] = await Promise.all([
+          getCollection("students"),
+          getCollection("enrollments"),
+          getCollection("subjects")
+        ]);
+        knownStudentCount = students.length;
+        const pending = enrollments.filter((item) => item.status === "pending").length;
+        content.innerHTML += `<div class="portal-cards"><div class="portal-metric"><span>Student records</span><strong>${students.length}</strong></div><div class="portal-metric"><span>Pending enrollments</span><strong>${pending}</strong></div><div class="portal-metric"><span>Subjects / sections</span><strong>${subjects.length}</strong></div></div>
+          <div class="portal-card"><h3>Student directory</h3><div class="table-wrap"><table class="data-table"><thead><tr><th>Student</th><th>Student number</th><th>Program</th><th>Year</th><th>Status</th><th>Action</th></tr></thead><tbody>${students.length ? students.map((student) => `<tr><td>${escapeHTML(student.fullName || "—")}</td><td>${escapeHTML(student.studentNumber || "—")}</td><td>${escapeHTML(student.program || "—")}</td><td>${escapeHTML(student.yearLevel || "—")}</td><td>${statusBadge(student.status)}</td><td><button class="button button-quiet button-small" data-student-status="${escapeHTML(student.id)}" data-next-status="${student.status === "active" ? "pending" : "active"}">${student.status === "active" ? "Set pending" : "Activate"}</button></td></tr>`).join("") : emptyRow(6)}</tbody></table></div></div>
+          ${enrollmentTable(enrollments, (record) => record.status === "pending" ? `<button class="button button-primary button-small" data-enrollment-action="${escapeHTML(record.id)}" data-next-status="approved">Approve</button><button class="button button-quiet button-small" data-enrollment-action="${escapeHTML(record.id)}" data-next-status="rejected">Reject</button>` : "—")}
+          ${subjectTable(subjects, false, true)}
+          <div class="portal-card"><h3>Publish a subject / section</h3><form id="subject-form" class="portal-form"><label>Subject code<input name="code" maxlength="20" required placeholder="e.g. IT 201"></label><label>Subject title<input name="title" maxlength="100" required placeholder="Subject name"></label><label>Units<input name="units" type="number" min="1" max="12" required value="3"></label><label>Section<input name="section" maxlength="30" required placeholder="Section"></label><label>Campus<select name="campus" required><option>San Pablo</option><option>Santa Cruz</option><option>Siniloan</option><option>Los Baños</option></select></label><label>Term<input name="term" maxlength="40" required placeholder="1st Semester 2026–2027"></label><label>Faculty UID<input name="facultyUid" maxlength="128" placeholder="Assign manually (optional)"></label><button class="button button-primary" type="submit">Add subject</button></form></div>
+          <div class="portal-card"><h3>Enrollment report</h3><p>${students.length} student records · ${enrollments.length} enrollment records · ${pending} pending review · ${subjects.length} published subjects</p></div>`;
+        bindRegistrarActions(enrollments);
+      }
+    }
+    async function loadPortalPage(page) {
+      if (page === "dashboard") {
+        await renderDashboard();
+        return;
+      }
+      if (currentRole === "student" && page === "subjects") {
+        const [subjects, enrollments] = await Promise.all([
+          getCollection("subjects"),
+          getCollection("enrollments", "studentUid", currentUser.uid)
+        ]);
+        $("#portal-content").innerHTML = `<p class="portal-welcome">Available subjects</p><p class="portal-subtitle">Browse the catalog and submit enrollment requests for registrar review.</p>${subjectTable(subjects, true)}`;
+        bindEnrollActions(subjects, enrollments);
+        return;
+      }
+      if (currentRole === "student" && page === "grades") {
+        const enrollments = await getCollection("enrollments", "studentUid", currentUser.uid);
+        $("#portal-content").innerHTML = `<p class="portal-welcome">Academic results</p><p class="portal-subtitle">Grades recorded for approved enrollments.</p><div class="portal-card"><div class="table-wrap"><table class="data-table"><thead><tr><th>Subject</th><th>Term</th><th>Grade</th><th>Status</th></tr></thead><tbody>${enrollments.length ? enrollments.map((item) => `<tr><td>${escapeHTML(item.subjectCode || item.subjectTitle || "—")}</td><td>${escapeHTML(item.term || "—")}</td><td>${escapeHTML(item.grade ?? "Not posted")}</td><td>${statusBadge(item.status)}</td></tr>`).join("") : emptyRow(4)}</tbody></table></div></div>`;
+        return;
+      }
+      if (currentRole === "faculty" && page === "classes") {
+        const classes = await getCollection("enrollments", "facultyUid", currentUser.uid);
+        $("#portal-content").innerHTML = `<p class="portal-welcome">My classes</p><p class="portal-subtitle">Review class lists and encode grades for your assigned sections.</p><div class="portal-card"><div class="table-wrap"><table class="data-table"><thead><tr><th>Student</th><th>Subject</th><th>Section</th><th>Status</th><th>Grade</th><th>Action</th></tr></thead><tbody>${classes.length ? classes.map((item) => `<tr><td>${escapeHTML(item.studentName || item.studentUid || "—")}</td><td>${escapeHTML(item.subjectCode || item.subjectTitle || "—")}</td><td>${escapeHTML(item.section || "—")}</td><td>${statusBadge(item.status)}</td><td>${escapeHTML(item.grade ?? "—")}</td><td><button class="button button-quiet button-small" data-encode-grade="${escapeHTML(item.id)}">Enter grade</button></td></tr>`).join("") : emptyRow(6, "No classes assigned to this account yet.")}</tbody></table></div></div>`;
+        bindGradeActions(classes);
+        return;
+      }
+      if (["admin", "registrar"].includes(currentRole) && page === "enrollments") {
+        const enrollments = await getCollection("enrollments");
+        $("#portal-content").innerHTML = `<p class="portal-welcome">Enrollment review</p><p class="portal-subtitle">Approve or reject student subject requests.</p>${enrollmentTable(enrollments, (record) => record.status === "pending" ? `<button class="button button-primary button-small" data-enrollment-action="${escapeHTML(record.id)}" data-next-status="approved">Approve</button><button class="button button-quiet button-small" data-enrollment-action="${escapeHTML(record.id)}" data-next-status="rejected">Reject</button>` : "—")}`;
+        bindRegistrarActions(enrollments);
+        return;
+      }
+      showToast("This view is not available for your assigned role.");
+    }
+    async function bindEnrollActions(subjects, existing) {
+      $$("[data-enroll-subject]").forEach((button) => button.addEventListener("click", async () => {
+        const subject = subjects.find((item) => item.id === button.dataset.enrollSubject);
+        if (!subject) return;
+        if (existing.some((item) => item.subjectId === subject.id)) { showToast("You already have an enrollment request for this subject."); return; }
+        button.disabled = true;
+        try {
+          const studentSnapshot = await getDoc(doc(db, "students", currentUser.uid));
+          const student = studentSnapshot.exists() ? studentSnapshot.data() : {};
+          await addDoc(collection(db, "enrollments"), {
+            studentId: currentUser.uid,
+            studentUid: currentUser.uid,
+            studentName: student.fullName || currentProfile.displayName || "",
+            subjectId: subject.id,
+            subjectCode: subject.code || "",
+            subjectTitle: subject.title || "",
+            section: subject.section || "",
+            facultyUid: subject.facultyUid || "",
+            term: subject.term || "",
+            status: "pending",
+            createdAt: serverTimestamp()
+          });
+          showToast("Enrollment request submitted for registrar review.");
+          await loadPortalPage(activePortalPage);
+        } catch (error) { button.disabled = false; showToast(friendlyError(error)); }
+      }));
+    }
+    function bindGradeActions(classes) {
+      $$("[data-encode-grade]").forEach((button) => button.addEventListener("click", async () => {
+        const record = classes.find((item) => item.id === button.dataset.encodeGrade);
+        const grade = prompt("Enter the approved grade for this enrollment:");
+        if (grade === null) return;
+        const cleanGrade = grade.trim();
+        if (!cleanGrade || cleanGrade.length > 20) { showToast("Enter a grade of 1–20 characters."); return; }
+        try {
+          await updateDoc(doc(db, "enrollments", record.id), { grade: cleanGrade, gradeUpdatedAt: serverTimestamp() });
+          showToast("Grade saved.");
+          await loadPortalPage(activePortalPage);
+        } catch (error) { showToast(friendlyError(error)); }
+      }));
+    }
+    function bindRegistrarActions(enrollments) {
+      $$("[data-student-status]").forEach((button) => button.addEventListener("click", async () => {
+        button.disabled = true;
+        try {
+          await updateDoc(doc(db, "students", button.dataset.studentStatus), { status: button.dataset.nextStatus, reviewedBy: currentUser.uid, reviewedAt: serverTimestamp() });
+          showToast(`Student status updated to ${button.dataset.nextStatus}.`);
+          await loadPortalPage(activePortalPage);
+        } catch (error) { button.disabled = false; showToast(friendlyError(error)); }
+      }));
+      $$("[data-enrollment-action]").forEach((button) => button.addEventListener("click", async () => {
+        const record = enrollments.find((item) => item.id === button.dataset.enrollmentAction);
+        if (!record) return;
+        button.disabled = true;
+        try {
+          await updateDoc(doc(db, "enrollments", record.id), { status: button.dataset.nextStatus, reviewedBy: currentUser.uid, reviewedAt: serverTimestamp() });
+          showToast(`Enrollment ${button.dataset.nextStatus}.`);
+          await loadPortalPage(activePortalPage);
+        } catch (error) { button.disabled = false; showToast(friendlyError(error)); }
+      }));
+      $$("[data-delete-subject]").forEach((button) => button.addEventListener("click", async () => {
+        if (!confirm("Remove this subject and section from the catalog? Existing enrollment records will remain.")) return;
+        button.disabled = true;
+        try {
+          await deleteDoc(doc(db, "subjects", button.dataset.deleteSubject));
+          showToast("Subject removed from the catalog.");
+          await loadPortalPage(activePortalPage);
+        } catch (error) { button.disabled = false; showToast(friendlyError(error)); }
+      }));
+      $("#subject-form")?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+        const values = Object.fromEntries(new FormData(form));
+        try {
+          await addDoc(collection(db, "subjects"), { ...values, units: Number(values.units), facultyUid: values.facultyUid.trim(), createdBy: currentUser.uid, createdAt: serverTimestamp() });
+          showToast("Subject and section published.");
+          await loadPortalPage(activePortalPage);
+        } catch (error) { showToast(friendlyError(error)); }
+      });
+    }
+    function downloadRegistration() {
+      const printable = $("#registration-print");
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>LSPU Registration Summary</title><style>body{font:15px Arial,sans-serif;max-width:760px;margin:40px auto;color:#183b2c}h1,h2{color:#173b2d}li,p{line-height:1.7}.note{margin-top:30px;color:#667}</style></head><body>${printable.innerHTML}</body></html>`;
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "lspu-registration-summary.html";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+    $("#signout-button").addEventListener("click", async () => {
+      if (!configured) return;
+      try { await signOut(auth); }
+      catch (error) { logTechnicalError("Sign-out failed", error); showToast(friendlyError(error)); }
+    });
+    $("#portal-menu").addEventListener("click", (event) => {
+      const open = $("#portal-side").classList.toggle("open");
+      event.currentTarget.setAttribute("aria-expanded", String(open));
+    });
+
+    async function initializeFirebaseServices() {
+      if (!configured) {
+        updateServiceNotice();
+        const configIssues = getFirebaseConfigIssues();
+        const setupMessage = configIssues.length
+          ? `Configuration is invalid: ${configIssues.join(" ")} Review Step 2.`
+          : "Use a local web server to test Firebase services. Review Step 5.";
+        setCheckResult($("#auth-check-result"), setupMessage, "warning");
+        setCheckResult($("#firestore-check-result"), setupMessage, "warning");
+        return;
+      }
+      try {
+        const sdkVersion = "10.14.1";
+        const [appSdk, authSdk, firestoreSdk] = await Promise.all([
+          import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-app.js`),
+          import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-auth.js`),
+          import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-firestore.js`)
+        ]);
+        ({ initializeApp } = appSdk);
+        ({
+          getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+          fetchSignInMethodsForEmail, sendEmailVerification, sendPasswordResetEmail,
+          signOut, setPersistence, browserLocalPersistence, browserSessionPersistence, updateProfile
+        } = authSdk);
+        ({
+          getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc,
+          query, where, serverTimestamp
+        } = firestoreSdk);
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        firebaseReady = true;
+        serviceAvailable = true;
+        ["#signin-submit", "#signup-submit", "#reset-submit"].forEach((selector) => {
+          $(selector).disabled = false;
+          $(selector).removeAttribute("aria-describedby");
+        });
+        $("#test-connection").disabled = false;
+        onAuthStateChanged(auth, async (user) => {
+          if (authBusy) return;
+          if (!user) {
+            currentUser = currentProfile = currentRole = null;
+            signedInAsAdmin = false;
+            authIdentityResolved = true;
+            updateSetupAccess();
+            portal.hidden = true;
+            $("#navbar").hidden = false;
+            $("#main-content").hidden = false;
+            $("#landing-footer").hidden = false;
+            if (knownStudentCount !== null) animateCounter($("#public-student-count"), knownStudentCount);
+            return;
+          }
+          if (!portal.hidden) return;
+          try {
+            if (!user.emailVerified) {
+              await signOut(auth);
+              showToast("Verify your university email before signing in.");
+              return;
+            }
+            const profileSnapshot = await getDoc(doc(db, "users", user.uid));
+            if (!profileSnapshot.exists()) {
+              await signOut(auth);
+              showToast("Your account profile is not set up. Contact your university registrar.");
+              return;
+            }
+            await enterPortal(user, profileSnapshot.data());
+          } catch (error) {
+            logTechnicalError("Session profile lookup failed", error);
+            portal.hidden = true;
+            showToast(friendlyError(error));
+          }
+        });
+      } catch (error) {
+        firebaseReady = false;
+        authIdentityResolved = true;
+        logTechnicalError("Firebase initialization failed", error);
+        updateServiceNotice();
+        $("#setup-notice").hidden = backdrop.hidden;
+        ["#signin-submit", "#signup-submit", "#reset-submit", "#test-connection"].forEach((selector) => { $(selector).disabled = true; });
+        const setupMessage = "Firebase services could not be initialized. Review the config block (Step 2), Authentication and Firestore setup (Steps 3–4), and authorized domains (Step 5).";
+        setCheckResult($("#auth-check-result"), setupMessage, "error");
+        setCheckResult($("#firestore-check-result"), setupMessage, "error");
+        updateSetupAccess();
+      }
+    }
+    initializeFirebaseServices();
+    export { app, auth, db };
+
+    const navbar = $("#navbar");
+    const scrollTop = $("#scroll-top");
+    let scrollPending = false;
+    window.addEventListener("scroll", () => {
+      if (scrollPending) return;
+      scrollPending = true;
+      requestAnimationFrame(() => {
+        navbar.classList.toggle("scrolled", window.scrollY > 24);
+        scrollTop.classList.toggle("show", window.scrollY > 500);
+        const bg = $("#hero-bg");
+        if (bg && window.scrollY < window.innerHeight) bg.style.transform = `translate3d(0, ${window.scrollY * .13}px, 0)`;
+        scrollPending = false;
+      });
+    }, { passive: true });
+    scrollTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    const menuToggle = $("#menu-toggle");
+    menuToggle.addEventListener("click", () => {
+      const open = $("#nav-links").classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+      menuToggle.textContent = open ? "×" : "☰";
+    });
+    $$("#nav-links a").forEach((link) => link.addEventListener("click", () => {
+      $("#nav-links").classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open navigation menu");
+      menuToggle.textContent = "☰";
+    }));
+    $("#current-year").textContent = new Date().getFullYear();
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function animateCounter(element, target) {
+      if (reducedMotion) { element.textContent = target.toLocaleString(); return; }
+      const start = performance.now(), duration = 1100;
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        element.textContent = Math.floor(target * (1 - (1 - progress) ** 3)).toLocaleString();
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); }
+      });
+    }, { threshold: .12 });
+    $$(".reveal").forEach((element) => revealObserver.observe(element));
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = Number(entry.target.dataset.counter);
+        animateCounter(entry.target, target);
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: .55 });
+    $$("[data-counter]").forEach((element) => counterObserver.observe(element));
+    const taglines = ["Learn with purpose. Lead with integrity.", "Discover your path. Shape what comes next.", "Grow in knowledge. Give back through service."];
+    if (!reducedMotion) {
+      let taglineIndex = 0;
+      setInterval(() => {
+        taglineIndex = (taglineIndex + 1) % taglines.length;
+        const target = $("#tagline-text");
+        target.animate([{ opacity: 1, transform: "translateY(0)" }, { opacity: 0, transform: "translateY(5px)" }], { duration: 180, fill: "forwards" }).onfinish = () => {
+          target.textContent = taglines[taglineIndex];
+          target.animate([{ opacity: 0, transform: "translateY(-5px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 240, fill: "forwards" });
+        };
+      }, 4200);
+    }
+  </script>
+</body>
+</html>
