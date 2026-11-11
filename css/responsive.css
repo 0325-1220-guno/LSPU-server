@@ -1,0 +1,81 @@
+/* Responsive and reduced-motion behavior */
+@media (max-width: 960px) {
+  .app-shell { grid-template-columns: 220px minmax(0, 1fr); }
+  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .workspace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .topbar, .page-content { padding-right: 20px; padding-left: 20px; }
+}
+@media (max-width: 860px) {
+  .site-header-inner { width: min(calc(100% - 32px), 640px); min-height: 68px; flex-wrap: wrap; gap: 10px; padding: 11px 0; }
+  .site-nav { order: 3; width: 100%; justify-content: space-between; gap: 10px; padding: 5px 0 1px; }
+  .site-nav a { font-size: 11px; }
+  .site-header .portal-link { min-height: 36px; padding: 0 12px; }
+  .landing-hero .auth-layout { width: min(510px, 100%); grid-template-columns: 1fr; gap: 25px; }
+  .program-grid { grid-template-columns: 1fr; }
+  .campus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-grid { grid-template-columns: 1fr; }
+  .admissions-steps { grid-template-columns: 1fr; gap: 0; }
+  .auth-intro { max-width: none; }
+  .auth-intro h2 { max-width: 510px; font-size: clamp(30px, 7vw, 42px); }
+  .auth-intro-copy { margin: 12px 0 15px; font-size: 13px; }
+  .school-info-card { max-width: none; margin-bottom: 15px; }
+  .auth-feature-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .auth-feature-list li { align-items: flex-start; font-size: 10px; line-height: 1.4; }
+  .feature-check { width: 19px; height: 19px; flex-basis: 19px; }
+  .auth-card { padding: clamp(24px, 6vw, 38px); }
+}
+@media (max-width: 700px) {
+  .app-shell { display: block; }
+  .sidebar { min-height: 0; position: fixed; z-index: 15; inset: 0 auto 0 0; width: min(280px, 84vw); transform: translateX(-105%); transition: transform .2s ease; box-shadow: 10px 0 35px #0e233a30; }
+  .sidebar.open { transform: none; }
+  .mobile-nav-toggle { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 7px; background: white; font-size: 16px; cursor: pointer; }
+  .topbar { min-height: 64px; justify-content: space-between; }
+  .topbar-date { display: none; }
+  .mobile-brand { display: flex; align-items: center; gap: 9px; }
+  .mobile-brand .lspu-letters { font-size: 22px; }
+  .topbar-title { display: grid; gap: 3px; }
+  .topbar-title strong { max-width: 200px; overflow: hidden; color: var(--navy); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+  .topbar-title small { color: var(--muted); font-size: 9px; }
+  .topbar-page { display: none; }
+  .topbar-user { display: block; text-align: left; }
+  .topbar-user strong { display: block; max-width: 86px; overflow: hidden; color: var(--navy); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+  .topbar-user small, .topbar-title { display: none; }
+}
+@media (max-width: 500px) {
+  .summary-grid { gap: 9px; }
+  .summary-card { padding: 14px; }
+  .summary-value { font-size: 24px; }
+  .page-content { padding: 23px 13px 32px; }
+  .content-panel, .workspace-panel { padding: 15px; }
+  .workspace-grid { grid-template-columns: 1fr; }
+  .workspace-card { min-height: 128px; }
+  .workspace-heading span { display: none; }
+  .form-grid, .profile-grid { grid-template-columns: 1fr; }
+  .activity-item { grid-template-columns: 9px minmax(0, 1fr); }
+  .activity-item time { grid-column: 2; }
+  .landing-hero .auth-layout { gap: 16px; }
+  .auth-intro h2 { font-size: 29px; }
+  .auth-intro-copy { font-size: 12px; }
+  .school-info-card { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px; }
+  .school-info-icon { width: 36px; height: 36px; }
+  .school-fact { font-size: 8px; }
+  .auth-feature-list { display: none; }
+  .auth-card { padding: 22px 19px; }
+  .auth-brand h1 { font-size: 17px; }
+  .page-heading { align-items: flex-start; }
+  .site-header-inner { width: calc(100% - 28px); }
+  .site-brand .lspu-letters { font-size: 26px; }
+  .site-brand-copy strong { font-size: 10px; }
+  .site-brand-copy small { font-size: 9px; }
+  .site-nav { gap: 7px; }
+  .site-nav a { font-size: 9px; }
+  .landing-hero { padding: 38px 16px; }
+  .landing-section { padding: 48px 18px; scroll-margin-top: 105px; }
+  .campus-grid { grid-template-columns: 1fr; }
+  .contact-panel, .site-footer-inner { align-items: flex-start; flex-direction: column; }
+  .contact-panel { padding: 23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .scroll-reveal { opacity: 1; transform: none; }
+}
