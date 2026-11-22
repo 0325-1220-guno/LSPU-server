@@ -4,284 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#142d52">
-  <meta name="description" content="LSPU Student Information and Enrollment Management System.">
+  <meta name="description" content="Explore Laguna State Polytechnic University programs, campuses, admissions information, and student portal services.">
   <title>LSPU | Student Information and Enrollment Management System</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --navy: #142d52;
-      --navy-2: #1d416c;
-      --green: #17883b;
-      --red: #d72d35;
-      --gold: #e4ad13;
-      --blue: #2458c6;
-      --ink: #1d2924;
-      --muted: #68766d;
-      --line: #e2e8e2;
-      --canvas: #f4f7f5;
-      --paper: #fff;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background: var(--canvas);
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
+  <script>
+    try {
+      if (localStorage.getItem("lspu-siems-theme") === "dark") document.documentElement.dataset.theme = "dark";
+    } catch (error) {
+      console.error("Could not read the saved theme preference.", error);
     }
-    *, *::before, *::after { box-sizing: border-box; }
-    body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--canvas); }
-    button, input, select { font: inherit; }
-    button { color: inherit; }
-    [hidden] { display: none !important; }
-    :focus-visible { outline: 3px solid #3374e5; outline-offset: 3px; }
-    .lspu-letters { display: inline-flex; gap: 2px; font-size: inherit; font-weight: 850; letter-spacing: -.075em; }
-    .lspu-letters span:nth-child(1) { color: var(--green); }
-    .lspu-letters span:nth-child(2) { color: var(--red); }
-    .lspu-letters span:nth-child(3) { color: var(--gold); }
-    .lspu-letters span:nth-child(4) { color: var(--blue); }
-
-    /* Account access and university introduction */
-    .auth-screen { min-height: 100vh; display: grid; place-items: center; position: relative; overflow: hidden; padding: clamp(24px, 5vw, 64px); background: radial-gradient(ellipse at 12% 10%, #31734f 0, transparent 38%), linear-gradient(138deg, #102746, #18385d 60%, #153e3d); isolation: isolate; }
-    .auth-screen::before, .auth-screen::after { position: absolute; z-index: -1; width: min(60vw, 600px); aspect-ratio: 1; border: 1px solid #ffffff1b; border-radius: 48% 52% 62% 38%; content: ""; pointer-events: none; }
-    .auth-screen::before { top: -34%; right: -14%; background: radial-gradient(circle at 30% 35%, #1b9e3e55, transparent 62%); animation: float-shape 20s ease-in-out infinite alternate; }
-    .auth-screen::after { bottom: -42%; left: -16%; background: radial-gradient(circle at 55% 40%, #d72d3535, transparent 63%); animation: float-shape 24s ease-in-out infinite alternate-reverse; }
-    @keyframes float-shape { to { transform: translate(22px, -18px) rotate(8deg) scale(1.05); } }
-    @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes card-in { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .auth-layout { width: min(1120px, 100%); display: grid; grid-template-columns: minmax(0, 1fr) minmax(380px, 470px); align-items: center; gap: clamp(40px, 8vw, 108px); }
-    .auth-intro { max-width: 540px; color: white; animation: card-in .4s ease both; }
-    .auth-eyebrow { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px; color: #d3e2d9; font-size: 11px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; animation: rise-in .55s .05s both; }
-    .auth-eyebrow::before { width: 25px; height: 2px; content: ""; background: #e4bd5c; }
-    .auth-intro h2 { max-width: 560px; margin: 0; font-size: clamp(34px, 5vw, 57px); font-weight: 680; letter-spacing: -.055em; line-height: 1.08; animation: rise-in .6s .12s both; }
-    .auth-intro-copy { max-width: 455px; margin: 17px 0 20px; color: #d1dce8; font-size: 15px; line-height: 1.75; animation: rise-in .6s .2s both; }
-    .school-info-card { max-width: 470px; display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: start; gap: 13px; margin: 0 0 22px; padding: 16px; border: 1px solid #ffffff29; border-radius: 12px; background: linear-gradient(115deg, #ffffff12, #ffffff08); box-shadow: 0 14px 36px #071a3318; backdrop-filter: blur(7px); animation: rise-in .65s .28s both; }
-    .school-info-icon { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid #f1d27c49; border-radius: 11px; color: #f1d27c; background: #e4bd5c15; }
-    .school-info-icon svg { width: 22px; height: 22px; }
-    .school-info-content { display: grid; gap: 5px; }
-    .school-info-content strong { color: white; font-size: 13px; }
-    .school-info-content p { margin: 0; color: #d1dce8; font-size: 11px; line-height: 1.6; }
-    .school-facts { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
-    .school-fact { padding: 5px 8px; border: 1px solid #ffffff24; border-radius: 99px; color: #f3f5f2; background: #ffffff0b; font-size: 9px; font-weight: 600; }
-    .auth-feature-list { display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
-    .auth-feature-list li { display: flex; align-items: center; gap: 11px; color: #f0f4f3; font-size: 13px; animation: rise-in .5s both; }
-    .auth-feature-list li:nth-child(1) { animation-delay: .34s; }
-    .auth-feature-list li:nth-child(2) { animation-delay: .4s; }
-    .auth-feature-list li:nth-child(3) { animation-delay: .46s; }
-    .feature-check { width: 22px; height: 22px; display: grid; flex: 0 0 22px; place-items: center; border: 1px solid #ffffff39; border-radius: 50%; color: #f0ca6c; font-size: 12px; }
-    .auth-card { width: 100%; padding: clamp(26px, 4vw, 42px); border: 1px solid #ffffffdc; border-radius: 20px; background: white; box-shadow: 0 28px 90px #071a3340; animation: card-in .35s ease both; }
-    .auth-brand { text-align: center; }
-    .auth-brand .lspu-letters { font-size: 32px; }
-    .auth-brand h1 { margin: 10px 0 5px; font-size: 19px; line-height: 1.4; }
-    .auth-brand p { margin: 0; color: var(--muted); font-size: 13px; }
-    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 25px 0 22px; padding: 4px; border-radius: 9px; background: #f0f3f0; }
-    .tab { min-height: 39px; border: 0; border-radius: 7px; color: #647168; background: transparent; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .16s, color .16s, box-shadow .16s; }
-    .tab[aria-selected="true"] { color: var(--navy); background: white; box-shadow: 0 2px 8px #173b2d14; }
-    .form-title { margin: 0; font-size: 24px; letter-spacing: -.035em; }
-    .form-copy { margin: 7px 0 21px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .field { display: grid; gap: 6px; margin-bottom: 15px; color: #34443a; font-size: 13px; font-weight: 650; }
-    .field input, .field select { width: 100%; min-height: 47px; padding: 0 12px; border: 1px solid #d6dfd8; border-radius: 8px; outline: none; color: var(--ink); background: white; font-size: 14px; transition: border-color .16s, box-shadow .16s; }
-    .field input:focus, .field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px #2458c61b; }
-    .field input[aria-invalid="true"] { border-color: var(--red); }
-    .helper { min-height: 14px; color: var(--muted); font-size: 11px; font-weight: 400; line-height: 1.4; }
-    .helper.error { color: #b3262e; }
-    .password-wrap { position: relative; }
-    .password-wrap input { padding-right: 45px; }
-    .eye-button { width: 36px; height: 36px; position: absolute; top: 5px; right: 3px; display: grid; place-items: center; border: 0; border-radius: 6px; color: #66746a; background: transparent; cursor: pointer; }
-    .eye-button:hover { color: var(--navy); background: #f0f3f0; }
-    .eye-button svg { width: 18px; height: 18px; }
-    .remember { display: flex; align-items: center; gap: 7px; margin: 4px 0 17px; color: var(--muted); font-size: 12px; cursor: pointer; }
-    .remember input { accent-color: var(--green); }
-    .text-button { padding: 2px 0; border: 0; color: #176f32; background: none; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .text-button:hover { text-decoration: underline; }
-    .primary-button { width: 100%; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 14px; border: 0; border-radius: 8px; color: white; background: var(--green); box-shadow: 0 5px 13px #17883b25; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .16s, background .16s; }
-    .primary-button:hover:not(:disabled) { transform: translateY(-1px); background: #116f2e; }
-    .primary-button:disabled { opacity: .7; cursor: wait; }
-    .spinner { width: 16px; height: 16px; border: 2px solid #ffffff75; border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; }
-    .message { margin: 0 0 12px; padding: 10px 11px; border-radius: 6px; color: #8b282e; background: #fff0ef; font-size: 12px; line-height: 1.5; }
-    .message.success { color: #24633a; background: #eaf5ec; }
-    .switch-copy { margin: 17px 0 0; color: var(--muted); font-size: 12px; }
-    .demo-note { margin: 19px 0 0; color: #768178; text-align: center; font-size: 11px; line-height: 1.6; }
-    .storage-warning { margin: 0 0 15px; padding: 10px 12px; border: 1px solid #eadfbf; border-radius: 7px; color: #65562e; background: #fffaf0; font-size: 11px; line-height: 1.5; }
-
-    /* Shared student and administrator workspaces */
-    .app-shell { min-height: 100vh; display: grid; grid-template-columns: 254px minmax(0, 1fr); }
-    .sidebar { min-height: 100vh; position: sticky; top: 0; display: flex; flex-direction: column; padding: 25px 16px 18px; color: white; background: linear-gradient(180deg, #142d52, #102642); }
-    .sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 0 8px 22px; border-bottom: 1px solid #ffffff1d; }
-    .sidebar-brand .lspu-letters { font-size: 26px; }
-    .sidebar-brand-copy { min-width: 0; display: grid; gap: 4px; }
-    .sidebar-brand-copy strong { font-size: 12px; line-height: 1.4; }
-    .sidebar-brand-copy small { color: #c1ccda; font-size: 10px; line-height: 1.5; }
-    .nav-label { margin: 23px 9px 9px; color: #aebbd0; font-size: 9px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
-    .side-nav { display: grid; gap: 5px; }
-    .nav-item { width: 100%; min-height: 44px; display: flex; align-items: center; gap: 11px; padding: 0 11px; border: 0; border-radius: 8px; color: #d7dfeb; background: transparent; text-align: left; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .16s, color .16s; }
-    .nav-item:hover { color: white; background: #ffffff12; }
-    .nav-item[aria-current="page"] { color: white; background: #ffffff1c; }
-    .nav-symbol { width: 19px; color: #c1d3f0; text-align: center; font-size: 15px; }
-    .sidebar-bottom { margin-top: auto; padding: 16px 8px 0; border-top: 1px solid #ffffff1d; }
-    .sidebar-user { display: flex; align-items: center; gap: 9px; margin: 0; }
-    .avatar { width: 34px; height: 34px; display: grid; flex: 0 0 34px; place-items: center; border-radius: 50%; color: var(--navy); background: #e9c96b; font-size: 11px; font-weight: 800; }
-    .sidebar-user-copy { min-width: 0; display: grid; gap: 3px; }
-    .sidebar-user-copy strong { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
-    .sidebar-user-copy small { color: #c1ccda; font-size: 9px; }
-    .app-main { min-width: 0; display: flex; flex-direction: column; }
-    .topbar { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 30px; border-bottom: 1px solid var(--line); background: #ffffffed; }
-    .topbar-left { display: flex; align-items: center; gap: 15px; }
-    .mobile-brand { display: none; }
-    .topbar-page { color: #34443a; font-size: 14px; font-weight: 750; }
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .topbar-date { color: var(--muted); font-size: 11px; }
-    .topbar-user { display: grid; gap: 3px; text-align: right; }
-    .topbar-user strong { color: var(--navy); font-size: 12px; }
-    .topbar-user small { color: var(--muted); font-size: 10px; }
-    .logout-button { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 7px; color: #36493d; background: white; font-size: 11px; font-weight: 700; cursor: pointer; transition: background .16s, border-color .16s; }
-    .logout-button:hover { border-color: #ccd7ce; background: #f6f8f6; }
-    .page-content { width: min(100%, 1220px); flex: 1; margin: 0 auto; padding: 31px 30px 44px; animation: page-in .22s ease both; }
-    @keyframes page-in { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-    .page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin: 0 0 23px; }
-    .page-heading h1 { margin: 0; color: var(--navy); font-size: clamp(23px, 3vw, 30px); letter-spacing: -.04em; }
-    .page-heading p { margin: 7px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .primary-button.add-button, .secondary-button { width: auto; min-height: 40px; padding-inline: 14px; font-size: 12px; }
-    .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; }
-    .summary-card { min-width: 0; padding: 19px; border: 1px solid var(--line); border-radius: 11px; background: var(--paper); box-shadow: 0 4px 16px #173b2d07; }
-    .summary-label { color: var(--muted); font-size: 12px; font-weight: 650; }
-    .summary-value { display: block; margin-top: 9px; color: var(--navy); font-size: 29px; font-weight: 750; letter-spacing: -.04em; }
-    .student-summary .summary-value { font-size: clamp(18px, 2vw, 26px); }
-    .summary-caption { display: block; margin-top: 4px; color: #839087; font-size: 11px; }
-    .content-panel, .workspace-panel { margin-top: 19px; padding: 21px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 5px 20px #173b2d08; }
-    .panel-heading, .workspace-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
-    .panel-heading h2, .workspace-heading h2 { margin: 0; color: var(--navy); font-size: 16px; letter-spacing: -.02em; }
-    .panel-heading p, .workspace-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
-    .workspace-heading span { color: #839087; font-size: 10px; white-space: nowrap; }
-    .workspace-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; }
-    .workspace-card { min-width: 0; min-height: 153px; display: flex; flex-direction: column; align-items: flex-start; padding: 16px; border: 1px solid #e6ebe7; border-radius: 10px; color: var(--ink); background: white; text-align: left; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-    .workspace-card:hover { transform: translateY(-2px); border-color: #cbd9ce; box-shadow: 0 8px 20px #173b2d0d; }
-    .workspace-icon { width: 38px; height: 38px; display: grid; place-items: center; margin-bottom: 13px; border-radius: 10px; color: #245c39; background: #eaf4ed; }
-    .workspace-icon svg { width: 20px; height: 20px; }
-    .workspace-card:nth-child(2) .workspace-icon { color: #3158a1; background: #edf2fb; }
-    .workspace-card:nth-child(3) .workspace-icon { color: #9a6a11; background: #fbf3df; }
-    .workspace-card:nth-child(4) .workspace-icon { color: #a33a42; background: #faeeee; }
-    .workspace-card strong { font-size: 12px; line-height: 1.4; }
-    .workspace-card small { margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.45; }
-    .workspace-card .workspace-arrow { margin-top: auto; padding-top: 11px; color: #24723d; font-size: 11px; font-weight: 700; }
-    .profile-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .profile-item { padding: 14px; border: 1px solid #e9eeea; border-radius: 9px; background: #fbfcfb; }
-    .profile-item small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-    .profile-item strong { color: var(--navy); font-size: 13px; overflow-wrap: anywhere; }
-    .profile-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-    .profile-avatar { width: 52px; height: 52px; display: grid; flex: 0 0 52px; place-items: center; border: 1px solid #dfe9e1; border-radius: 15px; color: #176f32; background: #edf5ef; font-size: 16px; font-weight: 800; }
-    .profile-heading h2 { margin: 0; color: var(--navy); font-size: 18px; }
-    .profile-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
-    .profile-heading .status { margin-left: auto; }
-    .profile-help { margin: 12px 2px; color: var(--muted); font-size: 11px; line-height: 1.6; }
-    .toolbar-count, .account-you { margin-left: auto; color: var(--muted); font-size: 11px; }
-    .table-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .table-toolbar input, .table-toolbar select, .form-control { min-height: 40px; padding: 0 12px; border: 1px solid #d6dfd8; border-radius: 7px; color: var(--ink); background: white; font-size: 12px; }
-    .table-toolbar input { width: min(100%, 340px); }
-    .table-wrap { width: 100%; overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 12px 10px; border-bottom: 1px solid var(--line); color: #758279; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
-    .data-table th button { padding: 0; border: 0; color: inherit; background: none; font-size: inherit; font-weight: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
-    .data-table td { padding: 13px 10px; border-bottom: 1px solid #edf0ec; color: #445349; font-size: 12px; vertical-align: middle; }
-    .data-table tr:last-child td { border-bottom: 0; }
-    .empty-cell { padding: 30px 10px !important; color: var(--muted) !important; text-align: center; }
-    .row-actions { display: flex; gap: 6px; }
-    .small-button { min-height: 30px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; color: #345241; background: white; font-size: 10px; font-weight: 650; cursor: pointer; }
-    .small-button:hover { background: #f4f7f4; }
-    .small-button.danger { color: #a22d36; }
-    .status { display: inline-flex; padding: 5px 8px; border-radius: 99px; color: #725d24; background: #fbf3d9; font-size: 10px; font-weight: 700; text-transform: capitalize; }
-    .status.active, .status.enrolled, .status.approved { color: #27623b; background: #e9f4eb; }
-    .status.inactive, .status.rejected { color: #8e3a40; background: #faeaea; }
-    .status.not-enrolled, .status.graduated { color: #596575; background: #edf0f3; }
-    .activity-list { display: grid; }
-    .activity-item { display: grid; grid-template-columns: 9px minmax(0, 1fr) auto; align-items: start; gap: 10px; padding: 12px 0; border-bottom: 1px solid #edf0ec; }
-    .activity-item:last-child { border-bottom: 0; }
-    .activity-dot { width: 7px; height: 7px; margin-top: 5px; border-radius: 50%; background: var(--green); }
-    .activity-item p { margin: 0; color: #445349; font-size: 12px; line-height: 1.55; }
-    .activity-item time { color: #879188; font-size: 10px; white-space: nowrap; }
-    .empty-note { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
-    .form-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
-    .secondary-button { border: 1px solid var(--line); border-radius: 7px; color: #435348; background: white; font-weight: 650; cursor: pointer; }
-    .secondary-button:hover { background: #f5f7f5; }
-    .dialog-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; overflow: auto; padding: 18px; background: #10233b77; backdrop-filter: blur(3px); }
-    .dialog { width: min(100%, 540px); max-height: min(92vh, 760px); overflow: auto; padding: 24px; border: 1px solid white; border-radius: 14px; background: white; box-shadow: 0 22px 60px #10233b35; animation: card-in .2s ease both; }
-    .dialog h2 { margin: 0; color: var(--navy); font-size: 20px; }
-    .dialog-copy { margin: 6px 0 18px; color: var(--muted); font-size: 12px; line-height: 1.5; }
-    .toast { position: fixed; z-index: 30; right: 18px; bottom: 18px; max-width: min(390px, calc(100vw - 36px)); padding: 12px 16px; transform: translateY(8px); border-radius: 8px; color: white; background: #173b2d; box-shadow: 0 8px 25px #173b2d2b; font-size: 12px; line-height: 1.5; opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; }
-    .toast.show { transform: none; opacity: 1; }
-    .toast.error { background: #9c252d; }
-    .footer-note { padding: 20px; color: #7d8981; text-align: center; font-size: 10px; }
-    .mobile-nav-toggle { display: none; }
-    @media (max-width: 960px) {
-      .app-shell { grid-template-columns: 220px minmax(0, 1fr); }
-      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .workspace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .topbar, .page-content { padding-right: 20px; padding-left: 20px; }
-    }
-    @media (max-width: 860px) {
-      .auth-layout { width: min(510px, 100%); grid-template-columns: 1fr; gap: 25px; }
-      .auth-intro { max-width: none; }
-      .auth-intro h2 { max-width: 510px; font-size: clamp(30px, 7vw, 42px); }
-      .auth-intro-copy { margin: 12px 0 15px; font-size: 13px; }
-      .school-info-card { max-width: none; margin-bottom: 15px; }
-      .auth-feature-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-      .auth-feature-list li { align-items: flex-start; font-size: 10px; line-height: 1.4; }
-      .feature-check { width: 19px; height: 19px; flex-basis: 19px; }
-      .auth-card { padding: clamp(24px, 6vw, 38px); }
-    }
-    @media (max-width: 700px) {
-      .app-shell { display: block; }
-      .sidebar { min-height: 0; position: fixed; z-index: 15; inset: 0 auto 0 0; width: min(280px, 84vw); transform: translateX(-105%); transition: transform .2s ease; box-shadow: 10px 0 35px #0e233a30; }
-      .sidebar.open { transform: none; }
-      .mobile-nav-toggle { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 7px; background: white; font-size: 16px; cursor: pointer; }
-      .topbar { min-height: 64px; justify-content: space-between; }
-      .topbar-date { display: none; }
-      .mobile-brand { display: flex; align-items: center; gap: 9px; }
-      .mobile-brand .lspu-letters { font-size: 22px; }
-      .topbar-title { display: grid; gap: 3px; }
-      .topbar-title strong { max-width: 200px; overflow: hidden; color: var(--navy); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-      .topbar-title small { color: var(--muted); font-size: 9px; }
-      .topbar-page { display: none; }
-      .topbar-user { display: block; text-align: left; }
-      .topbar-user strong { display: block; max-width: 86px; overflow: hidden; color: var(--navy); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-      .topbar-user small, .topbar-title { display: none; }
-    }
-    @media (max-width: 500px) {
-      .summary-grid { gap: 9px; }
-      .summary-card { padding: 14px; }
-      .summary-value { font-size: 24px; }
-      .page-content { padding: 23px 13px 32px; }
-      .content-panel, .workspace-panel { padding: 15px; }
-      .workspace-grid { grid-template-columns: 1fr; }
-      .workspace-card { min-height: 128px; }
-      .workspace-heading span { display: none; }
-      .form-grid, .profile-grid { grid-template-columns: 1fr; }
-      .activity-item { grid-template-columns: 9px minmax(0, 1fr); }
-      .activity-item time { grid-column: 2; }
-      .auth-layout { gap: 16px; }
-      .auth-intro h2 { font-size: 29px; }
-      .auth-intro-copy { font-size: 12px; }
-      .school-info-card { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px; }
-      .school-info-icon { width: 36px; height: 36px; }
-      .school-fact { font-size: 8px; }
-      .auth-feature-list { display: none; }
-      .auth-card { padding: 22px 19px; }
-      .auth-brand h1 { font-size: 17px; }
-      .page-heading { align-items: flex-start; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-    }
-  </style>
+  </script>
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/landing.css">
+  <link rel="stylesheet" href="./css/auth.css">
+  <link rel="stylesheet" href="./css/workspace.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="./css/themes.css">
 </head>
 <body>
+  <div class="background-effects" aria-hidden="true"><span class="background-orb"></span><span class="background-orb"></span></div>
   <main>
-    <!-- Login and account creation -->
-    <section class="auth-screen" id="auth-screen" aria-label="Account access">
+    <section class="auth-screen login-first" id="auth-screen" aria-label="LSPU student portal">
+      <button class="theme-toggle theme-toggle-auth" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Toggle dark mode">
+        <span class="theme-toggle-icon" aria-hidden="true"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.3 15.2A8.5 8.5 0 0 1 8.8 3.7 8.5 8.5 0 1 0 20.3 15.2Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></span>
+        <span class="theme-toggle-label">Dark mode</span>
+      </button>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="site-brand" href="#home" aria-label="LSPU home">
+            <span class="lspu-letters" aria-hidden="true"><span>L</span><span>S</span><span>P</span><span>U</span></span>
+            <span class="site-brand-copy"><strong>Laguna State Polytechnic University</strong><small>Student Information and Enrollment</small></span>
+          </a>
+          <nav class="site-nav" aria-label="Main navigation">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#programs">Programs</a>
+            <a href="#campuses">Campuses</a>
+            <a href="#admissions">Admissions</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Toggle dark mode">
+            <span class="theme-toggle-icon" aria-hidden="true"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.3 15.2A8.5 8.5 0 0 1 8.8 3.7 8.5 8.5 0 1 0 20.3 15.2Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></span>
+            <span class="theme-toggle-label">Dark mode</span>
+          </button>
+          <a class="portal-link" href="#portal" data-view="login">Student Portal</a>
+        </div>
+      </header>
+      <section class="landing-hero" id="home" aria-label="Welcome to LSPU">
       <div class="auth-layout">
         <div class="auth-intro">
           <p class="auth-eyebrow">Laguna State Polytechnic University</p>
-          <h2>Welcome to your LSPU student portal.</h2>
-          <p class="auth-intro-copy">A clear, convenient space to access student information and stay connected with enrollment, courses, and schedules.</p>
+          <h2>Build your future at LSPU.</h2>
+          <p class="auth-intro-copy">Discover a welcoming university community, explore academic programs, and take your next step with Laguna State Polytechnic University.</p>
+          <div class="hero-actions">
+            <a class="landing-action" href="#programs">Explore Programs</a>
+            <a class="landing-action secondary" href="#portal" data-view="signup">Create Student Account</a>
+          </div>
           <section class="school-info-card" aria-label="About Laguna State Polytechnic University">
             <span class="school-info-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 20.5h18M5 20V9.5h14V20M3.5 9.5 12 4l8.5 5.5M9 20v-6h6v6M8 11.5h.01M12 11.5h.01M16 11.5h.01"/></svg>
@@ -302,7 +79,7 @@
             <li><span class="feature-check">✓</span> Courses and schedules at a glance</li>
           </ul>
         </div>
-        <div class="auth-card">
+        <div class="auth-card" id="portal">
           <header class="auth-brand">
             <div class="lspu-letters" aria-label="LSPU"><span>L</span><span>S</span><span>P</span><span>U</span></div>
             <h1>Student Information and Enrollment Management System</h1>
@@ -338,7 +115,7 @@
           </section>
           <section id="signup-view" role="tabpanel" aria-labelledby="signup-tab" hidden>
             <h2 class="form-title">Create your account</h2>
-            <p class="form-copy">Enter four details to get started.</p>
+            <p class="form-copy">Enter your details to get started.</p>
             <form id="signup-form" novalidate>
               <label class="field">Full Name
                 <input id="signup-name" name="fullName" type="text" autocomplete="name" maxlength="100" placeholder="Your full name" required>
@@ -348,12 +125,33 @@
                 <input id="signup-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
                 <span class="helper" id="signup-email-help">Use an email address you can access.</span>
               </label>
+              <label class="field">Course
+                <select id="signup-course" name="course" data-course-select required>
+                  <option value="">Select course</option>
+                </select>
+                <span class="helper" id="signup-course-help">Choose your program or course.</span>
+              </label>
+              <label class="field">Year Level
+                <select id="signup-year-level" name="yearLevel" required>
+                  <option value="">Select year</option>
+                  <option>1st Year</option>
+                  <option>2nd Year</option>
+                  <option>3rd Year</option>
+                  <option>4th Year</option>
+                </select>
+                <span class="helper" id="signup-year-level-help">Choose your current year level.</span>
+              </label>
               <label class="field">Password
                 <span class="password-wrap">
                   <input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required>
                   <button class="eye-button" type="button" data-toggle-password="signup-password" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
                 </span>
-                <span class="helper" id="signup-password-help">At least 8 characters.</span>
+                <span class="password-strength" id="signup-password-strength" hidden>
+                  <span class="password-strength-copy" aria-live="polite" aria-atomic="true"><span>Password strength</span><strong id="password-strength-label"></strong></span>
+                  <span class="password-strength-track" role="progressbar" aria-label="Password strength" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="password-strength-bar"></span></span>
+                  <span class="password-strength-checks" id="password-strength-checks"></span>
+                </span>
+                <span class="helper" id="signup-password-help">Use at least 8 characters.</span>
               </label>
               <label class="field">Confirm Password
                 <span class="password-wrap">
@@ -368,8 +166,80 @@
             <p class="switch-copy">Already have an account? <button class="text-button" type="button" data-view="login">Login</button></p>
           </section>
           <p class="demo-note">School project demo · Browser data stays on this device.</p>
+          <p class="explore-copy"><button class="text-button" id="explore-lspu" type="button">Explore LSPU</button></p>
         </div>
       </div>
+      </section>
+      <section class="landing-section about-section" id="about">
+        <div class="landing-section-inner about-grid">
+          <div>
+            <p class="section-kicker">About LSPU</p>
+            <h2 class="section-heading">Learning that moves Laguna forward.</h2>
+            <p class="section-copy">Laguna State Polytechnic University is a public university serving learners and communities across Laguna. Explore the university, discover a program that fits your goals, and connect with campus services.</p>
+          </div>
+          <div class="about-highlight">
+            <strong>A place to learn, grow, and contribute</strong>
+            <p>From your first campus visit to your day-to-day student services, LSPU brings education and community together across its campuses.</p>
+          </div>
+        </div>
+      </section>
+      <section class="landing-section programs-section" id="programs">
+        <div class="landing-section-inner">
+          <p class="section-kicker">Academic programs</p>
+          <h2 class="section-heading">Find a path that fits your ambitions.</h2>
+          <p class="section-copy">Explore these featured programs, then contact the university for current offerings, admission requirements, and campus availability.</p>
+          <div class="program-grid">
+            <article class="program-card"><span aria-hidden="true">01</span><h3>Bachelor of Science in Information Technology</h3><p>Build a foundation for a future in computing and digital technology.</p></article>
+            <article class="program-card"><span aria-hidden="true">02</span><h3>Bachelor of Science in Business Administration</h3><p>Develop knowledge and skills for business and organizational settings.</p></article>
+            <article class="program-card"><span aria-hidden="true">03</span><h3>Bachelor of Elementary Education</h3><p>Prepare for a meaningful role supporting elementary learners.</p></article>
+            <article class="program-card"><span aria-hidden="true">04</span><h3>Bachelor of Secondary Education</h3><p>Develop teaching skills to support secondary-level learners.</p></article>
+            <article class="program-card"><span aria-hidden="true">05</span><h3>Bachelor of Science in Computer Science</h3><p>Explore computing foundations, software, and problem solving.</p></article>
+            <article class="program-card"><span aria-hidden="true">06</span><h3>Bachelor of Science in Psychology</h3><p>Study human behavior, development, and mental processes.</p></article>
+            <article class="program-card"><span aria-hidden="true">07</span><h3>Bachelor of Science in Hospitality Management</h3><p>Build service and management skills for hospitality careers.</p></article>
+            <article class="program-card"><span aria-hidden="true">08</span><h3>Bachelor of Science in Industrial Technology</h3><p>Develop practical technical skills for industry and enterprise.</p></article>
+            <article class="program-card"><span aria-hidden="true">09</span><h3>Bachelor of Science in Agriculture</h3><p>Learn about agricultural systems and sustainable production.</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="landing-section campuses-section" id="campuses">
+        <div class="landing-section-inner">
+          <p class="section-kicker">Our campuses</p>
+          <h2 class="section-heading">Rooted in communities across Laguna.</h2>
+          <p class="section-copy">Connect with an LSPU campus to learn more about local programs, services, and student life.</p>
+          <div class="campus-grid">
+            <article class="campus-card"><span>Santa Cruz</span><h3>Main Campus</h3><p>Santa Cruz, Laguna</p></article>
+            <article class="campus-card"><span>San Pablo</span><h3>San Pablo City Campus</h3><p>San Pablo City, Laguna</p></article>
+            <article class="campus-card"><span>Siniloan</span><h3>Siniloan Campus</h3><p>Siniloan, Laguna</p></article>
+            <article class="campus-card"><span>Los Baños</span><h3>Los Baños Campus</h3><p>Los Baños, Laguna</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="landing-section admissions-section" id="admissions">
+        <div class="landing-section-inner">
+          <p class="section-kicker">Admissions</p>
+          <h2 class="section-heading">Take your next step with confidence.</h2>
+          <p class="section-copy">Admission schedules and requirements may change. Check the latest official university announcements before preparing or submitting an application.</p>
+          <div class="admissions-steps">
+            <article class="admissions-step"><span>STEP 01</span><h3>Explore your options</h3><p>Review programs and contact the campus for current availability.</p></article>
+            <article class="admissions-step"><span>STEP 02</span><h3>Check requirements</h3><p>Confirm the latest application dates and required documents with LSPU.</p></article>
+            <article class="admissions-step"><span>STEP 03</span><h3>Stay connected</h3><p>Create a student portal account to explore the student information demo.</p></article>
+          </div>
+          <a class="landing-action" href="#portal" data-view="signup">Create Student Account</a>
+        </div>
+      </section>
+      <section class="landing-section contact-section" id="contact">
+        <div class="landing-section-inner contact-panel">
+          <div>
+            <p class="section-kicker">Contact and inquiries</p>
+            <h2 class="section-heading">We’re here to help you get started.</h2>
+            <p class="section-copy">For official admission details, campus contacts, and the latest university updates, visit LSPU’s official website or reach out to your preferred campus.</p>
+          </div>
+          <a class="landing-action" href="https://lspu.edu.ph/" target="_blank" rel="noopener noreferrer">Visit Official LSPU Website</a>
+        </div>
+      </section>
+      <footer class="site-footer">
+        <div class="site-footer-inner"><span>© Laguna State Polytechnic University · Student Information and Enrollment Management System</span><a href="#home">Back to top ↑</a></div>
+      </footer>
     </section>
 
     <section class="app-shell" id="app-shell" hidden>
@@ -397,6 +267,10 @@
           <div class="topbar-right">
             <span class="topbar-date" id="topbar-date"></span>
             <span class="topbar-user"><strong id="topbar-user-name">Student</strong><small id="topbar-role">Student</small></span>
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Toggle dark mode">
+              <span class="theme-toggle-icon" aria-hidden="true"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.3 15.2A8.5 8.5 0 0 1 8.8 3.7 8.5 8.5 0 1 0 20.3 15.2Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></span>
+              <span class="theme-toggle-label">Dark mode</span>
+            </button>
             <button class="logout-button" id="logout-button" type="button">Logout</button>
           </div>
         </header>
@@ -414,8 +288,8 @@
             <label class="field">Full Name<input name="name" maxlength="100" required><span class="helper">Enter the student’s full name.</span></label>
             <label class="field">Student ID<input name="studentId" maxlength="30" placeholder="Assigned automatically if left blank"><span class="helper" id="student-id-help">A unique number is assigned automatically if you leave this blank.</span></label>
             <label class="field">Email<input name="email" type="email" maxlength="160" required><span class="helper">Enter a contact email.</span></label>
-            <label class="field">Course<input name="course" maxlength="100" required><span class="helper">For example, BS Information Technology.</span></label>
-            <label class="field">Year Level<select name="yearLevel" required><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option><option>5th Year</option></select><span class="helper">Choose the current year level.</span></label>
+            <label class="field">Course<select name="course" data-course-select required><option value="">Select course</option></select><span class="helper">Choose the student’s program or course.</span></label>
+            <label class="field">Year Level<select name="yearLevel" required><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select><span class="helper">Choose the current year level.</span></label>
             <label class="field">Status<select name="status" required><option>Active</option><option>Pending</option><option>Inactive</option><option>Graduated</option></select><span class="helper">Choose the student’s status.</span></label>
           </div>
           <p class="message" id="student-form-message" role="alert" hidden></p>
@@ -427,12 +301,31 @@
       <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="profile-dialog-title">
         <h2 id="profile-dialog-title">Update my information</h2><p class="dialog-copy">Complete or update your student details.</p>
         <form id="profile-form" novalidate>
+          <div class="avatar-editor">
+            <span class="avatar-editor-preview"><img id="profile-avatar-preview" alt="Profile photo preview" hidden><span id="profile-avatar-fallback">ST</span></span>
+            <div class="avatar-editor-content">
+              <strong>Profile photo</strong>
+              <p>Choose a clear, recent photo to personalize your student profile.</p>
+              <div class="avatar-editor-actions">
+                <input class="visually-hidden" id="profile-photo" type="file" accept="image/jpeg,image/png,image/webp">
+                <label class="secondary-button avatar-upload-button" for="profile-photo">Choose photo</label>
+                <button class="small-button danger" id="profile-avatar-remove" type="button" hidden>Remove photo</button>
+              </div>
+              <span class="avatar-photo-help" id="profile-photo-help" role="status">JPG, PNG, or WebP · up to 8 MB. Adjust the crop before saving.</span>
+              <div class="avatar-crop-controls" id="profile-crop-controls" hidden>
+                <label class="crop-control"><span>Zoom <output id="profile-photo-zoom-value">1×</output></span><input id="profile-photo-zoom" type="range" min="1" max="3" step="0.1" value="1"></label>
+                <label class="crop-control"><span>Horizontal position <output id="profile-photo-horizontal-value">Center</output></span><input id="profile-photo-horizontal" type="range" min="-100" max="100" step="1" value="0"></label>
+                <label class="crop-control"><span>Vertical position <output id="profile-photo-vertical-value">Center</output></span><input id="profile-photo-vertical" type="range" min="-100" max="100" step="1" value="0"></label>
+                <button class="small-button" id="center-profile-photo" type="button">Center photo</button>
+              </div>
+            </div>
+          </div>
           <div class="form-grid">
             <label class="field">Full Name<input name="name" maxlength="100" required><span class="helper">Your full name.</span></label>
             <label class="field">Email<input name="email" type="email" maxlength="160" required><span class="helper">Your contact email.</span></label>
             <label class="field">Student ID<input name="studentId" maxlength="30" readonly><span class="helper">This number is assigned automatically and cannot be changed here.</span></label>
-            <label class="field">Course<input name="course" maxlength="100" placeholder="For example, BS Information Technology"><span class="helper">Your program or course.</span></label>
-            <label class="field">Year Level<select name="yearLevel"><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option><option>5th Year</option></select><span class="helper">Your current year level.</span></label>
+            <label class="field">Course<select name="course" data-course-select><option value="">Select course</option></select><span class="helper">Choose your program or course.</span></label>
+            <label class="field">Year Level<select name="yearLevel"><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select><span class="helper">Your current year level.</span></label>
           </div>
           <p class="message" id="profile-form-message" role="alert" hidden></p>
           <div class="form-actions"><button class="secondary-button" type="button" data-close-dialog="profile">Cancel</button><button class="primary-button add-button" type="submit">Save Information</button></div>
@@ -445,714 +338,35 @@
         <form id="enrollment-form" novalidate>
           <input type="hidden" name="recordId">
           <label class="field">Student<select name="studentRecordId" id="enrollment-student" required></select><span class="helper">Choose a student from the records.</span></label>
-          <label class="field">Course / Subject<input name="course" maxlength="100" required><span class="helper">Enter the course or subject name.</span></label>
+          <label class="field">Course / Subject<input name="course" maxlength="100" required><span class="helper">Defaults to the selected student's course; edit for a specific subject.</span></label>
           <label class="field">Semester<input name="semester" maxlength="60" placeholder="For example, First Semester 2026–2027" required><span class="helper">Enter the semester and school year.</span></label>
+          <span class="helper" id="enrollment-course-capacity" role="status">Maximum 100 enrolled students per course, per semester.</span>
           <label class="field">Status<select name="status" required><option>Enrolled</option><option>Pending</option><option>Not Enrolled</option></select><span class="helper">Choose the enrollment status.</span></label>
           <p class="message" id="enrollment-form-message" role="alert" hidden></p>
           <div class="form-actions"><button class="secondary-button" type="button" data-close-dialog="enrollment">Cancel</button><button class="primary-button add-button" type="submit">Save Enrollment</button></div>
         </form>
       </section>
     </div>
+    <div class="dialog-backdrop" id="schedule-dialog-backdrop" hidden>
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="schedule-dialog-title">
+        <h2 id="schedule-dialog-title">Add class schedule</h2><p class="dialog-copy">Add a dated class session to the student calendar.</p>
+        <form id="schedule-form" novalidate>
+          <input type="hidden" name="recordId">
+          <label class="field">Student<select name="studentRecordId" id="schedule-student" required></select><span class="helper">Choose a student from the records.</span></label>
+          <label class="field">Course / Subject<input name="course" maxlength="100" required><span class="helper">Defaults to the selected student's course; edit for a specific subject.</span></label>
+          <div class="form-grid">
+            <label class="field">Date<input name="date" type="date" required><span class="helper">Choose the class date.</span></label>
+            <label class="field">Room<input name="room" maxlength="60" placeholder="Optional"><span class="helper">Enter the room or location.</span></label>
+            <label class="field">Start time<input name="startTime" type="time" required><span class="helper">Choose the class start time.</span></label>
+            <label class="field">End time<input name="endTime" type="time" required><span class="helper">Choose the class end time.</span></label>
+          </div>
+          <p class="message" id="schedule-form-message" role="alert" hidden></p>
+          <div class="form-actions"><button class="secondary-button" type="button" data-close-dialog="schedule">Cancel</button><button class="primary-button add-button" type="submit">Save Schedule</button></div>
+        </form>
+      </section>
+    </div>
   </main>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script>
-    // This local demo uses browser storage only. Passwords are SHA-256 hashed.
-    const STORAGE_KEY = "lspu-siems-demo-v1";
-    const SESSION_KEY = "lspu-siems-demo-session";
-    // Demo default: admin@lspu.edu.ph / LspuAdmin2026! — change before first use; clear demo storage to reset later.
-    const DEFAULT_ADMIN_PASSWORD = "LspuAdmin2026!";
-    const ADMIN_EMAIL = "admin@lspu.edu.ph";
-    const $ = (selector, root = document) => root.querySelector(selector);
-    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-    const views = { login: $("#login-view"), signup: $("#signup-view") };
-    const navItems = {
-      student: [
-        ["my-information", "My Information", "◉"],
-        ["my-enrollment", "My Enrollment", "▤"],
-        ["my-schedule", "My Schedule", "◷"]
-      ],
-      admin: [
-        ["admin-dashboard", "Dashboard", "⌂"],
-        ["admin-students", "Students", "◉"],
-        ["admin-enrollments", "Enrollments", "▤"],
-        ["admin-accounts", "User Accounts", "♙"]
-      ]
-    };
-    let data;
-    let currentUser = null;
-    let activePage = "my-information";
-    let toastTimer;
-    let studentSort = { key: "name", direction: 1 };
-
-    function emptyData() {
-      return { accounts: [], students: [], enrollments: [], schedules: [], activity: [], studentNumberYear: "", nextStudentNumber: 1 };
-    }
-    function makeId() {
-      return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    }
-    function syncStudentNumberSequence() {
-      const year = String(new Date().getFullYear());
-      const highestExisting = data.students.reduce((highest, student) => {
-        const match = String(student.studentId || "").match(/^LSPU-(\d{4})-(\d+)$/i);
-        return match?.[1] === year ? Math.max(highest, Number(match[2])) : highest;
-      }, 0);
-      data.nextStudentNumber = data.studentNumberYear === year
-        ? Math.max(Number(data.nextStudentNumber) || 1, highestExisting + 1)
-        : highestExisting + 1;
-      data.studentNumberYear = year;
-    }
-    function createStudentNumber() {
-      syncStudentNumberSequence();
-      let studentId;
-      do {
-        studentId = `LSPU-${data.studentNumberYear}-${String(data.nextStudentNumber++).padStart(4, "0")}`;
-      } while (data.students.some((student) => student.studentId.toLowerCase() === studentId.toLowerCase()));
-      return studentId;
-    }
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, (character) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
-      })[character]);
-    }
-    function initials(name) {
-      return String(name || "Student").trim().split(/\s+/).slice(0, 2).map((part) => part[0] || "").join("").toUpperCase();
-    }
-    function saveData() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        return true;
-      } catch (error) {
-        console.error("Could not save portal data.", error);
-        showToast("Browser storage is full or unavailable. Your changes could not be saved.", true);
-        return false;
-      }
-    }
-    function loadData() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (!saved) return emptyData();
-        const parsed = JSON.parse(saved);
-        if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.accounts)) throw new Error("Saved portal data is not valid.");
-        return {
-          ...emptyData(), ...parsed,
-          accounts: parsed.accounts.map((account) => ({
-            ...account,
-            role: String(account.email || "").toLowerCase() === ADMIN_EMAIL ? "admin" : "student"
-          })),
-          students: Array.isArray(parsed.students) ? parsed.students : [],
-          enrollments: Array.isArray(parsed.enrollments) ? parsed.enrollments : [],
-          schedules: Array.isArray(parsed.schedules) ? parsed.schedules : [],
-          activity: Array.isArray(parsed.activity) ? parsed.activity : []
-        };
-      } catch (error) {
-        console.error("Could not read portal data.", error);
-        $("#storage-warning").hidden = false;
-        $("#storage-warning").textContent = "Saved data could not be read. Clear this demo’s browser storage to start over.";
-        throw error;
-      }
-    }
-    async function hashPassword(password, salt) {
-      if (!crypto.subtle) throw new Error("Secure password hashing is unavailable. Open this site on localhost or HTTPS.");
-      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${salt}:${password}`));
-      return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-    }
-    function randomSalt() {
-      return [...crypto.getRandomValues(new Uint8Array(16))].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-    }
-    async function initializeData() {
-      data = loadData();
-      const admin = data.accounts.find((account) => account.email.toLowerCase() === ADMIN_EMAIL);
-      if (!admin || admin.role !== "admin") {
-        const salt = randomSalt();
-        const adminAccount = {
-          id: admin?.id || makeId(), displayName: "Administrator", email: ADMIN_EMAIL, role: "admin",
-          salt, passwordHash: await hashPassword(DEFAULT_ADMIN_PASSWORD, salt),
-          createdAt: admin?.createdAt || new Date().toISOString(), lastLogin: admin?.lastLogin || null
-        };
-        if (admin) Object.assign(admin, adminAccount);
-        else data.accounts.push(adminAccount);
-        if (!saveData()) throw new Error("Could not save the administrator account.");
-      }
-      data.accounts.forEach((account) => {
-        account.role = account.role === "admin" ? "admin" : "student";
-        account.lastLogin = account.lastLogin || null;
-      });
-      data.students = data.students.map((student) => ({
-        id: student.id || makeId(), studentId: student.studentId || "", name: student.name || "",
-        email: student.email || "", course: student.course || "", yearLevel: student.yearLevel || "",
-        status: student.status || "Active", ownerId: student.ownerId || student.userId || ""
-      }));
-      syncStudentNumberSequence();
-      data.enrollments = data.enrollments.map((record) => {
-        const student = data.students.find((item) => item.id === record.studentRecordId || item.studentId === record.studentId);
-        return {
-          ...record, id: record.id || makeId(), studentRecordId: student?.id || record.studentRecordId || "",
-          course: record.course || "", semester: record.semester || "", status: record.status || "Pending",
-          createdAt: record.createdAt || new Date().toISOString()
-        };
-      });
-      data.accounts.filter((account) => account.role === "student").forEach((account) => {
-        let student = data.students.find((item) => item.ownerId === account.id || item.email.toLowerCase() === account.email.toLowerCase());
-        if (!student) {
-          student = { id: makeId(), studentId: "", name: account.displayName, email: account.email, course: "", yearLevel: "", status: "Active", ownerId: account.id };
-          data.students.push(student);
-        } else {
-          student.ownerId = account.id;
-          account.displayName = student.name || account.displayName;
-          account.email = student.email || account.email;
-        }
-      });
-      data.students.forEach((student) => {
-        if (!student.studentId) student.studentId = createStudentNumber();
-      });
-      if (!saveData()) throw new Error("Could not save browser data.");
-    }
-    function addActivity(text) {
-      data.activity.unshift({ id: makeId(), text, at: new Date().toISOString() });
-      data.activity = data.activity.slice(0, 30);
-      saveData();
-    }
-    function showToast(text, error = false) {
-      const toast = $("#toast");
-      toast.textContent = text;
-      toast.classList.toggle("error", error);
-      toast.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
-    }
-    function showMessage(id, text, success = false) {
-      const element = $(`#${id}`);
-      element.textContent = text;
-      element.classList.toggle("success", success);
-      element.hidden = false;
-    }
-    function setBusy(button, busy, loadingText) {
-      if (!button.dataset.label) button.dataset.label = button.textContent.trim();
-      button.disabled = busy;
-      button.innerHTML = busy ? `<span class="spinner" aria-hidden="true"></span>${loadingText}` : "";
-      if (!busy) button.textContent = button.dataset.label;
-      button.setAttribute("aria-busy", String(busy));
-    }
-    function showView(name) {
-      const selected = name === "signup" ? "signup" : "login";
-      Object.entries(views).forEach(([key, element]) => { element.hidden = key !== selected; });
-      $("#login-tab").setAttribute("aria-selected", String(selected === "login"));
-      $("#signup-tab").setAttribute("aria-selected", String(selected === "signup"));
-      $$(".message").forEach((message) => { message.hidden = true; message.textContent = ""; message.classList.remove("success"); });
-      requestAnimationFrame(() => views[selected].querySelector("input")?.focus());
-    }
-    document.querySelectorAll("[data-view]").forEach((button) => button.addEventListener("click", () => showView(button.dataset.view)));
-    document.querySelectorAll("[data-toggle-password]").forEach((button) => button.addEventListener("click", () => {
-      const input = $(`#${button.dataset.togglePassword}`);
-      const visible = input.type === "password";
-      input.type = visible ? "text" : "password";
-      button.setAttribute("aria-label", visible ? "Hide password" : "Show password");
-      button.setAttribute("aria-pressed", String(visible));
-    }));
-    function setHelper(input, selector, message) {
-      const helper = $(selector);
-      helper.textContent = message;
-      helper.classList.toggle("error", Boolean(message));
-      input.setAttribute("aria-invalid", String(Boolean(message)));
-    }
-    function validateEmail(inputSelector, helperSelector) {
-      const input = $(inputSelector);
-      const message = !input.value.trim() ? "Enter your email address." : input.validity.valid ? "" : "Enter a valid email address.";
-      setHelper(input, helperSelector, message);
-      return !message;
-    }
-    function validateSignupName() {
-      const input = $("#signup-name");
-      const message = input.value.trim().length < 2 ? "Enter your full name." : "";
-      setHelper(input, "#signup-name-help", message);
-      return !message;
-    }
-    function validateSignupPassword() {
-      const input = $("#signup-password");
-      const message = input.value.length < 8 ? "Use at least 8 characters." : "";
-      setHelper(input, "#signup-password-help", message);
-      if ($("#signup-confirm").value) validateSignupConfirm();
-      return !message;
-    }
-    function validateSignupConfirm(required = false) {
-      const input = $("#signup-confirm");
-      const message = !input.value && required ? "Confirm your password." : input.value && input.value !== $("#signup-password").value ? "Passwords do not match." : "";
-      setHelper(input, "#signup-confirm-help", message);
-      return !message;
-    }
-    $("#signup-name").addEventListener("input", validateSignupName);
-    $("#signup-email").addEventListener("input", () => validateEmail("#signup-email", "#signup-email-help"));
-    $("#signup-password").addEventListener("input", validateSignupPassword);
-    $("#signup-confirm").addEventListener("input", () => validateSignupConfirm());
-
-    // New accounts are always students; the admin role is never selected at sign-up.
-    $("#signup-form").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      if (![validateSignupName(), validateEmail("#signup-email", "#signup-email-help"), validateSignupPassword(), validateSignupConfirm(true)].every(Boolean)) return;
-      const button = $("#signup-button");
-      setBusy(button, true, "Creating account…");
-      try {
-        const email = $("#signup-email").value.trim().toLowerCase();
-        if (data.accounts.some((account) => account.email.toLowerCase() === email)) {
-          setHelper($("#signup-email"), "#signup-email-help", "This email is already registered.");
-          return;
-        }
-        const name = $("#signup-name").value.trim().replace(/\s+/g, " ");
-        const salt = randomSalt();
-        const account = { id: makeId(), displayName: name, email, role: "student", salt, passwordHash: await hashPassword($("#signup-password").value, salt), createdAt: new Date().toISOString(), lastLogin: new Date().toISOString() };
-        const student = { id: makeId(), studentId: createStudentNumber(), name, email, course: "", yearLevel: "", status: "Active", ownerId: account.id };
-        data.accounts.push(account);
-        data.students.push(student);
-        if (!saveData()) {
-          data.accounts = data.accounts.filter((item) => item.id !== account.id);
-          data.students = data.students.filter((item) => item.id !== student.id);
-          return;
-        }
-        currentUser = account;
-        localStorage.setItem(SESSION_KEY, account.id);
-        addActivity(`${name} created a student account`);
-        $("#signup-form").reset();
-        renderWorkspace("my-information");
-        showToast("Student account created successfully.");
-      } catch (error) {
-        console.error("Account could not be created.", error);
-        showMessage("signup-message", error.message.includes("hashing") ? error.message : "Something went wrong. Please try again.");
-      } finally {
-        setBusy(button, false, "Creating account…");
-      }
-    });
-    $("#login-form").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      if (!form.reportValidity()) return;
-      const button = $("#login-button");
-      setBusy(button, true, "Signing in…");
-      try {
-        const email = form.elements.email.value.trim().toLowerCase();
-        const account = data.accounts.find((item) => item.email.toLowerCase() === email);
-        if (!account || await hashPassword(form.elements.password.value, account.salt) !== account.passwordHash) {
-          showMessage("login-message", "Incorrect email or password.");
-          return;
-        }
-        if (account.role !== "admin" && account.role !== "student") {
-          showMessage("login-message", "This account cannot access the portal.");
-          return;
-        }
-        currentUser = account;
-        account.lastLogin = new Date().toISOString();
-        if ($("#remember-me").checked) {
-          localStorage.setItem(SESSION_KEY, account.id);
-          sessionStorage.removeItem(SESSION_KEY);
-        } else {
-          sessionStorage.setItem(SESSION_KEY, account.id);
-          localStorage.removeItem(SESSION_KEY);
-        }
-        addActivity(`${account.displayName} (${account.role}) logged in`);
-        saveData();
-        form.reset();
-        renderWorkspace(account.role === "admin" ? "admin-dashboard" : "my-information");
-      } catch (error) {
-        console.error("Login failed.", error);
-        showMessage("login-message", "Something went wrong. Please try again.");
-      } finally {
-        setBusy(button, false, "Signing in…");
-      }
-    });
-    $("#logout-button").addEventListener("click", () => {
-      if (currentUser) addActivity(`${currentUser.displayName} logged out`);
-      localStorage.removeItem(SESSION_KEY);
-      sessionStorage.removeItem(SESSION_KEY);
-      currentUser = null;
-      showAuthScreen();
-      showView("login");
-      showToast("You have logged out.");
-    });
-    function showAuthScreen() {
-      $("#auth-screen").hidden = false;
-      $("#app-shell").hidden = true;
-    }
-    function profileFor(account = currentUser) {
-      let student = data.students.find((item) => item.ownerId === account.id || item.email.toLowerCase() === account.email.toLowerCase());
-      if (!student && account.role === "student") {
-        student = { id: makeId(), studentId: "", name: account.displayName, email: account.email, course: "", yearLevel: "", status: "Active", ownerId: account.id };
-        data.students.push(student);
-        saveData();
-      }
-      return student;
-    }
-    function renderWorkspace(page) {
-      if (!currentUser) return showAuthScreen();
-      const isAdmin = currentUser.role === "admin";
-      const allowedPages = isAdmin ? navItems.admin.map(([key]) => key) : navItems.student.map(([key]) => key);
-      if (!allowedPages.includes(page)) page = isAdmin ? "admin-dashboard" : "my-information";
-      activePage = page;
-      $("#auth-screen").hidden = true;
-      $("#app-shell").hidden = false;
-      $("#nav-label").textContent = isAdmin ? "Administration" : "Student workspace";
-      $("#side-nav").innerHTML = (isAdmin ? navItems.admin : navItems.student).map(([key, label, icon]) =>
-        `<button class="nav-item" type="button" data-page="${key}" aria-current="${key === page ? "page" : "false"}"><span class="nav-symbol" aria-hidden="true">${icon}</span>${label}</button>`
-      ).join("");
-      $("#sidebar-user-name").textContent = currentUser.displayName;
-      $("#sidebar-user-role").textContent = isAdmin ? "Administrator" : "Student account";
-      $("#sidebar-avatar").textContent = initials(currentUser.displayName);
-      $("#topbar-user-name").textContent = isAdmin ? "Administrator" : currentUser.displayName;
-      $("#topbar-role").textContent = isAdmin ? "Admin account" : "Student account";
-      $("#topbar-date").textContent = new Intl.DateTimeFormat("en", { weekday: "short", month: "short", day: "numeric" }).format(new Date());
-      const label = (isAdmin ? navItems.admin : navItems.student).find(([key]) => key === page)?.[1] || "";
-      $("#topbar-page").textContent = label;
-      const content = $("#page-content");
-      content.innerHTML = "";
-      pagesForRole()[page](content);
-    }
-    function pagesForRole() {
-      return currentUser.role === "admin"
-        ? { "admin-dashboard": renderAdminDashboard, "admin-students": renderAdminStudents, "admin-enrollments": renderAdminEnrollments, "admin-accounts": renderAdminAccounts }
-        : { "my-information": renderMyInformation, "my-enrollment": renderMyEnrollment, "my-schedule": renderMySchedule };
-    }
-    $("#side-nav").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-page]");
-      if (!button) return;
-      renderWorkspace(button.dataset.page);
-      $("#sidebar").classList.remove("open");
-      $("#mobile-nav-toggle").setAttribute("aria-expanded", "false");
-    });
-    $("#mobile-nav-toggle").addEventListener("click", () => {
-      const open = $("#sidebar").classList.toggle("open");
-      $("#mobile-nav-toggle").setAttribute("aria-expanded", String(open));
-      $("#mobile-nav-toggle").setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    });
-    function heading(title, description, action = "") {
-      return `<div class="page-heading"><div><h1>${escapeHTML(title)}</h1><p>${escapeHTML(description)}</p></div>${action}</div>`;
-    }
-    function summaryCard(label, value, caption) {
-      return `<article class="summary-card"><span class="summary-label">${escapeHTML(label)}</span><strong class="summary-value">${value}</strong><span class="summary-caption">${escapeHTML(caption)}</span></article>`;
-    }
-    function formatDate(value, withTime = false) {
-      if (!value) return "Not yet";
-      const date = new Date(value);
-      return Number.isNaN(date.getTime()) ? "Not available" : new Intl.DateTimeFormat("en", withTime ? { dateStyle: "medium", timeStyle: "short" } : { dateStyle: "medium" }).format(date);
-    }
-    function renderAdminDashboard(content) {
-      const enrolledStudents = new Set(data.enrollments.filter((item) => item.status === "Enrolled").map((item) => item.studentRecordId));
-      const recent = data.activity.slice(0, 7);
-      content.innerHTML = `${heading("Administrator dashboard", "Manage student records, enrollment, and accounts across this browser.")}
-        <div class="summary-grid">
-          ${summaryCard("Total Students", data.students.length, "Student profiles")}
-          ${summaryCard("Enrolled", enrolledStudents.size, "Students with enrolled subjects")}
-          ${summaryCard("Not Enrolled", Math.max(0, data.students.length - enrolledStudents.size), "No active enrollment")}
-          ${summaryCard("Total Accounts", data.accounts.length, "Students and administrators")}
-        </div>
-        <section class="workspace-panel"><div class="workspace-heading"><div><h2>Administration workspace</h2><p>Choose an area to manage the student system.</p></div><span>ADMINISTRATOR</span></div>
-          <div class="workspace-grid">
-            ${workspaceCard("admin-students","Students","Manage student profiles and details.","Manage students","◉")}
-            ${workspaceCard("admin-enrollments","Enrollments","Add or update student enrollment records.","Manage enrollment","▤")}
-            ${workspaceCard("admin-accounts","User Accounts","Review accounts and recent sign-ins.","View accounts","♙")}
-          </div>
-        </section>
-        <section class="content-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Recent account and record changes in this browser.</p></div></div>
-          ${recent.length ? `<div class="activity-list">${recent.map((item) => `<div class="activity-item"><span class="activity-dot" aria-hidden="true"></span><p>${escapeHTML(item.text)}</p><time>${escapeHTML(formatDate(item.at, true))}</time></div>`).join("")}</div>` : `<p class="empty-note">No recent activity yet.</p>`}
-        </section>`;
-    }
-    function workspaceCard(page, title, copy, link, icon) {
-      return `<button class="workspace-card" type="button" data-workspace-page="${page}"><span class="workspace-icon" aria-hidden="true">${icon}</span><strong>${title}</strong><small>${copy}</small><span class="workspace-arrow">${link} &rarr;</span></button>`;
-    }
-    function renderMyInformation(content) {
-      const student = profileFor();
-      content.innerHTML = `${heading(`Welcome, ${escapeHTML(currentUser.displayName.split(/\s+/)[0])}`, "Your student profile and contact information.", `<button class="primary-button add-button" type="button" data-action="edit-profile">Edit My Information</button>`)}
-        <section class="content-panel profile-panel"><div class="profile-heading"><span class="profile-avatar">${escapeHTML(initials(student.name))}</span><div><h2>${escapeHTML(student.name || currentUser.displayName)}</h2><p>${escapeHTML(student.course || "Course not added yet")}</p></div><span class="status ${escapeHTML(student.status.toLowerCase())}">${escapeHTML(student.status)}</span></div>
-          <div class="profile-grid">
-            ${profileItem("Full name", student.name)}
-            ${profileItem("Email", student.email)}
-            ${profileItem("Student ID", student.studentId)}
-            ${profileItem("Course", student.course)}
-            ${profileItem("Year level", student.yearLevel)}
-            ${profileItem("Status", student.status)}
-          </div>
-        </section><p class="profile-help">Keep your contact details and student information up to date. If your student ID has not been assigned, you can leave it blank.</p>`;
-    }
-    function profileItem(label, value) {
-      return `<div class="profile-item"><small>${escapeHTML(label)}</small><strong>${escapeHTML(value || "Not added yet")}</strong></div>`;
-    }
-    function renderMyEnrollment(content) {
-      const student = profileFor();
-      const records = data.enrollments.filter((item) => item.studentRecordId === student.id);
-      const enrollmentStatus = records.some((item) => item.status === "Enrolled")
-        ? "Enrolled"
-        : records.some((item) => item.status === "Pending")
-          ? "Pending"
-          : "Not Enrolled";
-      content.innerHTML = `${heading("My Enrollment", "View the enrollment details saved for your student profile.")}
-        <div class="summary-grid student-summary">
-          ${summaryCard("Enrollment Status", enrollmentStatus, "Based on your records")}
-          ${summaryCard("Enrolled Subjects", records.filter((item) => item.status === "Enrolled").length, "Currently enrolled")}
-          ${summaryCard("Pending Review", records.filter((item) => item.status === "Pending").length, "Awaiting review")}
-          ${summaryCard("Total Records", records.length, "Your enrollment history")}
-        </div>
-        <section class="content-panel"><div class="panel-heading"><div><h2>My subjects</h2><p>Only enrollment records connected to your own profile are shown.</p></div></div>
-          <div class="table-wrap"><table class="data-table"><thead><tr><th>Course / Subject</th><th>Semester</th><th>Status</th></tr></thead><tbody>${records.length ? records.map((item) => `<tr><td>${escapeHTML(item.course)}</td><td>${escapeHTML(item.semester)}</td><td><span class="status ${escapeHTML(item.status.toLowerCase().replaceAll(" ", "-"))}">${escapeHTML(item.status)}</span></td></tr>`).join("") : `<tr><td class="empty-cell" colspan="3">No enrollment records are available yet. Please check back later.</td></tr>`}</tbody></table></div>
-        </section>`;
-    }
-    function renderMySchedule(content) {
-      const student = profileFor();
-      const records = data.schedules.filter((item) => item.studentRecordId === student.id || (student.studentId && item.studentId === student.studentId));
-      content.innerHTML = `${heading("My Schedule", "View class schedules connected to your student profile.")}
-        <section class="content-panel"><div class="panel-heading"><div><h2>Class schedule</h2><p>Your schedule information appears here when it is available.</p></div></div>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Course / Subject</th><th>Semester</th><th>Day</th><th>Time</th><th>Room</th></tr></thead><tbody>${records.length ? records.map((item) => `<tr><td>${escapeHTML(item.course)}</td><td>${escapeHTML(item.semester)}</td><td>${escapeHTML(item.day || "Not set")}</td><td>${escapeHTML(item.time || "Not set")}</td><td>${escapeHTML(item.room || "Not set")}</td></tr>`).join("") : `<tr><td class="empty-cell" colspan="5">No schedule is available yet. Please check back later.</td></tr>`}</tbody></table></div></section>`;
-    }
-    function renderAdminStudents(content) {
-      content.innerHTML = `${heading("Students", "Search, sort, and manage student profiles.", `<button class="primary-button add-button" type="button" data-action="add-student">Add Student</button>`)}
-        <section class="content-panel"><div class="table-toolbar"><input id="student-search" type="search" placeholder="Search name, ID, email, course" aria-label="Search all students"><span class="toolbar-count" id="student-count"></span></div>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th><button type="button" data-sort="studentId">Student ID ↕</button></th><th><button type="button" data-sort="name">Name ↕</button></th><th>Email</th><th>Course</th><th>Year</th><th>Status</th><th>Actions</th></tr></thead><tbody id="student-table-body"></tbody></table></div></section>`;
-      drawStudentRows();
-      $("#student-search").addEventListener("input", drawStudentRows);
-    }
-    function drawStudentRows() {
-      const body = $("#student-table-body");
-      if (!body) return;
-      const term = $("#student-search").value.trim().toLowerCase();
-      const records = data.students.filter((item) => [item.studentId,item.name,item.email,item.course,item.yearLevel,item.status].some((value) => String(value || "").toLowerCase().includes(term)));
-      records.sort((a,b) => String(a[studentSort.key] || "").localeCompare(String(b[studentSort.key] || "")) * studentSort.direction);
-      $("#student-count").textContent = `${records.length} ${records.length === 1 ? "student" : "students"}`;
-      body.innerHTML = records.length ? records.map((student) => `<tr><td>${escapeHTML(student.studentId || "Not assigned")}</td><td>${escapeHTML(student.name)}</td><td>${escapeHTML(student.email)}</td><td>${escapeHTML(student.course || "Not added")}</td><td>${escapeHTML(student.yearLevel || "—")}</td><td><span class="status ${escapeHTML(student.status.toLowerCase())}">${escapeHTML(student.status)}</span></td><td><div class="row-actions"><button class="small-button" type="button" data-action="edit-student" data-id="${escapeHTML(student.id)}">Edit</button><button class="small-button danger" type="button" data-action="delete-student" data-id="${escapeHTML(student.id)}">Delete</button></div></td></tr>`).join("") : `<tr><td class="empty-cell" colspan="7">${term ? "No students match your search." : "No student records yet."}</td></tr>`;
-    }
-    $("#page-content").addEventListener("click", (event) => {
-      if (event.target.closest("[data-sort]")) {
-        const key = event.target.closest("[data-sort]").dataset.sort;
-        studentSort = { key, direction: studentSort.key === key ? -studentSort.direction : 1 };
-        drawStudentRows();
-        return;
-      }
-      const workspace = event.target.closest("[data-workspace-page]");
-      if (workspace) { renderWorkspace(workspace.dataset.workspacePage); return; }
-      const action = event.target.closest("[data-action]");
-      if (!action) return;
-      if (action.dataset.action === "edit-profile") openProfileDialog();
-      if (action.dataset.action === "add-student") openStudentDialog();
-      if (action.dataset.action === "edit-student") {
-        const student = data.students.find((item) => item.id === action.dataset.id);
-        if (student) openStudentDialog(student);
-      }
-      if (action.dataset.action === "delete-student") deleteStudent(action.dataset.id);
-      if (action.dataset.action === "add-enrollment") openEnrollmentDialog();
-      if (action.dataset.action === "edit-enrollment") {
-        const record = data.enrollments.find((item) => item.id === action.dataset.id);
-        if (record) openEnrollmentDialog(record);
-      }
-      if (action.dataset.action === "delete-enrollment") deleteEnrollment(action.dataset.id);
-      if (action.dataset.action === "delete-account") deleteAccount(action.dataset.id);
-    });
-    function renderAdminEnrollments(content) {
-      content.innerHTML = `${heading("Enrollments", "Review and update student course enrollment.", `<button class="primary-button add-button" type="button" data-action="add-enrollment">Add Enrollment</button>`)}
-        <section class="content-panel"><div class="table-toolbar"><input id="enrollment-search" type="search" placeholder="Search student, subject, semester" aria-label="Search enrollment records"></div>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Student ID</th><th>Student</th><th>Course / Subject</th><th>Semester</th><th>Status</th><th>Actions</th></tr></thead><tbody id="enrollment-table-body"></tbody></table></div></section>`;
-      drawEnrollmentRows();
-      $("#enrollment-search").addEventListener("input", drawEnrollmentRows);
-    }
-    function drawEnrollmentRows() {
-      const body = $("#enrollment-table-body");
-      if (!body) return;
-      const term = $("#enrollment-search").value.trim().toLowerCase();
-      const records = data.enrollments.filter((item) => {
-        const student = data.students.find((entry) => entry.id === item.studentRecordId);
-        return [student?.studentId,student?.name,item.course,item.semester,item.status].some((value) => String(value || "").toLowerCase().includes(term));
-      });
-      body.innerHTML = records.length ? records.map((item) => {
-        const student = data.students.find((entry) => entry.id === item.studentRecordId);
-        return `<tr><td>${escapeHTML(student?.studentId || "Not assigned")}</td><td>${escapeHTML(student?.name || "Student record missing")}</td><td>${escapeHTML(item.course)}</td><td>${escapeHTML(item.semester)}</td><td><span class="status ${escapeHTML(item.status.toLowerCase().replaceAll(" ", "-"))}">${escapeHTML(item.status)}</span></td><td><div class="row-actions"><button class="small-button" type="button" data-action="edit-enrollment" data-id="${escapeHTML(item.id)}">Edit</button><button class="small-button danger" type="button" data-action="delete-enrollment" data-id="${escapeHTML(item.id)}">Remove</button></div></td></tr>`;
-      }).join("") : `<tr><td class="empty-cell" colspan="6">No enrollment records yet.</td></tr>`;
-    }
-    function renderAdminAccounts(content) {
-      content.innerHTML = `${heading("User Accounts", "Review accounts and see when each user last signed in.")}
-        <section class="content-panel"><div class="table-toolbar"><input id="account-search" type="search" placeholder="Search name, email, or role" aria-label="Search user accounts"><span class="toolbar-count">${data.accounts.length} accounts</span></div>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Date Created</th><th>Last Login</th><th>Actions</th></tr></thead><tbody id="account-table-body"></tbody></table></div></section>`;
-      drawAccountRows();
-      $("#account-search").addEventListener("input", drawAccountRows);
-    }
-    function drawAccountRows() {
-      const body = $("#account-table-body");
-      if (!body) return;
-      const term = $("#account-search").value.trim().toLowerCase();
-      const accounts = data.accounts.filter((account) => [account.displayName,account.email,account.role].some((value) => String(value || "").toLowerCase().includes(term)));
-      body.innerHTML = accounts.length ? accounts.map((account) => `<tr><td>${escapeHTML(account.displayName)}</td><td>${escapeHTML(account.email)}</td><td><span class="status ${account.role === "admin" ? "approved" : "active"}">${account.role === "admin" ? "Administrator" : "Student"}</span></td><td>${escapeHTML(formatDate(account.createdAt))}</td><td>${escapeHTML(formatDate(account.lastLogin, true))}</td><td>${account.id === currentUser.id ? `<span class="account-you">Current account</span>` : `<button class="small-button danger" type="button" data-action="delete-account" data-id="${escapeHTML(account.id)}">Remove</button>`}</td></tr>`).join("") : `<tr><td class="empty-cell" colspan="6">No accounts match your search.</td></tr>`;
-    }
-    function openStudentDialog(student = null) {
-      const form = $("#student-form");
-      form.reset();
-      $("#student-form-message").hidden = true;
-      form.elements.recordId.value = student?.id || "";
-      for (const key of ["name","studentId","email","course","yearLevel","status"]) form.elements[key].value = student?.[key] || (key === "status" ? "Active" : "");
-      $("#student-dialog-title").textContent = student ? "Edit student details" : "Add student";
-      $("#save-student-button").textContent = student ? "Save Changes" : "Save Student";
-      $("#student-dialog-backdrop").hidden = false;
-      requestAnimationFrame(() => form.elements.name.focus());
-    }
-    function openProfileDialog() {
-      const student = profileFor();
-      const form = $("#profile-form");
-      form.reset();
-      $("#profile-form-message").hidden = true;
-      for (const key of ["name","email","studentId","course","yearLevel"]) form.elements[key].value = student[key] || "";
-      $("#profile-dialog-backdrop").hidden = false;
-      requestAnimationFrame(() => form.elements.name.focus());
-    }
-    function openEnrollmentDialog(record = null) {
-      if (!data.students.length) return showToast("Add a student record before creating an enrollment.", true);
-      const form = $("#enrollment-form");
-      form.reset();
-      $("#enrollment-form-message").hidden = true;
-      form.elements.recordId.value = record?.id || "";
-      $("#enrollment-student").innerHTML = data.students.map((student) => `<option value="${escapeHTML(student.id)}">${escapeHTML(student.studentId || "No ID")} — ${escapeHTML(student.name)}</option>`).join("");
-      if (record) {
-        $("#enrollment-student").value = record.studentRecordId;
-        form.elements.course.value = record.course;
-        form.elements.semester.value = record.semester;
-        form.elements.status.value = record.status;
-      }
-      $("#enrollment-dialog-title").textContent = record ? "Update enrollment" : "Add enrollment";
-      $("#enrollment-dialog-backdrop").hidden = false;
-      requestAnimationFrame(() => $("#enrollment-student").focus());
-    }
-    function closeDialog(kind) { $(`#${kind}-dialog-backdrop`).hidden = true; }
-    function deleteStudent(id) {
-      if (!currentUser || currentUser.role !== "admin") return;
-      const student = data.students.find((item) => item.id === id);
-      if (!student || !confirm(`Are you sure? Delete the student record for ${student.name}? Related enrollments will also be removed.`)) return;
-      data.students = data.students.filter((item) => item.id !== id);
-      data.enrollments = data.enrollments.filter((item) => item.studentRecordId !== id);
-      data.schedules = data.schedules.filter((item) => item.studentRecordId !== id && item.studentId !== student.studentId);
-      addActivity(`Administrator deleted student ${student.name}`);
-      if (saveData()) { renderWorkspace("admin-students"); showToast("Student removed successfully."); }
-    }
-    function deleteEnrollment(id) {
-      if (!currentUser || currentUser.role !== "admin") return;
-      const item = data.enrollments.find((record) => record.id === id);
-      if (!item || !confirm("Are you sure? Remove this enrollment record?")) return;
-      data.enrollments = data.enrollments.filter((record) => record.id !== id);
-      addActivity("Administrator removed an enrollment record");
-      if (saveData()) { renderWorkspace("admin-enrollments"); showToast("Enrollment removed successfully."); }
-    }
-    function deleteAccount(id) {
-      if (!currentUser || currentUser.role !== "admin") return;
-      const account = data.accounts.find((item) => item.id === id);
-      if (!account || account.id === currentUser.id || !confirm(`Are you sure? Remove the account for ${account.displayName}?`)) return;
-      data.accounts = data.accounts.filter((item) => item.id !== id);
-      if (account.role === "student") {
-        const profile = data.students.find((item) => item.ownerId === account.id);
-        if (profile) {
-          data.students = data.students.filter((item) => item.id !== profile.id);
-          data.enrollments = data.enrollments.filter((item) => item.studentRecordId !== profile.id);
-          data.schedules = data.schedules.filter((item) => item.studentRecordId !== profile.id);
-        }
-      }
-      addActivity(`Administrator removed the account for ${account.displayName}`);
-      if (saveData()) { renderWorkspace("admin-accounts"); showToast("Account removed successfully."); }
-    }
-    $("#student-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (currentUser?.role !== "admin") return;
-      const form = event.currentTarget;
-      if (!form.reportValidity()) return;
-      const id = form.elements.recordId.value;
-      const old = data.students.find((student) => student.id === id);
-      const studentId = form.elements.studentId.value.trim() || old?.studentId || createStudentNumber();
-      const email = form.elements.email.value.trim().toLowerCase();
-      const duplicateId = data.students.some((student) => student.studentId.toLowerCase() === studentId.toLowerCase() && student.id !== id);
-      if (duplicateId) return showMessage("student-form-message", "This student ID is already in use.");
-      const duplicateStudentEmail = data.students.some((student) => student.email.toLowerCase() === email && student.id !== id);
-      if (duplicateStudentEmail) return showMessage("student-form-message", "This email is already used by another student.");
-      const duplicateEmail = data.accounts.some((account) => account.email.toLowerCase() === email && account.id !== data.students.find((student) => student.id === id)?.ownerId);
-      if (duplicateEmail) return showMessage("student-form-message", "This email belongs to another account.");
-      const student = {
-        id: id || makeId(), studentId, email,
-        name: form.elements.name.value.trim().replace(/\s+/g, " "), course: form.elements.course.value.trim(),
-        yearLevel: form.elements.yearLevel.value, status: form.elements.status.value, ownerId: old?.ownerId || ""
-      };
-      if (old) Object.assign(old, student); else data.students.push(student);
-      const linked = data.accounts.find((account) => account.id === student.ownerId);
-      if (linked) { linked.displayName = student.name; linked.email = student.email; }
-      data.enrollments.filter((item) => item.studentRecordId === student.id).forEach((item) => { item.studentName = student.name; });
-      addActivity(`${old ? "Updated" : "Added"} student ${student.name}`);
-      if (saveData()) { closeDialog("student"); renderWorkspace("admin-students"); showToast(old ? "Student updated successfully." : "Student added successfully."); }
-    });
-    $("#profile-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (currentUser?.role !== "student") return;
-      const form = event.currentTarget;
-      if (!form.reportValidity()) return;
-      const email = form.elements.email.value.trim().toLowerCase();
-      if (data.accounts.some((account) => account.id !== currentUser.id && account.email.toLowerCase() === email)) return showMessage("profile-form-message", "This email is already used by another account.");
-      const student = profileFor();
-      if (data.students.some((item) => item.id !== student.id && item.email.toLowerCase() === email)) return showMessage("profile-form-message", "This email is already used by another student.");
-      student.name = form.elements.name.value.trim().replace(/\s+/g, " ");
-      student.email = email;
-      student.course = form.elements.course.value.trim();
-      student.yearLevel = form.elements.yearLevel.value;
-      currentUser.displayName = student.name;
-      currentUser.email = email;
-      addActivity(`${student.name} updated their student information`);
-      if (saveData()) { closeDialog("profile"); renderWorkspace("my-information"); showToast("Your information was updated."); }
-    });
-    $("#enrollment-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (currentUser?.role !== "admin") return;
-      const form = event.currentTarget;
-      if (!form.reportValidity()) return;
-      const student = data.students.find((item) => item.id === form.elements.studentRecordId.value);
-      if (!student) return showMessage("enrollment-form-message", "Choose a student from the list.");
-      const id = form.elements.recordId.value;
-      const course = form.elements.course.value.trim();
-      const semester = form.elements.semester.value.trim();
-      const duplicate = data.enrollments.some((record) => record.id !== id && record.studentRecordId === student.id && record.course.toLowerCase() === course.toLowerCase() && record.semester.toLowerCase() === semester.toLowerCase());
-      if (duplicate) return showMessage("enrollment-form-message", "This student already has a record for that course and semester.");
-      const old = data.enrollments.find((record) => record.id === id);
-      const record = { id: id || makeId(), studentRecordId: student.id, course, semester, status: form.elements.status.value, createdAt: old?.createdAt || new Date().toISOString() };
-      if (old) Object.assign(old, record); else data.enrollments.push(record);
-      addActivity(`${old ? "Updated" : "Added"} enrollment for ${student.name}`);
-      if (saveData()) { closeDialog("enrollment"); renderWorkspace("admin-enrollments"); showToast(old ? "Enrollment updated successfully." : "Enrollment added successfully."); }
-    });
-    document.querySelectorAll("[data-close-dialog]").forEach((button) => button.addEventListener("click", () => closeDialog(button.dataset.closeDialog)));
-    ["student","profile","enrollment"].forEach((kind) => $(`#${kind}-dialog-backdrop`).addEventListener("click", (event) => { if (event.target === event.currentTarget) closeDialog(kind); }));
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        ["student","profile","enrollment"].forEach(closeDialog);
-        $("#sidebar").classList.remove("open");
-        $("#mobile-nav-toggle").setAttribute("aria-expanded", "false");
-      }
-    });
-    async function startApp() {
-      $("#login-button").disabled = true;
-      $("#signup-button").disabled = true;
-      try {
-        await initializeData();
-        const sessionId = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
-        const account = data.accounts.find((item) => item.id === sessionId);
-        if (account && ["admin","student"].includes(account.role)) {
-          currentUser = account;
-          renderWorkspace(account.role === "admin" ? "admin-dashboard" : "my-information");
-        } else {
-          localStorage.removeItem(SESSION_KEY);
-          sessionStorage.removeItem(SESSION_KEY);
-          showAuthScreen();
-        }
-        if (!crypto.subtle) {
-          $("#storage-warning").hidden = false;
-          $("#storage-warning").textContent = "Password protection is not available here. Open this site through localhost or a secure website address.";
-          $("#login-button").disabled = true;
-          $("#signup-button").disabled = true;
-        } else {
-          $("#login-button").disabled = false;
-          $("#signup-button").disabled = false;
-        }
-      } catch (error) {
-        console.error("Student portal could not start.", error);
-        showAuthScreen();
-        $("#storage-warning").hidden = false;
-        $("#storage-warning").textContent = "The portal could not load browser data. Clear this demo’s browser storage and try again.";
-        $("#login-button").disabled = true;
-        $("#signup-button").disabled = true;
-      }
-    }
-    startApp();
-  </script>
+  <script type="module" src="./js/app.js"></script>
 </body>
 </html>
